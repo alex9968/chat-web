@@ -1,0 +1,14 @@
+{
+    "name": "customer-chat",
+    "mode": "offline",
+    "uuid": "f31sj12p11mtiumn",
+    "oss": {
+        "bucket": "fenpeiduixiang",
+        "path": "/customer-chat"
+    },
+    "scripts": {
+        "production": "build",
+        "development": "buildtest"
+    },
+    "build_result_folder": "dist"
+}
