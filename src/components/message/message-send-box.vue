@@ -16,24 +16,7 @@
       <i class="iconfont icon-diaocha" title="小调查" @click="surveyDialogVisible = true"></i>
       <i class="el-icon-video-camera" v-if="currentConversationType === 'C2C'&& toAccount !== userID" title="视频通话" @click="videoCall"></i> -->
     </div>
-
-    <!-- <el-dialog title="发自定义消息" :visible.sync="sendCustomDialogVisible" width="30%">
-      <el-form label-width="100px">
-        <el-form-item label="data">
-          <el-input v-model="form.data"></el-input>
-        </el-form-item>
-        <el-form-item label="description">
-          <el-input v-model="form.description"></el-input>
-        </el-form-item>
-        <el-form-item label="extension">
-          <el-input v-model="form.extension"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="sendCustomDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sendCustomMessage">确 定</el-button>
-      </span>
-    </el-dialog> -->
+   
 
     <el-popover
       trigger="manual"
@@ -218,7 +201,7 @@ export default {
           this.$set(message, 'progress', percent) // 手动给message 实例加个响应式属性: progress
         }
       })
-      this.$store.commit('pushCurrentMessageList', message)
+      this.$store.commit('sendMessage', message)
 
       // 2. 发送消息
       let promise = this.tim.sendMessage(message)
@@ -281,19 +264,13 @@ export default {
         })
         return
       }
-      const message = this.tim.createTextMessage({
-        to: this.toAccount,
-        conversationType: this.currentConversationType,
-        payload: { text: this.messageContent }
-      })
-      this.$store.commit('pushCurrentMessageList', message)
+      // const message = {
+      //   to: this.toAccount,
+      //   conversationType: this.currentConversationType,
+      //   payload: { text: this.messageContent }
+      // }
+      this.$store.commit('sendMessage', this.messageContent)
       this.$bus.$emit('scroll-bottom')
-      this.tim.sendMessage(message).catch(error => {
-        this.$store.commit('showMessage', {
-          type: 'error',
-          message: error.message
-        })
-      })
       this.messageContent = ''
     },
     chooseEmoji(item) {

@@ -1,6 +1,6 @@
 <template>
   <div class="side-bar-wrapper">
-    <div class="bar-left" >
+    <div class="bar-left">
       <my-profile />
       <div class="tab-items" @click="handleClick">
         <div
@@ -34,11 +34,7 @@
         ></div>
       </div>
       <div class="bottom">
-        <div
-          class="iconfont icon-tuichu"
-          @click="$store.dispatch('logout')"
-          title="退出"
-        ></div>
+        <div class="iconfont icon-tuichu" @click="logout" title="退出"></div>
       </div>
     </div>
 
@@ -119,6 +115,15 @@ export default {
           this.checkoutActive(activeName.BLACK_LIST)
           break
       }
+    },
+    logout() {
+      API.logout({ authToken: localStorage.getItem('authToken') }).then(
+        (res) => {
+          console.log('logout')
+          this.$store.dispatch('logout')
+          this.$router.push('/login')
+        }
+      )
     },
     // handleRefresh() {
     //   switch (this.active) {

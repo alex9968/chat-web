@@ -1,35 +1,42 @@
 <template>
-  <div class="login-wrapper">
-    <img class="logo" :src="logo" />
-    <el-form
-      ref="login"
-      :rules="rules"
-      :model="form"
-      label-width="0"
-      style="width: 100%"
-      @keydown.enter.native="submit"
-    >
-      <!-- 线上版本登录方式 -->
-      <el-form-item prop="userID">
-        <el-input v-model="form.userID" placeholder="请输入用户名" type="text" clearable></el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          v-model="form.password"
-          placeholder="请输入密码"
-          type="password"
-          show-password
-          clearable
-        ></el-input>
-      </el-form-item>
-    </el-form>
-    <el-button
-      type="primary"
-      @click="submit"
-      style="width: 100%; margin-top: 6px"
-      :loading="loading"
-      >登录</el-button
-    >
+  <div class="login-box">
+    <div class="login-wrapper">
+      <img class="logo" :src="logo" />
+      <el-form
+        ref="login"
+        :rules="rules"
+        :model="form"
+        label-width="0"
+        style="width: 100%"
+        @keydown.enter.native="submit"
+      >
+        <!-- 线上版本登录方式 -->
+        <el-form-item prop="userID">
+          <el-input
+            v-model="form.userID"
+            placeholder="请输入用户名"
+            type="text"
+            clearable
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="form.password"
+            placeholder="请输入密码"
+            type="password"
+            show-password
+            clearable
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <el-button
+        type="primary"
+        @click="submit"
+        style="width: 100%; margin-top: 6px"
+        :loading="loading"
+        >登录</el-button
+      >
+    </div>
   </div>
 </template>
 
@@ -37,14 +44,12 @@
 import { Form, Loading } from 'element-ui'
 import logo from '../assets/image/logo.png'
 
-
-let loadingInstance = null 
-
+let loadingInstance = null
 
 export default {
   name: 'Login',
   components: {
-    ElForm: Form
+    ElForm: Form,
     // ElFormItem: FormItem,
     // ElSelect: Select,
     // ElOption: Option,
@@ -60,7 +65,7 @@ export default {
     return {
       form: {
         userID: 'alen9968',
-        password: 'alen9968'
+        password: 'alen9968',
       },
       rules: {
         userID: [
@@ -71,11 +76,10 @@ export default {
       },
       logo: logo,
       registerVisible: false,
-      loading: false
+      loading: false,
     }
   },
   beforeMount() {
-    
     // this.login()
   },
   methods: {
@@ -89,10 +93,10 @@ export default {
 
     submitLogin(userID, userSig) {
       loadingInstance = Loading.service()
-        this.API.login({
-          userName: this.form.userID,
-          passWord: this.form.password
-        })
+      this.API.login({
+        userName: this.form.userID,
+        passWord: this.form.password,
+      })
         .then((res) => {
           this.loading = false
           this.$store.commit('toggleIsLogin', true)
@@ -108,7 +112,7 @@ export default {
             // 以服务的方式调用的 Loading 需要异步关闭
             loadingInstance.close()
           })
-          localStorage.setItem("authToken",res.data)
+          localStorage.setItem('authToken', res.data)
           this.$router.push('/home')
           this.$store.commit('showMessage', {
             type: 'success',
@@ -128,6 +132,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.login-box {
+  width: 100%;
+  margin-top: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-wrapper {
   display: flex;
   align-items: center;

@@ -54,6 +54,12 @@ export default new Vuex.Store({
       })
     }
   },
+  actions: {
+    // logout(){
+
+    // }
+
+  },
   modules: {
     conversation,
     group,

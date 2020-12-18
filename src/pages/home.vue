@@ -6,9 +6,9 @@
       element-loading-text="正在拼命初始化..."
       element-loading-background="rgba(0, 0, 0, 0.8)"
     >
-    <div class="chat-header">
+      <div class="chat-header">
         <header-bar />
-    </div>
+      </div>
       <div class="chat-wrapper">
         <el-row>
           <el-col :xs="10" :sm="10" :md="8" :lg="8" :xl="7">
@@ -77,11 +77,20 @@ export default {
       return !this.isSDKReady
     },
   },
+  watch: {
+    // isLogin(cur) {
+    //   if(!cur){
+    //     this.$router.push('/login') 
+    //   }
+    // }
+
+  },
   mounted() {
     // this.addHistoryFriendList()
     // 初始化监听器
     // this.initListener()
-    this.initWebSocket()
+      this.initWebSocket()
+    
   },
   data() {
     return {
@@ -132,7 +141,7 @@ export default {
       let data = { authToken: localStorage.getItem('authToken'), roomId: 1 }
       //websocket onopen
       this.websock.send(JSON.stringify(data))
-      this.API.getRoomInfo()
+      //取出当前的会话列表
       this.onReadyStateUpdate()
     },
     websocketonmessage(e) {
@@ -142,20 +151,13 @@ export default {
       let data = JSON.parse(e.data)
       console.log('websocketonmessage', data)
       if (data.op == 3) {
-        // let userNameAndMsg = data.fromUserName + '(' + data.createTime + ')';
-        // let innerInfo = '<div class="item" >' +
-        //     '<p class="nick guest j-nick " data-role="guest"></p>' +
-        //     '<p class="text"></p>' +
-        //     '</div>';
-        // $("#msg").append(innerInfo);
-        // $("#msg > div[class='item']:last > p[class='nick guest j-nick ']").text(userNameAndMsg);
-        // $("#msg > div[class='item']:last > p[class='text']:last").text(data.msg);
-        // $("#msg").animate({scrollTop: $("#msg").offset().top + 100000}, 1000);
+         this.$store.commit('pushCurrentMessageList', data) 
       } else if (data.op == 4) {
         // get room user count
         // $("#roomOnlineMemberNum").text(data.count);
       } else if (data.op == 5) {
         // get room user list
+        this.$store.commit('addConversationList', [data])
       }
     },
     websocketsend(agentData) {
@@ -190,18 +192,11 @@ export default {
       this.tim.on(this.TIM.EVENT.MESSAGE_READ_BY_PEER, this.onMessageReadByPeer)
     },
     addHistoryFriendList() {
-      this.API.getContactList({
-        kf_uid: localStorage.getItem('kfUid'),
-        page: 1,
-        per_page: this.conversationPageSize,
-      }).then((res) => {
-        console.log('getContactList', res.data.contact_list)
-        this.$store.commit('addConversationList', res.data.contact_list)
-        this.$store.commit('setTotalConvasation', res.data.total)
-        this.$store.commit('updateUnreadTotal', {
-          unreadCount: res.data.unread_count,
-          unreadNumber: res.data.unread_number,
-        })
+      this.$store.commit('addConversationList', res.data.contact_list)
+      this.$store.commit('setTotalConvasation', res.data.total)
+      this.$store.commit('updateUnreadTotal', {
+        unreadCount: res.data.unread_count,
+        unreadNumber: res.data.unread_number,
       })
     },
     onReceiveMessage({ data: messageList }) {
@@ -227,6 +222,7 @@ export default {
         authToken: localStorage.getItem('authToken'),
       }).then((res) => {
         console.log('getRoomInfo', res)
+        // this.$store.commit('addConversationList', res.data.contact_list)
         // this.$store.commit('updateCurrentUserProfile',res.data)
       })
       // if (this.isSDKReady) {
@@ -524,10 +520,11 @@ body {
   box-shadow: 0 11px 20px 0 rgba(0, 0, 0, 0.3);
   max-width: 1280px;
 }
+
 .chat-header {
   position: absolute;
   top: 0;
-  left:0;
+  left: 0;
 }
 
 .bg {
