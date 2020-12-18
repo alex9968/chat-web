@@ -1,18 +1,24 @@
 <template>
   <div class="container">
-    <div id="wrapper" v-if="!isLogin">
-      <login />
-    </div>
     <div
       class="loading"
-      v-else
       v-loading="showLoading"
       element-loading-text="正在拼命初始化..."
       element-loading-background="rgba(0, 0, 0, 0.8)"
     >
-      <div class="chat-wrapper">
+    <div class="chat-header">
         <header-bar />
+    </div>
+      <div class="chat-wrapper">
         <el-row>
+          <el-col :xs="10" :sm="10" :md="8" :lg="8" :xl="7">
+            <side-bar />
+          </el-col>
+          <el-col :xs="14" :sm="14" :md="16" :lg="16" :xl="17">
+            <current-conversation />
+          </el-col>
+        </el-row>
+        <!-- <el-row>
           <el-col :span="4">
             <side-bar />
           </el-col>
@@ -22,31 +28,33 @@
           <el-col :span="8">
             <right-side />
           </el-col>
-        </el-row>
+        </el-row> -->
       </div>
 
       <image-previewer />
     </div>
+    <div class="bg" />
   </div>
 </template>
 
 <script>
 import { Notification } from 'element-ui'
 import { mapState } from 'vuex'
-import CurrentConversation from './components/conversation/current-conversation'
-import SideBar from './components/layout/side-bar'
-import HeaderBar from './components/layout/header-bar'
-import RightSide from './components/rightside/index.vue'
-import Login from './components/user/login'
-import ImagePreviewer from './components/message/image-previewer.vue'
+import CurrentConversation from '../components/conversation/current-conversation'
+import SideBar from '../components/layout/side-bar'
+import HeaderBar from '../components/layout/header-bar'
+import RightSide from '../components/rightside/index.vue'
+import ImagePreviewer from '../components/message/image-previewer.vue'
 // import { translateGroupSystemNotice } from './utils/common'
-import { ACTION } from './utils/trtcCustomMessageMap'
-import MTA from './utils/mta'
+import { ACTION } from '../utils/trtcCustomMessageMap'
+import MTA from '../utils/mta'
+
+const socketUrl = 'ws://127.0.0.1:7000/ws'
+// let websocket = new WebSocket(socketUrl)
 
 export default {
   title: 'TIMSDK DEMO',
   components: {
-    Login,
     SideBar,
     CurrentConversation,
     ImagePreviewer,
@@ -70,11 +78,16 @@ export default {
     },
   },
   mounted() {
-    this.addHistoryFriendList()
+    // this.addHistoryFriendList()
     // 初始化监听器
-    this.initListener()
+    // this.initListener()
+    this.initWebSocket()
   },
-
+  data() {
+    return {
+      websock: null,
+    }
+  },
   watch: {
     isLogin(next) {
       if (next) {
@@ -82,8 +95,77 @@ export default {
       }
     },
   },
-
   methods: {
+    // threadPoxi() {
+    //   // 实际调用的方法
+    //   //参数
+    //   const agentData = 'mymessage'
+    //   //若是ws开启状态
+    //   if (this.websock.readyState === this.websock.OPEN) {
+    //     this.websocketsend(agentData)
+    //   }
+    //   // 若是 正在开启状态，则等待300毫秒
+    //   else if (this.websock.readyState === this.websock.CONNECTING) {
+    //     let that = this //保存当前对象this
+    //     setTimeout(function () {
+    //       that.websocketsend(agentData)
+    //     }, 300)
+    //   }
+    //   // 若未开启 ，则等待500毫秒
+    //   else {
+    //     this.initWebSocket()
+    //     let that = this //保存当前对象this
+    //     setTimeout(function () {
+    //       that.websocketsend(agentData)
+    //     }, 500)
+    //   }
+    // },
+    //初始化weosocket
+    initWebSocket() {
+      // const wsuri = process.env.WS_API + '/websocket/threadsocket'
+      this.websock = new WebSocket(socketUrl)
+      this.websock.onmessage = this.websocketonmessage
+      this.websock.onopen = this.websocketopen
+      this.websock.onclose = this.websocketclose
+    },
+    websocketopen() {
+      let data = { authToken: localStorage.getItem('authToken'), roomId: 1 }
+      //websocket onopen
+      this.websock.send(JSON.stringify(data))
+      this.API.getRoomInfo()
+      this.onReadyStateUpdate()
+    },
+    websocketonmessage(e) {
+      //数据接收
+      // const redata = JSON.parse(e.data)
+      // console.log(redata.value)
+      let data = JSON.parse(e.data)
+      console.log('websocketonmessage', data)
+      if (data.op == 3) {
+        // let userNameAndMsg = data.fromUserName + '(' + data.createTime + ')';
+        // let innerInfo = '<div class="item" >' +
+        //     '<p class="nick guest j-nick " data-role="guest"></p>' +
+        //     '<p class="text"></p>' +
+        //     '</div>';
+        // $("#msg").append(innerInfo);
+        // $("#msg > div[class='item']:last > p[class='nick guest j-nick ']").text(userNameAndMsg);
+        // $("#msg > div[class='item']:last > p[class='text']:last").text(data.msg);
+        // $("#msg").animate({scrollTop: $("#msg").offset().top + 100000}, 1000);
+      } else if (data.op == 4) {
+        // get room user count
+        // $("#roomOnlineMemberNum").text(data.count);
+      } else if (data.op == 5) {
+        // get room user list
+      }
+    },
+    websocketsend(agentData) {
+      //数据发送
+      this.websock.send(agentData)
+    },
+    websocketclose(e) {
+      //关闭
+      console.log('connection closed (' + e.code + ')')
+    },
     initListener() {
       // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
       this.tim.on(this.TIM.EVENT.SDK_READY, this.onReadyStateUpdate, this)
@@ -105,25 +187,21 @@ export default {
       // 网络监测
       this.tim.on(this.TIM.EVENT.NET_STATE_CHANGE, this.onNetStateChange)
       // 已读回执
-      this.tim.on(
-        this.TIM.EVENT.MESSAGE_READ_BY_PEER,
-        this.onMessageReadByPeer
-      )
+      this.tim.on(this.TIM.EVENT.MESSAGE_READ_BY_PEER, this.onMessageReadByPeer)
     },
     addHistoryFriendList() {
       this.API.getContactList({
         kf_uid: localStorage.getItem('kfUid'),
         page: 1,
-        per_page: this.conversationPageSize, 
+        per_page: this.conversationPageSize,
       }).then((res) => {
-        console.log('getContactList' , res.data.contact_list)
+        console.log('getContactList', res.data.contact_list)
         this.$store.commit('addConversationList', res.data.contact_list)
         this.$store.commit('setTotalConvasation', res.data.total)
-        this.$store.commit('updateUnreadTotal', { 
-          unreadCount: res.data.unread_count,  
-          unreadNumber: res.data.unread_number
+        this.$store.commit('updateUnreadTotal', {
+          unreadCount: res.data.unread_count,
+          unreadNumber: res.data.unread_number,
         })
-        
       })
     },
     onReceiveMessage({ data: messageList }) {
@@ -141,24 +219,30 @@ export default {
       }
     },
     onMessageReadByPeer() {},
-    onReadyStateUpdate({ name }) {
-      const isSDKReady = name === this.TIM.EVENT.SDK_READY ? true : false
-      this.$store.commit('toggleIsSDKReady', isSDKReady)
-
-      if (isSDKReady) {
-        this.tim
-          .getMyProfile()
-          .then(({ data }) => {
-            this.$store.commit('updateCurrentUserProfile', data)
-          })
-          .catch((error) => {
-            this.$store.commit('showMessage', {
-              type: 'error',
-              message: error.message,
-            })
-          })
-        this.$store.dispatch('getBlacklist')
-      }
+    //登录成功后
+    onReadyStateUpdate() {
+      this.$store.commit('toggleIsSDKReady', true)
+      this.API.getRoomInfo({
+        roomId: 1,
+        authToken: localStorage.getItem('authToken'),
+      }).then((res) => {
+        console.log('getRoomInfo', res)
+        // this.$store.commit('updateCurrentUserProfile',res.data)
+      })
+      // if (this.isSDKReady) {
+      //   this.tim
+      //     .getMyProfile()
+      //     .then(({ data }) => {
+      //       this.$store.commit('updateCurrentUserProfile', data)
+      //     })
+      //     .catch((error) => {
+      //       this.$store.commit('showMessage', {
+      //         type: 'error',
+      //         message: error.message,
+      //       })
+      //     })
+      //   this.$store.dispatch('getBlacklist')
+      // }
     },
     kickedOutReason(type) {
       switch (type) {
@@ -185,10 +269,7 @@ export default {
       }
     },
     onNetStateChange(event) {
-      this.$store.commit(
-        'showMessage',
-        this.checkoutNetState(event.data.state)
-      )
+      this.$store.commit('showMessage', this.checkoutNetState(event.data.state))
     },
     onKickOut(event) {
       this.$store.commit('showMessage', {
@@ -425,8 +506,10 @@ body {
 .loading {
   height: 100vh;
   width: 100vw;
-  // display: flex;
-  // justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .text-ellipsis {
@@ -438,8 +521,25 @@ body {
 .chat-wrapper {
   width: $width;
   height: $height;
-  // max-width: 1280px;
-  // box-shadow: 0 11px 20px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 11px 20px 0 rgba(0, 0, 0, 0.3);
+  max-width: 1280px;
+}
+.chat-header {
+  position: absolute;
+  top: 0;
+  left:0;
+}
+
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background: url('~@/./assets/image/bg.jpg') no-repeat 0 0;
+  background-size: cover;
+  // filter blur(67px)
 }
 
 /* 设置滚动条的样式 */

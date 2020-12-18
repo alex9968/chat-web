@@ -1,25 +1,25 @@
-const path = require('path')
+const path = require("path");
 
 function resolve(dir) {
-  return path.join(__dirname, dir)
+  return path.join(__dirname, dir);
 }
 module.exports = {
-  publicPath: './',
-  assetsDir: './',
+  publicPath: "./",
+  assetsDir: "./",
   productionSourceMap: false,
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.resolve.alias
-      .set('@', resolve('src'))
-      .set('tim', resolve('src/tim.js'))
-      .set('@assets', resolve('src/assets'))
+      .set("@", resolve("src"))
+      .set("@assets", resolve("src/assets"))
+      .set("tim", resolve("src/tim.js"));
   },
   css: {
     loaderOptions: {
       stylus: {
-        'resolve url': true,
+        "resolve url": true,
         // 自定义主题场景
-        import: [path.resolve(__dirname, './src/assets/css/base.styl')]
-      }
-    }
+        import: [path.resolve(__dirname, "./src/assets/css/base.styl")],
+      },
+    },
   },
-}
+};

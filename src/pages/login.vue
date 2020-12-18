@@ -1,5 +1,5 @@
 <template>
-  <div v-if="false" class="login-wrapper">
+  <div class="login-wrapper">
     <img class="logo" :src="logo" />
     <el-form
       ref="login"
@@ -9,20 +9,8 @@
       style="width: 100%"
       @keydown.enter.native="submit"
     >
-      <!-- Github登录方式 -->
-      <!-- <el-form-item prop="userID">
-        <el-select v-model="form.userID" class="user-selector">
-          <el-option
-            v-for="index in 30"
-            :key="index"
-            :label="`user${index-1}`"
-            :value="`user${index-1}`"
-          ></el-option>
-        </el-select>
-      </el-form-item> -->
-
       <!-- 线上版本登录方式 -->
-      <!-- <el-form-item prop="userID">
+      <el-form-item prop="userID">
         <el-input v-model="form.userID" placeholder="请输入用户名" type="text" clearable></el-input>
       </el-form-item>
       <el-form-item prop="password">
@@ -33,7 +21,7 @@
           show-password
           clearable
         ></el-input>
-      </el-form-item>-->
+      </el-form-item>
     </el-form>
     <el-button
       type="primary"
@@ -47,34 +35,16 @@
 
 <script>
 import { Form, Loading } from 'element-ui'
-import logo from '../../assets/image/logo.png'
+import logo from '../assets/image/logo.png'
 
 
-let loadingInstance = Loading.service()
+let loadingInstance = null 
 
-function genTestUserSig(userID) {
-  var SDKAPPID =
-    process.env.NODE_ENV === 'development' ? 1400407288 : 1400284328
-  var EXPIRETIME = 604800
-  var SECRETKEY =
-    '0f6624e1d7436f1d55904d226d841a253d8b708e6c5799cbaad66e46f55ee708'
-  var generator = new window.LibGenerateTestUserSig(
-    SDKAPPID,
-    SECRETKEY,
-    EXPIRETIME
-  )
-  var userSig = generator.genTestUserSig(userID)
-  return {
-    SDKAppID: SDKAPPID,
-    userSig: userSig,
-  }
-}
-window.genTestUserSig = genTestUserSig
 
 export default {
   name: 'Login',
   components: {
-    ElForm: Form,
+    ElForm: Form
     // ElFormItem: FormItem,
     // ElSelect: Select,
     // ElOption: Option,
@@ -89,8 +59,8 @@ export default {
     }
     return {
       form: {
-        userID: 'im_account_3',
-        password: '',
+        userID: 'alen9968',
+        password: 'alen9968'
       },
       rules: {
         userID: [
@@ -101,61 +71,45 @@ export default {
       },
       logo: logo,
       registerVisible: false,
-      loading: false,
+      loading: false
     }
   },
   beforeMount() {
     
-    this.login()
+    // this.login()
   },
   methods: {
     submit() {
       this.$refs['login'].validate((valid) => {
         if (valid) {
-          this.login()
+          this.submitLogin()
         }
       })
     },
-    // login entry
-    login() {
-      localStorage.setItem('kfUid', 11)
-      this.loading = true
-      this.API.accountInit({ kf_uid: localStorage.getItem('kfUid') }).then(
-        (res) => {
-          const { user } = res.data
-          console.log('accountInit', res)
-          this.submitLogin(user.im_account, user.im_sig)
-        }
-      )
-    },
+
     submitLogin(userID, userSig) {
-      console.log(
-        'ff',
-        this.form.userID,
-        window.genTestUserSig(this.form.userID).userSig
-      )
-      this.tim
-        .login({
-          // userID: this.form.userID,
-          // userSig: window.genTestUserSig(this.form.userID).userSig
-          userID,
-          userSig,
+      loadingInstance = Loading.service()
+        this.API.login({
+          userName: this.form.userID,
+          passWord: this.form.password
         })
-        .then(() => {
+        .then((res) => {
           this.loading = false
           this.$store.commit('toggleIsLogin', true)
           this.$store.commit('startComputeCurrent')
 
-          this.$store.commit({
-            type: 'GET_USER_INFO',
-            userID,
-            userSig,
-            sdkAppID: window.genTestUserSig('').SDKAppID,
-          })
+          // this.$store.commit({
+          //   type: 'GET_USER_INFO',
+          //   userID,
+          //   userSig,
+          //   sdkAppID: window.genTestUserSig('').SDKAppID,
+          // })
           this.$nextTick(() => {
             // 以服务的方式调用的 Loading 需要异步关闭
             loadingInstance.close()
           })
+          localStorage.setItem("authToken",res.data)
+          this.$router.push('/home')
           this.$store.commit('showMessage', {
             type: 'success',
             message: '登录成功',

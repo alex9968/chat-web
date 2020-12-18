@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import Axios from './axios'
-import apis from './apis'
-import { parseQueryString } from '../utils/index'
+import Axios from "./axios";
+import apis from "./apis";
+import { parseQueryString } from "../utils/index";
 
 // const getQueryString = (name) => {
 //   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
@@ -12,30 +12,28 @@ import { parseQueryString } from '../utils/index'
 //   return null
 // }
 const getBaseURL = () => {
-  console.log('sssss',process.env.NODE_ENV)
-  if(process.env.NODE_ENV === 'production' ) {
-      return 'https://api.fenpeiduixiang.com'
-  } else  if (process.env.NODE_ENV === 'release') { 
-      return 'http://release.fenpeiduixiang.com'
+  // console.log('sssss',process.env.NODE_ENV)
+  if (process.env.NODE_ENV === "production") {
+    return "http://127.0.0.1:7070";
   }
-  return 'http://dev.fenpeiduixiang.com'
-}
+  return "http://127.0.0.1:7070";
+};
 
 // console.log('url',getBaseURL())
 let token;
-function getToken () {
-  if(token) return token;
+function getToken() {
+  if (token) return token;
 
-  return token = parseQueryString().token;
+  return (token = parseQueryString().token);
 }
 
 const http = new Axios({
   initConfig: {
     baseURL: getBaseURL(),
-    credentials: 'same-origin',
+    credentials: "same-origin",
     headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
+      Accept: "*/*",
+      "Content-Type": "application/json",
       authorization: getToken(),
       //'authorization': 'bearereyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXV0aC5wb2NrZXR1bml2ZXJzaXR5LmNuL2FwaS9hdXRoL2FkbWluL3ZlcmlmeWNvZGUiLCJpYXQiOjE2MDIyMDgwOTEsImV4cCI6MTYwMjI1MTI5MSwibmJmIjoxNjAyMjA4MDkxLCJqdGkiOiJJRnRBc1pJakZPUWRlbVRRIiwic3ViIjoiMTc2MDE0MjgwNzUiLCJwcnYiOiJlM2JjMDdmOTM1OTZlODU2MzhhYjQ1ZjIxMDZmYjg1Yzc4ZDI3ZTcyIiwibmlja25hbWUiOiJ0aHJlYWRzIiwiaGVhZGltZ3VybCI6Imh0dHBzOi8vb3NzLnBvY2tldHVuaXZlcnNpdHkuY24vYXZhdGFyL0ZSTkk0cmlzcUhCa0ZVRGRBOU44bDZVcTZlemN1SU5FRkxBd1hETzEuanBlZyIsInNleCI6MiwidWlkIjo5ODA0N30.8LG96gEauzPhQbNvAiCNZIYs3QKulAQL8wHiNiRq1PU'
       //'authorization': 'bearereyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZGV2LmF1dGguZmVucGVpZHVpeGlhbmcuY29tL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjAyMzgwNTU3LCJleHAiOjE2MDQ5NzI1NTcsIm5iZiI6MTYwMjM4MDU1NywianRpIjoidkloMk04YUVqdUhCYmxDQyIsInN1YiI6IjZBREIwOURCNEJDMzBGQzgxMjEyQjI2NjM0Q0YyQzdCIiwicHJ2IjoiZTNiYzA3ZjkzNTk2ZTg1NjM4YWI0NWYyMTA2ZmI4NWM3OGQyN2U3MiIsIm5pY2tuYW1lIjoiXHU2ODQyXHU1NzA2IiwiaGVhZGltZ3VybCI6Imh0dHBzOi8vb3NzLnBvY2tldHVuaXZlcnNpdHkuY24vYXZhdGFyLzIwMjAtMDUtMTgvMTI4ZmZmNjgtNDRkNC00NmRjLTlmOTgtMjQ4ZWUxNjM2YzU1LnBuZyIsInNleCI6MiwidWlkIjoxMDAwMX0.yt2BKt86T4dyBAkXu691TeivE56di8jQYvJt95jiTEg'
@@ -44,17 +42,17 @@ const http = new Axios({
     },
   },
   beforeRequset: (url) => {
-    if (url === '/login') {
-      console.log('to login page')
+    if (url === "/login") {
+      console.log("to login page");
     }
   },
   reqIntercept: (config, url) => {
     // 在这里添加loading、 配置token
     // config.headers.Token = sessionStorage.getItem('token')
-    if (url === '/login') {
-      console.log('to login page')
+    if (url === "/login") {
+      console.log("to login page");
     }
-    return config
+    return config;
   },
   resIntercept: (res, url) => {
     // 在这里移除loading,对响应结果预先处理
@@ -65,33 +63,33 @@ const http = new Axios({
     //ProgressBar.hide();
     switch (res.status) {
       case 200:
-        return res
+        return res;
       case 302:
         //message.info('登录超时, 请重新登录！')
-        break
+        break;
       case 401:
         //window.push('login');
-        break
+        break;
       default:
-        if (process.env.NODE_ENV !== 'production') {
-          console.error('Request error: ', res, res.code, res.message)
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Request error: ", res, res.code, res.message);
         }
-        Promise.resolve(res)
+        Promise.resolve(res);
     }
 
-    return Promise.resolve(res)
+    return Promise.resolve(res);
   },
-})
+});
 
 const mapUrl = (apiObj) => {
-  const API = {}
+  const API = {};
   Object.keys(apiObj).forEach((key) => {
-    const item = apiObj[key]
+    const item = apiObj[key];
     API[key] = async function(params) {
-      return await http[item.method](item.url, params)
-    }
-  })
-  return API
-}
+      return await http[item.method](item.url, params);
+    };
+  });
+  return API;
+};
 
-export default mapUrl(apis)
+export default mapUrl(apis);

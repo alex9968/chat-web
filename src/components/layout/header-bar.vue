@@ -1,11 +1,10 @@
 <template>
   <div class="header-bar">
     <div class="header-bar-left">
-      <my-profile />
       <div class="title">客服系统</div>
     </div>
     <!-- 右边 -->
-    <div>
+    <div v-if="false">
       <div class="total">
         <!-- 当前未读: {{ unreadCount }}人{{ unreadNumber }}条消息 -->
         当前未读: {{ totalUnreadCount.people }}人{{ totalUnreadCount.count }}条消息 
@@ -24,7 +23,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import MyProfile from '../my-profile'
 export default {
   name: 'HeaderBar',
   computed: {
@@ -34,7 +32,6 @@ export default {
     }),
     ...mapGetters(['totalUnreadCount']),
   },
-  components: { MyProfile },
   data() {
     return {}
   },
@@ -56,7 +53,7 @@ export default {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  border-bottom: 1px solid lightgrey;
+  // border-bottom: 1px solid lightgrey;
   // box-shadow: 0 11px 20px 0 rgba(0, 0, 0, 0.3);
   align-items: center;
   overflow: hidden;
@@ -64,6 +61,7 @@ export default {
   .header-bar-left {
     display: flex;
     align-items: center;
+    margin-left: 80px;
   }
 
   .title {
@@ -71,7 +69,7 @@ export default {
     margin-left: 10px;
     height: 100%;
     vertical-align: center;
-    border-bottom: 2px solid green;
+    // border-bottom: 2px solid green;
     font-size: 24px;
     color: green;
   }

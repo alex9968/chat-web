@@ -177,34 +177,7 @@ const conversationModules = {
     },
     sendContactStar(state, {conversationID,UID, isFork }) {
       console.log('forkConversation3', isFork)
-      if(!isFork) {
-        API.contactStar({contactUid: UID}).then(res => {
-          if(res.code === 200) {
-            state.forkList.push(conversationID)
-            message.success('收藏成功')
-            console.log('contact Star success', state.forkList)
-            return
-          }
-          message.warning('收藏失败')
-        }) 
-        return
-      }
-      API.contactUnStar({contactUid: UID}).then(res => {
-        if(res.code === 200) {
-          const localForkListIndex = state.forkList.indexOf(conversationID)
-          if(localForkListIndex !== -1) { //存在本地记录
-            console.log('contactUnStar', localForkListIndex, state.forkList )
-            const newforkList =  state.forkList
-            newforkList.splice(localForkListIndex,1) 
-            state.forkList = newforkList 
-            console.log('contactUnStar success', state.forkList)
-            message.success('取消成功')
-          }
-
-          return
-        }
-          message.warning('取消收藏失败')
-      })
+          // message.warning('取消收藏失败')
     },
   },
   actions

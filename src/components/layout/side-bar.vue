@@ -1,6 +1,6 @@
 <template>
   <div class="side-bar-wrapper">
-    <div class="bar-left" v-if="false" >
+    <div class="bar-left" >
       <my-profile />
       <div class="tab-items" @click="handleClick">
         <div

@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import Vue from 'vue'
-import { MessageBox, Message, Row, Collapse, DatePicker, Radio, CollapseItem, TabPane, Tabs, Avatar, Image, Col, Button, Input, Loading, Dialog, Dropdown, DropdownMenu, DropdownItem } from 'element-ui'
+import { MessageBox, Message, Row, Collapse, DatePicker, Radio, CollapseItem, TabPane, Tabs, Avatar, Image, Col, Button, Input, Loading, Dialog, Dropdown, DropdownMenu, DropdownItem, FormItem } from 'element-ui'
 //import ElementUI from 'element-ui'
 import MyAvatar from './components/avatar.vue'
-import Index from './index.vue'
+import App from './App.vue'
 import store from './store/index'
 import API from './services/index'
+import router from './router/index'
 import tim from 'tim'
 import TIM from 'tim-js-sdk'
 import './assets/icon/iconfont.css'
@@ -39,7 +40,9 @@ Vue.use(Dialog)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(FormItem)
 Vue.component('avatar', MyAvatar)
 new Vue({
-  render: h => h(Index)
+  router,
+  render: h => h(App)
 }).$mount('#app')

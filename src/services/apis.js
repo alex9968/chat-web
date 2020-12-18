@@ -1,34 +1,172 @@
 export default {
-  /* -------- 获取用户详细资料信息, params: /uid -------- */
-  getUserInfo: {
-    method: "get",
-    url: "/api/admin/pair/history/",
-  },
-  /* -------- 获取用户配对信息 body{ content } -------- */
-  getUserPartner: {
+  /* -------- 登录 -------- */
+  // {userName: , passWord: }
+  login: {
     method: "post",
-    url: "/api/admin/partner/search/",
+    url: "/user/login",
   },
-  /* -------- 获取好友列表 -------- */
-  getFriendList: {
-    method: "get",
-    url: "/stub-api/v3/friend/get_friend_list",
+  //   $.ajax({
+  //     type: "POST",
+  //     dataType: "json",
+  //     url: apiUrl + "/user/login",
+  //     data: JSON.stringify(jsonData),
+  //     success: function (result) {
+  //         if (result.code == 0) {
+  //             setLocalStorage("authToken", result.data);
+  //             window.location.href = "/index.html";
+  //         } else {
+  //             swal("error:" + result.message);
+  //         }
+  //     },
+  //     error: function () {
+  //         swal("exception！");
+  //     }
+  // });
+
+  /* --------  body{ content } -------- */
+  logout: {
+    method: "post",
+    url: "/user/logout",
   },
+  // function logout() {
+  //   let jsonData = {authToken: getLocalStorage("authToken")};
+  //   $.ajax({
+  //       type: "POST",
+  //       dataType: "json",
+  //       url: apiUrl + "/user/logout",
+  //       data: JSON.stringify(jsonData),
+  //       success: function (result) {
+  //           if (result.code == 0) {
+  //               window.location.href = "/login.html";
+  //           } else {
+  //               swal("request error，please login！");
+  //           }
+  //       },
+  //       error: function () {
+  //           swal("sorry, exception！");
+  //       }
+  //   });
+  // }
+
+  /* -------- 注册 body{ content } -------- */
+  register: {
+    method: "post",
+    url: "/user/register",
+  },
+  // let jsonData = {userName: userName, passWord: passWord};
+  // $.ajax({
+  //     type: "POST",
+  //     dataType: "json",
+  //     url: apiUrl + "/user/register",
+  //     data: JSON.stringify(jsonData),
+  //     success: function (result) {
+  //         if (result.code == 0) {
+  //             setLocalStorage("authToken", result.data);
+  //             window.location.href = "/index.html";
+  //         } else {
+  //             swal("error:" + result.message);
+  //         }
+  //     },
+  //     error: function () {
+  //         swal("register exception！");
+  //     }
+  // });
+
+  /* -------- 登录验证 -------- */
+  checkAuth: {
+    method: "post",
+    url: "/user/checkAuth",
+  },
+  // let auth = getLocalStorage("authToken");
+  //   let jsonData = {"authToken": auth};
+  //   $.ajax({
+  //       type: "POST",
+  //       contentType: "application/json",
+  //       dataType: "json",
+  //       url: apiUrl + "/user/checkAuth",
+  //       data: JSON.stringify(jsonData),
+
   /* -------- 获取联系人列表 -------- */
-  getContactList: {
-    method: "get",
-    url: "/api/admin/kfaccount/get_contact_list",
-  },
-  /* -------- 获取消息列表 -------- */
-  getMessageList: {
-    method: "get",
-    url: "/api/admin/kfaccount/get_message_list",
-  },
-  /* -------- 设置已读-------- */
-  setMessageRead: {
+  getRoomInfo: {
     method: "post",
-    url: "/api/admin/kfaccount/set_message_read",
+    url: "/push/getRoomInfo",
   },
+
+  // let jsonData = {roomId: 1, authToken: getLocalStorage("authToken")};
+  // $.ajax({
+  //     type: "POST",
+  //     dataType: "json",
+  //     url: apiUrl + "/push/getRoomInfo",
+  //     data: JSON.stringify(jsonData),
+  //     success: function (result) {
+  //         if (result.code != 0) {
+  //             //swal("request error，please try again later！");
+  //         }
+  //     },
+  //     error: function () {
+  //         swal("sorry, exception!");
+  //     }
+  // });
+
+  /* -------- 获取消息列表 -------- */
+  getRoomUserCount: {
+    method: "get",
+    url: "/push/count",
+  },
+
+  //   function getRoomUserCount() {
+  //     let jsonData = {roomId: 1, authToken: getLocalStorage("authToken")};
+  //     $.ajax({
+  //         type: "POST",
+  //         dataType: "json",
+  //         url: apiUrl + "/push/count",
+  //         data: JSON.stringify(jsonData),
+  //         success: function (result) {
+  //             if (result.code != 0) {
+  //                 swal("request error，please login!");
+  //             }
+  //         },
+  //         error: function () {
+  //             swal("sorry, exception!");
+  //         }
+  //     });
+  // }
+
+  /* -------- 设置已读-------- */
+  sendMessage: {
+    method: "post",
+    url: "/push/pushRoom",
+  },
+
+  //   function send() {
+  //     $("#tab_chat").click();
+  //     $("#msg").animate({scrollTop: $("#msg").offset().top + 100000}, 1000);
+  //     let msg = document.getElementById('editText').value;
+  //     if (msg == "") {
+  //         swal("send msg is empty!");
+  //         return
+  //     }
+  //     document.getElementById('editText').value = '';
+  //     let jsonData = {op: 3, msg: msg, roomId: 1, authToken: getLocalStorage("authToken")};
+  //     $.ajax({
+  //         type: "POST",
+  //         dataType: "json",
+  //         url: apiUrl + "/push/pushRoom",
+  //         data: JSON.stringify(jsonData),
+  //         success: function (result) {
+  //             if (result.code == 0) {
+  //                 // send ok
+  //             } else {
+  //                 swal("please login or register account!");
+  //                 window.location.href = "/register.html";
+  //             }
+  //         },
+  //         error: function () {
+  //             swal("sorry, exception！");
+  //         }
+  //     });
+  // }
+
   /* -------- 获取客服初始化用户信息-------- */
   accountInit: {
     method: "post",
@@ -60,13 +198,6 @@ export default {
   },
 
   /* -------- 获取聊天记录 -------- */
-  // fromAccount		String	true
-  // toAccount		String	true
-  // msgRandom		int	true
-  // msgTimeStamp		int	true
-  // msgSeq		int	true
-  // limit	页距	int
-  // isForward	是否向前查找更早的消息	Enums.BoolToInt	true
   getUserMessages: {
     method: "post",
     url: "/stub-api/v3/im/get_user_messages",
