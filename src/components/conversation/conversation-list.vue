@@ -19,11 +19,11 @@
         :key="item.conversationID"
       />
     </div>
-    <div class="more">
+    <!-- <div class="more">
       <el-button type="text" @click="$store.commit('addMoreConversationList')"
         >查看更多</el-button
       >
-    </div>
+    </div> -->
 
     <!-- <el-dialog title="快速发起会话" :visible.sync="showDialog" width="30%">
       <el-input

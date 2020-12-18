@@ -181,7 +181,7 @@ export default {
 .side-bar-wrapper {
   height: 100%;
   color: black;
-  border-right: 1px solid lightgrey;
+  // border-right: 1px solid lightgrey;
   display: flex;
   width: 100%;
   overflow: hidden;
@@ -190,10 +190,9 @@ export default {
     display: flex;
     flex-shrink: 0;
     flex-direction: column;
-    border-right: 1px solid lightgrey;
     width: 80px;
     height: $height;
-    background-color: $background-dark;
+    background-color: #303841;
 
     .tab-items {
       display: flex;
@@ -214,8 +213,8 @@ export default {
       }
 
       .active {
-        // color: $white;
-        background-color: lightgrey;
+        color: $white;
+        background-color: #363e47;
 
         &::after {
           content: ' ';
