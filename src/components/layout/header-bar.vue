@@ -1,7 +1,7 @@
 <template>
   <div class="header-bar">
     <div class="header-bar-left">
-      <div class="title">客服系统</div>
+      <div class="title">聊天系统</div>
     </div>
     <!-- 右边 -->
     <div v-if="false">

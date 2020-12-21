@@ -64,8 +64,8 @@ export default {
     }
     return {
       form: {
-        userID: 'alen9968',
-        password: 'alen9968',
+        userID: 'demo',
+        password: '111111',
       },
       rules: {
         userID: [

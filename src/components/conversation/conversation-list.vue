@@ -1,14 +1,15 @@
 <template>
   <div class="list-container">
     <div class="header-bar">
-      <!-- <button title="刷新列表" @click="handleRefresh">
-        <i class="tim-icon-refresh"></i>
-      </button> -->
-      <el-input size="mini" placeholder="输入UID查找" v-model="searchToUid" @change="handleAddButtonClick">
+
+       <el-button title="创建会话" @click="handleAddButtonClick">
+        <i class="tim-icon-add"></i>
+      </el-button>
+      <!-- <el-input size="mini" placeholder="输入UID查找" v-model="searchToUid" @change="handleAddButtonClick">
         <el-button  slot="append" title="添加会话" size="mini" @click="handleAddButtonClick">
           <i class="el-icon-search"/>
         </el-button>
-      </el-input>
+      </el-input> -->
      
     </div>
 
@@ -25,7 +26,7 @@
       >
     </div> -->
 
-    <!-- <el-dialog title="快速发起会话" :visible.sync="showDialog" width="30%">
+    <el-dialog title="快速发起群会话" :visible.sync="showDialog" width="30%">
       <el-input
         placeholder="请输入用户ID"
         v-model="userID"
@@ -35,9 +36,12 @@
         <el-button @click="showDialog = false">取 消</el-button>
         <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
+
+
+
 
 <script>
 import ConversationItem from './conversation-item'
@@ -108,6 +112,29 @@ export default {
     handleRefresh() {
       this.refreshConversation()()
     },
+     handleAddButtonClick() {
+      this.showDialog = true
+    },
+    handleConfirm() {
+      if (this.userID !== '@TIM#SYSTEM') {
+        this.$store
+          .dispatch('checkoutConversation', `C2C${this.userID}`)
+          .then(() => {
+            this.showDialog = false
+          }).catch(() => {
+          this.$store.commit('showMessage', {
+            message: '没有找到该用户',
+            type: 'warning'
+          })
+        })
+      } else {
+        this.$store.commit('showMessage', {
+          message: '没有找到该用户',
+          type: 'warning'
+        })
+      }
+      this.userID = ''
+    },
     refreshConversation() {
       let that = this
       return function () {
@@ -124,12 +151,12 @@ export default {
         }
       }
     },
-    handleAddButtonClick() {
-      console.log('adsd',this.searchToUid)
-        this.$store.dispatch('searchConversation',this.searchToUid).then(() => {
-          this.searchToUid = ''
-        })
-    },
+    // handleAddButtonClick() {
+    //   console.log('adsd',this.searchToUid)
+    //     this.$store.dispatch('searchConversation',this.searchToUid).then(() => {
+    //       this.searchToUid = ''
+    //     })
+    // },
     handleKeydown(event) {
       if (
         (event.keyCode !== 38 && event.keyCode !== 40) ||
@@ -190,14 +217,42 @@ export default {
   display: flex;
   flex-direction: column; // -reverse
 
-  .header-bar {
-    // flex-shrink: 0;
-    display flex
-    justify-content space-around
-    align-items center
-    height: 50px;
-    border-bottom: 1px solid $background-deep-dark;
-    padding: 10px 10px 10px 20px;
+  
+
+  .header-bar{ 
+    flex-shrink 0
+    height 50px
+    border-bottom 1px solid $background-deep-dark
+    padding 10px 10px 10px 20px
+    button{
+      float right
+      display: inline-block;
+      cursor: pointer;
+      background $background-deep-dark
+      border: none
+      color: $font-dark;
+      box-sizing: border-box;
+      transition: .3s;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      margin: 0 10px 0 0
+      padding 0
+      width 30px
+      height 30px
+      line-height 34px
+      font-size: 24px;
+      text-align: center;
+      white-space: nowrap;
+      border-radius: 50%
+      outline 0
+      &:hover{
+        // background $light-primary
+        // color $white
+        transform: rotate(360deg);
+        color $light-primary
+      }
+    }
   }
 
   .scroll-container {
