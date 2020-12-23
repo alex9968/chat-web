@@ -13,14 +13,7 @@
 
     <!-- 头像 -->
     <div class="avatar">
-      <span style="width: 50%"
-        ><el-avatar size="medium" :src="data.avatar"></el-avatar
-      ></span>
-      <a
-        href="https://www.yuque.com/docs/share/7673f881-8736-404a-923a-71685254a7d0"
-        target="_blank"
-        >匹配偏好对照表</a
-      >
+        <el-avatar size="medium" :src="data.avatar"></el-avatar>
     </div>
 
     <!-- 详细资料 -->
@@ -114,61 +107,12 @@ export default {
           label: '生日',
           modify: true,
         },
-        be_vip_at: {
-          key: 'be_vip_at',
-          label: '普通会员开启时间',
-          transform: (val) => {
-            return val
-              ? dayjs(val * 1000).format('YYYY-MM-DD HH:mm:ss')
-              : '不是会员'
-          },
-        },
-        feed_sex: {
-          key: 'feed_sex',
-          label: '信息流性别',
-        },
-        fpdx_like: {
-          key: 'fpdx_like',
-          label: '匹配偏好',
-        },
+       
         height: {
           key: 'height',
           label: '身高',
         },
-        home: {
-          key: 'home',
-          label: '故乡',
-        },
-        identity_auth: {
-          key: 'identity_auth',
-          label: '认证照片',
-          transform: (val) => {
-            return val || '无'
-          },
-        },
-        login_at: {
-          key: 'login_at',
-          label: '上次登录时间',
-          transform: (val) => {
-            return dayjs(val * 1000).format('YYYY-MM-DD HH:mm:ss')
-          },
-        },
-        pair_max_age: {
-          key: 'pair_max_age',
-          label: '匹配最大年龄',
-        },
-        pair_min_age: {
-          key: 'pair_max_age',
-          label: '匹配最小年龄',
-        },
-        partner_id: {
-          key: 'partner_id',
-          label: '卡片id',
-        },
-        phone: {
-          key: 'phone',
-          label: '手机号',
-        },
+       
         qq: {
           key: 'qq',
           label: 'qq',
@@ -197,36 +141,6 @@ export default {
           transform: (val) => {
             return map.sxoMap[val]
           },
-        },
-        supvip_endat: {
-          key: 'supvip_endat',
-          label: 'svip到期时间',
-          transform: (val) => {
-            if (!val) {
-              return '不是svip'
-            }
-            return dayjs(val * 1000).format('YYYY-MM-DD HH:mm:ss')
-          },
-        },
-        wx_auth: {
-          key: 'wx_auth',
-          label: '是否微信认证',
-          transform: (val) => {
-            return val ? '是' : '否'
-          },
-        },
-
-        gold_flower: {
-          key: 'gold_flower',
-          label: '金花',
-        },
-        red_flower: {
-          key: 'red_flower',
-          label: '红花',
-        },
-        expect: {
-          key: 'expect',
-          label: '自我描述',
         },
       },
     }

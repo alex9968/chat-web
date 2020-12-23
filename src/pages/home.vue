@@ -14,21 +14,13 @@
           <el-col :xs="10" :sm="10" :md="8" :lg="8" :xl="7">
             <side-bar />
           </el-col>
-          <el-col :xs="14" :sm="14" :md="16" :lg="16" :xl="17">
+          <el-col :xs="14" :sm="10" :md="12" :lg="11" :xl="12">
             <current-conversation />
           </el-col>
-        </el-row>
-        <!-- <el-row>
-          <el-col :span="4">
-            <side-bar />
-          </el-col>
-          <el-col :span="12">
-            <current-conversation />
-          </el-col>
-          <el-col :span="8">
+          <el-col :xs="0" :sm="4" :md="4" :lg="5" :xl="5">
             <right-side />
           </el-col>
-        </el-row> -->
+        </el-row>
       </div>
 
       <image-previewer />
@@ -138,9 +130,11 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     websocketopen() {
-      let data = { authToken: localStorage.getItem('authToken'), roomId: 1 }
+      let data = { authToken: localStorage.getItem('authToken'), roomId: 2 }
+      // let data2 = { authToken: localStorage.getItem('authToken'), roomId: 2 }
       //websocket onopen
       this.websock.send(JSON.stringify(data))
+      // this.websock.send(JSON.stringify(data2))
       //取出当前的会话列表
       this.onReadyStateUpdate()
     },
@@ -149,7 +143,7 @@ export default {
       // const redata = JSON.parse(e.data)
       // console.log(redata.value)
       let data = JSON.parse(e.data)
-      console.log('websocketonmessage', data)
+      // console.log('websocketonmessage', data)
       if (data.op == 3) {
          this.$store.commit('pushCurrentMessageList', data) 
       } else if (data.op == 4) {

@@ -144,7 +144,7 @@ const conversationModules = {
      */
     pushCurrentMessageList(state, msg) {
       // 还没当前会话，则跳过s
-      console.log("pushCurrentMessageList",msg)
+      console.log("pushCurrentMessageList", msg, state.currentMessageList)
       const data = messageFormate([msg])[0]
       state.currentMessageList = [...state.currentMessageList, data]
     },

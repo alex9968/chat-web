@@ -1,22 +1,14 @@
 <template>
   <div class="right-side">
-    <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-      <!-- 用户信息  -->
-      <el-tab-pane label="用户信息" name="first">
-        <div class="empty" v-if="userInfo === null">
-          <i style="margin-right: 10px" class="el-icon-warning-outline" />
-          <span>用户资料加载失败</span>
-        </div>
-        <div v-else-if="currentToUID">
-          <user-card :data="userInfo" />
-        </div>
-        <div class="empty" v-else>
+    <!-- 用户信息  -->
+    <div class="title">资料信息</div>
+    <div v-if="true">
+      <user-card :data="userInfo" />
+    </div>
+    <!-- <div class="empty" v-else>
           <i style="margin-right: 10px" class="el-icon-warning-outline" />
           <span>未选择用户</span>
-        </div>
-      </el-tab-pane>
-
-    </el-tabs>
+        </div> -->
   </div>
 </template>
 
@@ -62,7 +54,6 @@ export default {
           key: 'feed_sex',
           label: '信息流性别',
         },
-       
       },
     }
   },
@@ -99,7 +90,7 @@ export default {
       //     this.userPairs = null
       //   })
     },
-   
+
     handleTabClick(tab, event) {
       console.log(tab, event)
     },
@@ -112,9 +103,10 @@ export default {
 
 <style lang="stylus" scoped>
 .right-side {
-  height: 94vh;
+  height: 80vh;
   padding: 20px;
   border-left: 1px solid lightgrey;
+  background-color: #f5f5f5;
   width: 100%;
   overflow-y: scroll;
 
@@ -123,14 +115,6 @@ export default {
     height: 500px;
     line-height: 500px;
     text-align: center;
-  }
-
-  /deep/ .el-collapse-item__header {
-    background: #f5f5f5;
-  }
-
-  /deep/ .el-collapse-item__wrap {
-    background: #f5f5f5;
   }
 }
 </style>
