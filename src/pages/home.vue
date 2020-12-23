@@ -130,7 +130,7 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     websocketopen() {
-      let data = { authToken: localStorage.getItem('authToken'), roomId: 2 }
+      let data = { authToken: localStorage.getItem('authToken'), roomId: 1 }
       // let data2 = { authToken: localStorage.getItem('authToken'), roomId: 2 }
       //websocket onopen
       this.websock.send(JSON.stringify(data))
