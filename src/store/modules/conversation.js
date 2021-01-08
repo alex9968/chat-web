@@ -126,10 +126,10 @@ const conversationModules = {
       state.currentConversation = {};
     },
     sendMessage(state, msg) {
-      API.sendMessage({
+      API.sendMessage(
         op: 3,
         msg: msg,
-        roomId: 1,
+        roomId: 2,
         authToken: localStorage.getItem("authToken"),
       }).then(res => {
         console.log("sendMessage",res)

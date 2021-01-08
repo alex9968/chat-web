@@ -130,7 +130,7 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     websocketopen() {
-      let data = { authToken: localStorage.getItem('authToken'), roomId: 1 }
+      let data = { authToken: localStorage.getItem('authToken'), roomId: 2 }
       // let data2 = { authToken: localStorage.getItem('authToken'), roomId: 2 }
       //websocket onopen
       this.websock.send(JSON.stringify(data))
@@ -212,7 +212,7 @@ export default {
     onReadyStateUpdate() {
       this.$store.commit('toggleIsSDKReady', true)
       this.API.getRoomInfo({
-        roomId: 1,
+        roomId: 2,
         authToken: localStorage.getItem('authToken'),
       }).then((res) => {
         console.log('getRoomInfo', res)
