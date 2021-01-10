@@ -1,4 +1,6 @@
 import _axios from 'axios'
+import { message } from 'element-ui'
+
 
 class Axios {
 	constructor(props) {
@@ -29,16 +31,26 @@ class Axios {
 					return Promise.reject('error')
 			}
 		}, (err) => {
-			console.log('response err', err)
+			// console.log('response err', err.response.status)
 			if (err.response) { // 响应错误码处理
 				switch (err.response.status) {
-					case '403':
-						console.log('403 ERR!')
+					case 400:
+						message.warning("400,请求格式错误!")
 						break
-					case '404':
-						console.warn('404 ERR!')
+					case 401:
+						message.warning("401,未授权!")
+						break
+					case 403:
+						message.warning("403,禁止访问!")
+						break
+					case 404:
+						message.warning("404,资源不存在")
+						break
+					case 500:
+						message.warning("500,服务端错误")
 						break
 					default:
+						message.warning("请求错误")
 						break
 				}
 				return Promise.reject(err.response)
@@ -89,13 +101,18 @@ class Axios {
 		let options = {
 			method: 'POST',
 			headers: {
-				'content-type': 'application/json;charset=UTF-8'
+				// 'content-type': 'application/json;charset=UTF-8'
+				'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
 			},
 			...config,
 			data: {}
 		}
+
 		//console.log('222', url, data,JSON.stringify(data))
-		if (data) options.data = JSON.stringify(data)
+		if (data) options.data = new URLSearchParams()
+		for(let [k , v] of Object.entries(data)){
+			options.data.append(k, v);
+	   }
 		return this.request(url, options)
 	}
 

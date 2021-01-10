@@ -1,171 +1,43 @@
 export default {
   /* -------- 登录 -------- */
-  // {userName: , passWord: }
+  // {name: , pwd: }
   login: {
     method: "post",
-    url: "/user/login",
+    url: "/api/v1/users/login",
   },
-  //   $.ajax({
-  //     type: "POST",
-  //     dataType: "json",
-  //     url: apiUrl + "/user/login",
-  //     data: JSON.stringify(jsonData),
-  //     success: function (result) {
-  //         if (result.code == 0) {
-  //             setLocalStorage("authToken", result.data);
-  //             window.location.href = "/index.html";
-  //         } else {
-  //             swal("error:" + result.message);
-  //         }
-  //     },
-  //     error: function () {
-  //         swal("exception！");
-  //     }
-  // });
 
   /* --------  body{ content } -------- */
   logout: {
     method: "post",
-    url: "/user/logout",
+    url: "/api/v1/users/logout",
   },
-  // function logout() {
-  //   let jsonData = {authToken: getLocalStorage("authToken")};
-  //   $.ajax({
-  //       type: "POST",
-  //       dataType: "json",
-  //       url: apiUrl + "/user/logout",
-  //       data: JSON.stringify(jsonData),
-  //       success: function (result) {
-  //           if (result.code == 0) {
-  //               window.location.href = "/login.html";
-  //           } else {
-  //               swal("request error，please login！");
-  //           }
-  //       },
-  //       error: function () {
-  //           swal("sorry, exception！");
-  //       }
-  //   });
-  // }
 
-  /* -------- 注册 body{ content } -------- */
+
+    /* -------- 注册 body{ content } -------- */
   register: {
     method: "post",
-    url: "/user/register",
+    url: "/api/v1/users/register",
   },
-  // let jsonData = {userName: userName, passWord: passWord};
-  // $.ajax({
-  //     type: "POST",
-  //     dataType: "json",
-  //     url: apiUrl + "/user/register",
-  //     data: JSON.stringify(jsonData),
-  //     success: function (result) {
-  //         if (result.code == 0) {
-  //             setLocalStorage("authToken", result.data);
-  //             window.location.href = "/index.html";
-  //         } else {
-  //             swal("error:" + result.message);
-  //         }
-  //     },
-  //     error: function () {
-  //         swal("register exception！");
-  //     }
-  // });
 
-  /* -------- 登录验证 -------- */
+   /* -------- 登录验证 -------- */
   checkAuth: {
     method: "post",
-    url: "/user/checkAuth",
+    url: "/api/v1/users/checkAuth",
   },
-  // let auth = getLocalStorage("authToken");
-  //   let jsonData = {"authToken": auth};
-  //   $.ajax({
-  //       type: "POST",
-  //       contentType: "application/json",
-  //       dataType: "json",
-  //       url: apiUrl + "/user/checkAuth",
-  //       data: JSON.stringify(jsonData),
 
-  /* -------- 获取联系人列表 -------- */
-  getRoomInfo: {
+    /* -------- 获取联系人列表 -------- */
+  getFriendList: {
     method: "post",
-    url: "/push/getRoomInfo",
+    url: "/api/v1/friend",
   },
-
-  // let jsonData = {roomId: 1, authToken: getLocalStorage("authToken")};
-  // $.ajax({
-  //     type: "POST",
-  //     dataType: "json",
-  //     url: apiUrl + "/push/getRoomInfo",
-  //     data: JSON.stringify(jsonData),
-  //     success: function (result) {
-  //         if (result.code != 0) {
-  //             //swal("request error，please try again later！");
-  //         }
-  //     },
-  //     error: function () {
-  //         swal("sorry, exception!");
-  //     }
-  // });
 
   /* -------- 获取消息列表 -------- */
-  getRoomUserCount: {
+  getMessageList: {
     method: "get",
-    url: "/push/count",
+    url: "/api/v1/message",
   },
 
-  //   function getRoomUserCount() {
-  //     let jsonData = {roomId: 1, authToken: getLocalStorage("authToken")};
-  //     $.ajax({
-  //         type: "POST",
-  //         dataType: "json",
-  //         url: apiUrl + "/push/count",
-  //         data: JSON.stringify(jsonData),
-  //         success: function (result) {
-  //             if (result.code != 0) {
-  //                 swal("request error，please login!");
-  //             }
-  //         },
-  //         error: function () {
-  //             swal("sorry, exception!");
-  //         }
-  //     });
-  // }
 
-  /* -------- 设置已读-------- */
-  sendMessage: {
-    method: "post",
-    url: "/push/pushRoom",
-  },
-
-  //   function send() {
-  //     $("#tab_chat").click();
-  //     $("#msg").animate({scrollTop: $("#msg").offset().top + 100000}, 1000);
-  //     let msg = document.getElementById('editText').value;
-  //     if (msg == "") {
-  //         swal("send msg is empty!");
-  //         return
-  //     }
-  //     document.getElementById('editText').value = '';
-  //     let jsonData = {op: 3, msg: msg, roomId: 1, authToken: getLocalStorage("authToken")};
-  //     $.ajax({
-  //         type: "POST",
-  //         dataType: "json",
-  //         url: apiUrl + "/push/pushRoom",
-  //         data: JSON.stringify(jsonData),
-  //         success: function (result) {
-  //             if (result.code == 0) {
-  //                 // send ok
-  //             } else {
-  //                 swal("please login or register account!");
-  //                 window.location.href = "/register.html";
-  //             }
-  //         },
-  //         error: function () {
-  //             swal("sorry, exception！");
-  //         }
-  //     });
-  // }
 
   /* -------- 获取客服初始化用户信息-------- */
   accountInit: {
@@ -179,6 +51,7 @@ export default {
     method: "put",
     url: "/api/admin/user/${uid}/update",
   },
+
   /* -------- 获取UID------- */
   /* data: {   [key]: value   } */
   getUserUidByIMAccount: {

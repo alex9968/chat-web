@@ -64,8 +64,8 @@ export default {
     }
     return {
       form: {
-        userID: 'demo',
-        password: '111111',
+        userID: 'root',
+        password: 'root',
       },
       rules: {
         userID: [
@@ -94,8 +94,8 @@ export default {
     submitLogin(userID, userSig) {
       loadingInstance = Loading.service()
       this.API.login({
-        userName: this.form.userID,
-        passWord: this.form.password,
+        name: this.form.userID,
+        pwd: this.form.password,
       })
         .then((res) => {
           this.loading = false
@@ -112,7 +112,7 @@ export default {
             // 以服务的方式调用的 Loading 需要异步关闭
             loadingInstance.close()
           })
-          localStorage.setItem('authToken', res.data)
+          localStorage.setItem('token', res.data.token)
           this.$router.push('/home')
           this.$store.commit('showMessage', {
             type: 'success',

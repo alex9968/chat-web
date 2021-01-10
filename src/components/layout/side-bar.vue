@@ -117,7 +117,7 @@ export default {
       }
     },
     logout() {
-      API.logout({ authToken: localStorage.getItem('authToken') }).then(
+      API.logout({ token: localStorage.getItem('token') }).then(
         (res) => {
           console.log('logout')
           this.$store.dispatch('logout')

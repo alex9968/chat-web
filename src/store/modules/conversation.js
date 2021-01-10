@@ -126,7 +126,7 @@ const conversationModules = {
       state.currentConversation = {};
     },
     sendMessage(state, msg) {
-      API.sendMessage(
+      API.sendMessage({ 
         op: 3,
         msg: msg,
         roomId: 2,

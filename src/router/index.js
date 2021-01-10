@@ -28,9 +28,9 @@ const router = new VueRouter({
 });
 // mount router navgitar
 router.beforeEach(async(to, from, next) => {
-  if (to.path === "/home") return next();
+  if (to.path === "/login") return next();
   const token = window.localStorage.getItem("token");
-  const res = await API.checkAuth({ authToken: token })
+  const res = await API.checkAuth({ token })
   if (!res) return next("/login");
   next();
 });

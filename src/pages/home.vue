@@ -41,7 +41,7 @@ import ImagePreviewer from '../components/message/image-previewer.vue'
 import { ACTION } from '../utils/trtcCustomMessageMap'
 import MTA from '../utils/mta'
 
-const socketUrl = 'ws://127.0.0.1:7000/ws'
+const socketUrl = 'ws://127.0.0.1:8888/ws'
 // let websocket = new WebSocket(socketUrl)
 
 export default {
