@@ -12,12 +12,21 @@
       >
         <!-- 线上版本登录方式 -->
         <el-form-item prop="userID">
-          <el-input
+          <!-- <el-input
             v-model="form.userID"
             placeholder="请输入用户名"
             type="text"
             clearable
-          ></el-input>
+          ></el-input> -->
+          <el-select v-model="form.userID" placeholder="请选择用户名">
+            <el-option
+              v-for="item in userOptions"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
@@ -36,6 +45,14 @@
         :loading="loading"
         >登录</el-button
       >
+
+      <div style="width: 240px;text-align: right">
+        <el-button
+          type="text"
+          @click="handelRegister"
+          >去注册</el-button
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -77,6 +94,14 @@ export default {
       logo: logo,
       registerVisible: false,
       loading: false,
+      userOptions: [
+        {
+          name: 'root',
+        },
+        {
+          name: 'root2',
+        },
+      ],
     }
   },
   beforeMount() {
@@ -89,6 +114,9 @@ export default {
           this.submitLogin()
         }
       })
+    },
+    handelRegister() {
+
     },
 
     submitLogin(userID, userSig) {
@@ -132,6 +160,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+/deep/ .el-input__inner {
+  width: 240px;
+}
+
 .login-box {
   width: 100%;
   margin-top: 300px;

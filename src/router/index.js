@@ -31,7 +31,8 @@ router.beforeEach(async(to, from, next) => {
   if (to.path === "/login") return next();
   const token = window.localStorage.getItem("token");
   const res = await API.checkAuth({ token })
-  if (!res) return next("/login");
+  // console
+  if (!res.data) return next("/login");
   next();
 });
 export default router;

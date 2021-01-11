@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Vue from 'vue'
-import { MessageBox, Message, Row, Collapse, DatePicker, Radio, CollapseItem, TabPane, Tabs, Avatar, Image, Col, Button, Input, Loading, Dialog, Dropdown, DropdownMenu, DropdownItem, FormItem } from 'element-ui'
+import { MessageBox, Message, Row, Collapse, DatePicker, Radio, CollapseItem, TabPane, Tabs, Avatar, Image, Col, Button, Input, Loading, Dialog, Dropdown, DropdownMenu, DropdownItem, FormItem, Select, Option } from 'element-ui'
 //import ElementUI from 'element-ui'
 import MyAvatar from './components/avatar.vue'
 import App from './App.vue'
@@ -38,6 +38,8 @@ Vue.use(CollapseItem)
 Vue.use(Tabs)
 Vue.use(Dialog)
 Vue.use(Dropdown)
+Vue.use(Select)
+Vue.use(Option)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(FormItem)

@@ -54,6 +54,7 @@ const user = {
     //     })
     // },
     logout(context) {
+      localStorage.clear()
       context.commit("toggleIsLogin");
       context.commit("stopComputeCurrent");
       context.commit("reset");
