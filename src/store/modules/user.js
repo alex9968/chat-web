@@ -1,64 +1,44 @@
 import API from "@/services/index";
 const user = {
   state: {
-    currentUserProfile: {},
+    profile: {},
     isLogin: false,
-    isSDKReady: false, // TIM SDK 是否 ready
+    isWsReady: false,
     userID: 0,
-    userSig: "",
-    sdkAppID: 0,
-    kfUid: localStorage.getItem("kfUid"),
+    name: "",
+    age: null,
+    avatar: "",
   },
   mutations: {
-    updateCurrentUserProfile(state, userProfile) {
-      state.currentUserProfile = userProfile;
+    setUserInfo(state, userInfo) {
+      state.profile = userInfo.Profile;
+      state.userID = userInfo.ID;
+      state.name = userInfo.Name;
+      state.age = userInfo.Age;
+      state.avatar = userInfo.Avatar;
     },
     toggleIsLogin(state, isLogin) {
       state.isLogin = typeof isLogin === "undefined" ? !state.isLogin : isLogin;
     },
-    toggleIsSDKReady(state, isSDKReady) {
-      state.isSDKReady =
-        typeof isSDKReady === "undefined" ? !state.isSDKReady : isSDKReady;
+    toggleIsWsReady(state, isWsReady) {
+      state.isWsReady = isWsReady
     },
     reset(state) {
       Object.assign(state, {
-        currentUserProfile: {},
+        profile: {},
         isLogin: false,
-        isSDKReady: false, // TIM SDK 是否 ready
+        isWsReady: false,
+        userID: null,
+        name: "",
+        avatar: "",
       });
-    },
-    GET_USER_INFO(state, payload) {
-      state.userID = payload.userID;
-      state.userSig = payload.userSig;
-      state.sdkAppID = payload.sdkAppID;
     },
   },
   actions: {
-    // login(context, userID) {
-    //   tim
-    //     .login({
-    //       userID,
-    //       userSig: window.genTestUserSig(userID).userSig
-    //     })
-    //     .then(() => {
-    //       context.commit('toggleIsLogin', true)
-    //       context.commit('startComputeCurrent')
-    //       window.$message({ type: 'success', message: '登录成功' })
-    //     })
-    //     .catch(imError => {
-    //       if (imError.code === 2000) {
-    //         window.$message.error(imError.message + ', 请检查是否正确填写了 SDKAPPID')
-    //       } else {
-    //         window.$message.error(imError.message)
-    //       }
-    //     })
-    // },
     logout(context) {
-      localStorage.clear()
-      context.commit("toggleIsLogin");
-      context.commit("stopComputeCurrent");
+      localStorage.clear();
+      context.commit("toggleIsLogin", false);
       context.commit("reset");
-      
     },
   },
 };

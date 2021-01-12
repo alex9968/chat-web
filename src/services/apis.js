@@ -12,20 +12,36 @@ export default {
     url: "/api/v1/users/logout",
   },
 
-
-    /* -------- 注册 body{ content } -------- */
+  /* -------- 注册 body{ content } -------- */
   register: {
     method: "post",
     url: "/api/v1/users/register",
   },
 
-   /* -------- 登录验证 -------- */
+  /* -------- 登录验证 -------- */
   checkAuth: {
     method: "post",
     url: "/api/v1/users/checkAuth",
   },
 
-    /* -------- 获取联系人列表 -------- */
+   /* -------- -------- */
+   userProfile: {
+    method: "get",
+    url: "/api/v1/users/detail",
+  },
+
+  /* -------- 获取联系人列表 -------- */
+  getChatList: {
+    method: "get",
+    url: "/api/v1/chats",
+  },
+
+  sendMessage: {
+    method: "post",
+    url: "/api/v1/message",
+  },
+
+  /* -------- 获取联系人列表 -------- */
   getFriendList: {
     method: "post",
     url: "/api/v1/friend",
@@ -36,8 +52,6 @@ export default {
     method: "get",
     url: "/api/v1/message",
   },
-
-
 
   /* -------- 获取客服初始化用户信息-------- */
   accountInit: {

@@ -55,6 +55,7 @@ export default {
       searchToUid: '',
       isCheckouting: false, // 是否正在切换会话
       timeout: null,
+      userID: null,
     }
   },
   computed: {

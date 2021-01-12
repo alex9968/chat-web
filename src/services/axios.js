@@ -92,7 +92,14 @@ class Axios {
 			method: 'GET',
 			...config
 		}
-		let req_url = params ? this.buildUrl(url, params) : url
+		let req_url = url 
+		if(typeof params === "number"){
+			req_url = req_url+`${params}` 
+		}
+		if(typeof params === "object"){
+			req_url =  this.buildUrl(url, params) 
+		}
+
 		// console.log("url", req_url)
 		return this.request(req_url, options)
 	}

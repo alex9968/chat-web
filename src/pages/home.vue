@@ -31,6 +31,7 @@
 
 <script>
 import { Notification } from 'element-ui'
+import Vue  from 'vue'
 import { mapState } from 'vuex'
 import CurrentConversation from '../components/conversation/current-conversation'
 import SideBar from '../components/layout/side-bar'
@@ -59,14 +60,14 @@ export default {
       currentUserProfile: (state) => state.user.currentUserProfile,
       currentConversation: (state) => state.conversation.currentConversation,
       isLogin: (state) => state.user.isLogin,
-      isSDKReady: (state) => state.user.isSDKReady,
+      isWsReady: (state) => state.user.isWsReady,
       isBusy: (state) => state.video.isBusy,
       userID: (state) => state.user.userID,
       conversationPageSize: (state) => state.conversation.conversationPageSize,
     }),
     // 是否显示 Loading 状态
     showLoading() {
-      return !this.isSDKReady
+      return !this.isWsReady
     },
   },
   watch: {
@@ -97,46 +98,23 @@ export default {
     },
   },
   methods: {
-    // threadPoxi() {
-    //   // 实际调用的方法
-    //   //参数
-    //   const agentData = 'mymessage'
-    //   //若是ws开启状态
-    //   if (this.websock.readyState === this.websock.OPEN) {
-    //     this.websocketsend(agentData)
-    //   }
-    //   // 若是 正在开启状态，则等待300毫秒
-    //   else if (this.websock.readyState === this.websock.CONNECTING) {
-    //     let that = this //保存当前对象this
-    //     setTimeout(function () {
-    //       that.websocketsend(agentData)
-    //     }, 300)
-    //   }
-    //   // 若未开启 ，则等待500毫秒
-    //   else {
-    //     this.initWebSocket()
-    //     let that = this //保存当前对象this
-    //     setTimeout(function () {
-    //       that.websocketsend(agentData)
-    //     }, 500)
-    //   }
-    // },
     //初始化weosocket
     initWebSocket() {
       // const wsuri = process.env.WS_API + '/websocket/threadsocket'
-      this.websock = new WebSocket(socketUrl)
-      this.websock.onmessage = this.websocketonmessage
-      this.websock.onopen = this.websocketopen
-      this.websock.onclose = this.websocketclose
+      Vue.prototype.ws = new WebSocket(socketUrl)
+
+      //  this.$store.commit('initWebsocket', data) 
+      
+      this.ws.onmessage = this.websocketonmessage
+      this.ws.onopen = this.websocketopen
+      this.ws.onclose = this.websocketclose
     },
     websocketopen() {
-      let data = { authToken: localStorage.getItem('authToken'), roomId: 2 }
-      // let data2 = { authToken: localStorage.getItem('authToken'), roomId: 2 }
+      let data = { token: localStorage.getItem('token') }
       //websocket onopen
-      this.websock.send(JSON.stringify(data))
-      // this.websock.send(JSON.stringify(data2))
+      this.ws.send(JSON.stringify(data))
       //取出当前的会话列表
-      this.onReadyStateUpdate()
+      this.onReady()
     },
     websocketonmessage(e) {
       //数据接收
@@ -151,12 +129,12 @@ export default {
         // $("#roomOnlineMemberNum").text(data.count);
       } else if (data.op == 5) {
         // get room user list
-        this.$store.commit('addConversationList', [data])
+        // this.$store.commit('addConversationList', [data])
       }
     },
     websocketsend(agentData) {
       //数据发送
-      this.websock.send(agentData)
+      this.ws.send(agentData)
     },
     websocketclose(e) {
       //关闭
@@ -164,9 +142,9 @@ export default {
     },
     initListener() {
       // 登录成功后会触发 SDK_READY 事件，该事件触发后，可正常使用 SDK 接口
-      this.tim.on(this.TIM.EVENT.SDK_READY, this.onReadyStateUpdate, this)
-      // SDK NOT READT
-      this.tim.on(this.TIM.EVENT.SDK_NOT_READY, this.onReadyStateUpdate, this)
+      // this.tim.on(this.TIM.EVENT.SDK_READY, this.onReady, this)
+      // // SDK NOT READT
+      // this.tim.on(this.TIM.EVENT.SDK_NOT_READY, this.onReadyStateUpdate, this)
       // 被踢出
       this.tim.on(this.TIM.EVENT.KICKED_OUT, this.onKickOut)
       // SDK内部出错
@@ -208,15 +186,13 @@ export default {
       }
     },
     onMessageReadByPeer() {},
+
     //登录成功后
-    onReadyStateUpdate() {
-      this.$store.commit('toggleIsSDKReady', true)
-      this.API.getRoomInfo({
-        roomId: 2,
-        authToken: localStorage.getItem('authToken'),
-      }).then((res) => {
+    onReady() {
+      this.$store.commit('toggleIsWsReady', true)
+      this.API.getChatList().then((res) => {
         console.log('getRoomInfo', res)
-        // this.$store.commit('addConversationList', res.data.contact_list)
+        this.$store.commit('initConversationList', res.data)
         // this.$store.commit('updateCurrentUserProfile',res.data)
       })
       // if (this.isSDKReady) {

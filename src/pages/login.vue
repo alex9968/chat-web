@@ -129,13 +129,8 @@ export default {
           this.loading = false
           this.$store.commit('toggleIsLogin', true)
           this.$store.commit('startComputeCurrent')
-
-          // this.$store.commit({
-          //   type: 'GET_USER_INFO',
-          //   userID,
-          //   userSig,
-          //   sdkAppID: window.genTestUserSig('').SDKAppID,
-          // })
+          this.$store.commit('setUserInfo', res.data.userInfo)
+           
           this.$nextTick(() => {
             // 以服务的方式调用的 Loading 需要异步关闭
             loadingInstance.close()

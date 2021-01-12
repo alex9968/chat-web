@@ -130,7 +130,8 @@ export default {
     ...mapGetters(['toAccount', 'currentConversationType']),
     ...mapState({
       memberList: state => state.group.currentMemberList,
-      userID: state => state.user.userID
+      userID: state => state.user.userID,
+      currentConversation: state => state.conversation.currentConversation
     })
   },
   mounted() {
@@ -264,12 +265,19 @@ export default {
         })
         return
       }
-      // const message = {
-      //   to: this.toAccount,
-      //   conversationType: this.currentConversationType,
-      //   payload: { text: this.messageContent }
-      // }
-      this.$store.commit('sendMessage', this.messageContent)
+      const messageReq = {
+        option: 3, //req type
+        message: { 
+          fromUserID: this.userID,
+          toUserID: this.currentConversation.id, 
+          content:    this.messageContent,
+          type: 1 
+        },
+      }
+
+      this.ws.send(JSON.stringify(messageReq))
+        this.$store.commit('sendMessage', '')
+      //  console.log("sendMessage",res)
       this.$bus.$emit('scroll-bottom')
       this.messageContent = ''
     },

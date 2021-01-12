@@ -100,7 +100,7 @@ const conversationModules = {
       // state.totalConvasation  = total
     },
     //  初始化会话列表
-    addConversationList(state, conversationList) {
+    initConversationList(state, conversationList) {
       const list = conversationFormate(conversationList);
       // console.log('初始化联系人列表', list)
       window.initConversationObject = list;
@@ -126,14 +126,8 @@ const conversationModules = {
       state.currentConversation = {};
     },
     sendMessage(state, msg) {
-      API.sendMessage({ 
-        op: 3,
-        msg: msg,
-        roomId: 2,
-        authToken: localStorage.getItem("authToken"),
-      }).then(res => {
-        console.log("sendMessage",res)
-      })
+      console.log("commit sendMessage")
+     
     },
     /**
      * 将消息插入当前会话列表

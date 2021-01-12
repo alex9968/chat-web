@@ -6,11 +6,10 @@ import TIM from "tim-js-sdk";
 export const messageFormate = (messageList, conversationID) => {
   const _messageList = [];
   messageList.forEach((v) => {
-    const messageContent = v.msg
-    const type =  TIM.TYPES.MSG_TEXT
+    const messageContent = v.msg;
+    const type = TIM.TYPES.MSG_TEXT;
     const messagePayload = {};
 
-  
     //解析图片
     // if (type === TIM.TYPES.MSG_IMAGE) {
     //   //console.log('message type', type)
@@ -39,15 +38,15 @@ export const messageFormate = (messageList, conversationID) => {
     //   messagePayload["second"] = messageContent.Second;
     // }
 
-//     code: 0
-// createTime: "2020-12-18 11:52:43"
-// fromUserId: 5
-// fromUserName: "alen9968"
-// msg: "2"
-// op: 3
-// roomId: 1
-// toUserId: 0
-// toUserName: ""
+    //     code: 0
+    // createTime: "2020-12-18 11:52:43"
+    // fromUserId: 5
+    // fromUserName: "alen9968"
+    // msg: "2"
+    // op: 3
+    // roomId: 1
+    // toUserId: 0
+    // toUserName: ""
 
     _messageList.push({
       // ID: v.,
@@ -57,7 +56,7 @@ export const messageFormate = (messageList, conversationID) => {
       conversationSubType: undefined,
       conversationType: "C2C",
       //in 为收到的消息, out 为发出的消息
-      flow: `C2C${v.fromUserId}` === 'C2C5' ? "in" : "out",
+      flow: `C2C${v.fromUserId}` === "C2C5" ? "in" : "out",
       from: v.fromUserId,
       //geo: null,
       // isPeerRead: v.read === 1,
@@ -85,8 +84,8 @@ export const messageFormate = (messageList, conversationID) => {
 export const conversationFormate = (conversationList) => {
   const conversationObject = {};
   conversationList.forEach((v) => {
-    conversationObject[`C2C${v.roomId}`] = {
-      conversationID: `C2C${v.roomId}`,
+    conversationObject[`C2C${v.id}`] = {
+      conversationID: `C2C${v.id}`,
       lastMessage: {
         lastTime: null,
         fromAccount: "",
@@ -97,23 +96,12 @@ export const conversationFormate = (conversationList) => {
       type: "C2C",
       unreadCount: 0,
       userProfile: {
-        // userID: v.roomUserInfo,
-        // nick: v.user.nickname,
-        // avatar: v.user.avatar,
-        // profileCustomField: [{ key: 'Tag_Profile_Custom_Uid', value: v.user.uid }]
+        userID: v.id,
+        nick: v.name,
+        avatar: v.avatar,
       },
-      onlineList: { 5: "alen9968", 6: "alen2" },
+      // onlineList: { 5: "alen9968", 6: "alen2" },
     };
-    //存入本地收藏列表
-    // if (v.star_at) {
-    //   state.forkList.push(`C2C${v.user.im_account}`);
-    // }
   });
-
-  //   count: 2
-  // op: 5
-  // roomId: 1
-  // roomUserInfo: {5: "alen9968", 6: "alen2"}
-
   return conversationObject;
 };

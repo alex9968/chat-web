@@ -1,14 +1,15 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import conversation from './modules/conversation'
-import group from './modules/group'
-import user from './modules/user'
-import video from './modules/video'
-import friend from './modules/friend'
-import blacklist from './modules/blacklist'
-import {Message} from 'element-ui'
+import Vue from "vue";
+import Vuex from "vuex";
+import conversation from "./modules/conversation";
+import group from "./modules/group";
+import user from "./modules/user";
+import message from "./modules/message";
+import video from "./modules/video";
+import friend from "./modules/friend";
+import blacklist from "./modules/blacklist";
+import { Message } from "element-ui";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -21,26 +22,26 @@ export default new Vuex.Store({
   getters: {
     hidden(state) {
       // eslint-disable-next-line no-unused-vars
-      const temp = state.current 
-      if (typeof document.hasFocus !== 'function') {
-        return document.hidden
+      const temp = state.current;
+      if (typeof document.hasFocus !== "function") {
+        return document.hidden;
       }
-      return !document.hasFocus()
-    }
+      return !document.hasFocus();
+    },
   },
   mutations: {
     startComputeCurrent(state) {
       state.intervalID = setInterval(() => {
-        state.current = Date.now()
-      }, 500)
+        state.current = Date.now();
+      }, 500);
     },
     updateUnreadTotal(state, options) {
-      state.unreadCount = options.unreadCount
-      state.unreadNumber = options.unreadNumber
+      state.unreadCount = options.unreadCount;
+      state.unreadNumber = options.unreadNumber;
     },
     stopComputeCurrent(state) {
-      clearInterval(state.intervalID)
-      state.intervalID = 0
+      clearInterval(state.intervalID);
+      state.intervalID = 0;
     },
     showMessage(state, options) {
       if (state.message) {
@@ -48,17 +49,15 @@ export default new Vuex.Store({
       }
       state.message = Message({
         message: options.message,
-        type: options.type || 'success',
+        type: options.type || "success",
         duration: options.duration || 2000,
-        offset: 40
+        offset: 40,
       })
-    }
+    },
   },
   actions: {
     // logout(){
-
     // }
-
   },
   modules: {
     conversation,
@@ -66,6 +65,7 @@ export default new Vuex.Store({
     friend,
     blacklist,
     user,
-    video
-  }
-})
+    message,
+    video,
+  },
+});

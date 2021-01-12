@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUserProfile: state => state.user.currentUserProfile,
+      currentUserProfile: state => state.user.profile,
       currentConversation: state => state.conversation.currentConversation
     }),
     gender() {
