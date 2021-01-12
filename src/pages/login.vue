@@ -136,6 +136,7 @@ export default {
             loadingInstance.close()
           })
           localStorage.setItem('token', res.data.token)
+          localStorage.setItem('userID', res.data.userInfo.ID)
           this.$router.push('/home')
           this.$store.commit('showMessage', {
             type: 'success',

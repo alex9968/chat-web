@@ -215,7 +215,7 @@ export default {
   computed: {
     ...mapState({
       currentConversation: state => state.conversation.currentConversation,
-      currentUserProfile: state => state.user.currentUserProfile
+      currentUserProfile: state => state.user
     }),
     // 是否显示头像，群提示消息不显示头像
     showAvatar() {
@@ -227,14 +227,13 @@ export default {
       return false
     },
     avatar() {
+      console.log("self", this.currentConversation)
       if (this.currentConversation.type === 'C2C') {
         return this.isMine
           ? this.currentUserProfile.avatar
           : this.currentConversation.userProfile.avatar
-      } else if (this.currentConversation.type === 'GROUP') {
-        return this.isMine
-          ? this.currentUserProfile.avatar
-          : this.message.avatar
+      } else if (this.currentConversation.type === 'GROUP') { 
+        return ''
       } else {
         return ''
       }

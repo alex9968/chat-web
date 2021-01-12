@@ -38,6 +38,12 @@ export default {
     getMatchStatus
 }
 
+export const MSG_TYPE = {
+    MSG_TEXT: 'TIMTextElem',
+    MSG_IMAGE: 'TIMImageElem',
+    MSG_SOUND: 'TIMSoundElem',
+};
+
 
 export const MATCH_STATUS_ALIAS = {
     'MATCHING': '匹配中', // 匹配中

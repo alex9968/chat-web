@@ -1,14 +1,11 @@
-import TIM from "tim-js-sdk";
 
-// export const userFormate = (messageList, conversationID) => {
-// }
+
+import TIM from '@/assets/tim'
 
 export const messageFormate = (messageList, conversationID) => {
-  const _messageList = [];
+  const _messageList = []
   messageList.forEach((v) => {
-    const messageContent = v.msg;
-    const type = TIM.TYPES.MSG_TEXT;
-    const messagePayload = {};
+    const messagePayload = {}
 
     //解析图片
     // if (type === TIM.TYPES.MSG_IMAGE) {
@@ -21,9 +18,9 @@ export const messageFormate = (messageList, conversationID) => {
     //   messagePayload["imageInfoArray"] = messageContent.ImageInfoArray;
     // }
     //解析文本
-    if (type === TIM.TYPES.MSG_TEXT) {
+    if (v.type === TIM.TYPES.MSG_TEXT) {
       //console.log('message type', type)
-      messagePayload["text"] = messageContent;
+      messagePayload['text'] = v.content
     }
     //解析声音
     // if (type === TIM.TYPES.MSG_SOUND) {
@@ -34,74 +31,65 @@ export const messageFormate = (messageList, conversationID) => {
     //   messagePayload["url"] = messageContent.Url;
     //   // size	Number	文件大小，单位：Byte
     //   messagePayload["size"] = messageContent.Size;
-    //   // second	Number	音频时长，单位：秒
-    //   messagePayload["second"] = messageContent.Second;
+    //   // second	Number	音频时长，单位：秒 //   messagePayload["second"] = messageContent.Second;
     // }
-
-    //     code: 0
-    // createTime: "2020-12-18 11:52:43"
-    // fromUserId: 5
-    // fromUserName: "alen9968"
-    // msg: "2"
-    // op: 3
-    // roomId: 1
-    // toUserId: 0
-    // toUserName: ""
+    const isMine = localStorage.getItem('userID') === v.fromUserID + ''
+    console.log("mine",localStorage.getItem('userID'), v.fromUserID )
 
     _messageList.push({
       // ID: v.,
-      avatar: "",
+      avatar: '',
       clientSequence: 49812,
       conversationID: v.roomId,
       conversationSubType: undefined,
-      conversationType: "C2C",
-      //in 为收到的消息, out 为发出的消息
-      flow: `C2C${v.fromUserId}` === "C2C5" ? "in" : "out",
+      conversationType: 'C2C',
+      //in 为收到的消息, out 为自己发出的消息
+      flow: isMine ? 'in' : 'out',
       from: v.fromUserId,
-      //geo: null,
       // isPeerRead: v.read === 1,
       isPlaceMessage: 0,
       // isRead: v.read === 0,
       isResend: false,
       isRevoked: false,
       isSystemMessage: false,
-      nick: "",
+      nick: '',
       payload: messagePayload,
       // isFork: v.star_at,
       // priority: 'Normal',
       // protocol: 'JSON',
       // random: v.msgRandom,
-      // sequence: v.content.MsgSeq,
-      status: "success",
+      sequence: v.uuid,
       time: v.createTime,
       to: v.toUserId,
-      type: type,
-    });
-  });
-  return _messageList;
+      type: v.type,
+      userInfo: v.userInfo
+    })
+  })
+  return _messageList
 };
 
 export const conversationFormate = (conversationList) => {
-  const conversationObject = {};
+  const conversationObject = {}
   conversationList.forEach((v) => {
     conversationObject[`C2C${v.id}`] = {
       conversationID: `C2C${v.id}`,
       lastMessage: {
         lastTime: null,
-        fromAccount: "",
-        messageForShow: "",
-        type: "TIMCustomElem",
+        fromAccount: '',
+        messageForShow: '',
+        type: 'TIMCustomElem',
       },
       peerReadTime: 0,
-      type: "C2C",
+      type: 'C2C',
       unreadCount: 0,
+      userInfo: v.userInfo,
       userProfile: {
         userID: v.id,
         nick: v.name,
-        avatar: v.avatar,
+        avatar: v.avatar, 
       },
       // onlineList: { 5: "alen9968", 6: "alen2" },
-    };
-  });
-  return conversationObject;
+    }
+  })
+  return conversationObject
 };

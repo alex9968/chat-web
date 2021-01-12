@@ -22,11 +22,11 @@
       </span>
     </el-dialog>
     <el-popover :width="200" trigger="click" placement="right" class="popover">
-      <profile-card :profile="currentUserProfile" />
+      <profile-card :profile="userInfo" />
       <i class="el-icon-setting edit-my-profile" @click="handleEdit"></i>
       <avatar
         slot="reference"
-        :src="currentUserProfile.avatar"
+        :src="userInfo.avatar"
         class="my-avatar"
       />
     </el-popover>
@@ -55,11 +55,11 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUserProfile: state => state.user.profile,
+      userInfo: state => state.user,
       currentConversation: state => state.conversation.currentConversation
     }),
     gender() {
-      switch (this.currentUserProfile.gender) {
+      switch (this.userProfile.gender) {
         case this.TIM.TYPES.GENDER_MALE:
           return '男'
         case this.TIM.TYPES.GENDER_FEMALE:
@@ -102,8 +102,8 @@ export default {
         })
     },
     handleEdit() {
-      const { avatar, nick, gender } = this.currentUserProfile
-      Object.assign(this.form, { avatar, nick, gender })
+      const { avatar, name, gender } = this.userInfo
+      Object.assign(this.form, { avatar, name, gender })
       this.showEditMyProfile = true
     }
   }

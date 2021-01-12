@@ -33,4 +33,5 @@ tim.setLogLevel(4)
 
 // 注册 cos
 tim.registerPlugin({'cos-js-sdk':COSSDK})
+
 export default tim

@@ -3,7 +3,7 @@
     <div class="content">
       <avatar :src="profile.avatar" />
       <div class="basic">
-        <span class="nick text-ellipsis">{{ profile.nick || profile.userID }}</span>
+        <span class="nick text-ellipsis">{{ profile.name || profile.userID }}</span>
         <span class="iconfont" :class="genderClass"></span>
       </div>
     </div>

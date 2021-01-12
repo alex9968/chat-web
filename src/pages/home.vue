@@ -121,16 +121,16 @@ export default {
       // const redata = JSON.parse(e.data)
       // console.log(redata.value)
       let data = JSON.parse(e.data)
-      // console.log('websocketonmessage', data)
-      if (data.op == 3) {
-         this.$store.commit('pushCurrentMessageList', data) 
-      } else if (data.op == 4) {
-        // get room user count
-        // $("#roomOnlineMemberNum").text(data.count);
-      } else if (data.op == 5) {
-        // get room user list
-        // this.$store.commit('addConversationList', [data])
-      }
+      this.$store.commit('pushCurrentMessageList', data) 
+      // // console.log('websocketonmessage', data)
+      // if (data.op == 3) {
+      // } else if (data.op == 4) {
+      //   // get room user count
+      //   // $("#roomOnlineMemberNum").text(data.count);
+      // } else if (data.op == 5) {
+      //   // get room user list
+      //   // this.$store.commit('addConversationList', [data])
+      // }
     },
     websocketsend(agentData) {
       //数据发送

@@ -7,6 +7,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import dayjs from 'dayjs'
 import { getFullDate } from '../../utils/date'
 export default {
   name: 'MessageFooter',
@@ -23,7 +24,7 @@ export default {
       currentMemberList: state => state.group.currentMemberList
     }),
     date() {
-      return getFullDate(new Date(this.message.time * 1000))
+        return dayjs(this.message.createdAt).format('YYYY-MM-DD HH:mm:ss');
     },
     from() {
       const isC2C = this.currentConversation.type === this.TIM.TYPES.CONV_C2C

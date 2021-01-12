@@ -14,7 +14,7 @@
     "axios": "^0.20.0",
     "core-js": "^2.6.11",
     "cos-js-sdk-v5": "^0.5.22",
-    "dayjs": "^1.9.1",
+    "dayjs": "^1.10.3",
     "element-ui": "^2.13.0",
     "mta-h5-analysis": "^2.0.15",
     "tim-js-sdk": "^2.7.6",

@@ -88,6 +88,7 @@ import {
   Tooltip,
 } from 'element-ui'
 import { emojiMap, emojiName, emojiUrl } from '../../utils/emojiMap'
+import TIM from '@/assets/tim'
 
 export default {
   name: 'message-send-box',
@@ -265,13 +266,16 @@ export default {
         })
         return
       }
+
+      const userID = parseInt(localStorage.getItem("userID"))
+      console.log("232", this.currentConversation)
       const messageReq = {
         option: 3, //req type
         message: { 
-          fromUserID: this.userID,
+          fromUserID: userID,
           toUserID: this.currentConversation.id, 
           content:    this.messageContent,
-          type: 1 
+          type: TIM.TYPES.MSG_TEXT
         },
       }
 
