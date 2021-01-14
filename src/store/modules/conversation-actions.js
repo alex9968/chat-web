@@ -1,4 +1,3 @@
-import tim from 'tim'
 import { message } from 'element-ui'
 import { conversationFormate, messageFormate } from '../../utils/formatTIMData'
 import API from '@/services/index'
@@ -12,36 +11,32 @@ export default {
       })
       return
     }
-    const { nextReqMessageID, currentMessageList } = context.state
-    tim
-      .getMessageList({ conversationID, nextReqMessageID, count: 15 })
-      .then((imReponse) => {
+    const { currentMessageList } = context.state
+    API.getMessageList({ chatID: conversationID, pageNum: 1, pageSize: 20 })
+      .then((res) => {
         // 更新messageID，续拉时要用到
-        context.state.nextReqMessageID = imReponse.data.nextReqMessageID
-        context.state.isCompleted = imReponse.data.isCompleted
+        // context.state.nextReqMessageID = imReponse.data.nextReqMessageID
+        context.state.isCompleted = res.data.isCompleted
         // 更新当前消息列表，从头部插入
         //console.log('new currentMessageList', imReponse.data.messageList, currentMessageList)
         context.state.currentMessageList = [
-          ...imReponse.data.messageList,
+          ...res.data.messageList,
           ...currentMessageList,
         ]
       })
   },
   getMoreHistoryMessageList(context, conversationID) {
     // const kfUid = localStorage.getItem('kfUid')
-
     //     // context.commit('showMessage', {
     //     //   message: '已经没有更多的历史消息了哦',
     //     //   type: 'warning',
     //     // })
-      
     //   const messageList = messageFormate(
     //     res.data.messages,
     //     conversationID
     //   ).sort((a, b) => {
     //     return a.time - b.time
     //   })
-
     //   //console.log('messageList', messageList, res.data.messages)
     //   const { currentMessageList } = context.state
     //   context.state.currentMessageList = [
@@ -51,67 +46,45 @@ export default {
     //   context.state.moreMessagePage++
   },
   getHistoryMessageList(context, conversationID) {
-    //console.log('getHistoryMessageList', conversationID, context.state.currentToUID)
-    // const kfUid = localStorage.getItem('kfUid')
-    // API.getMessageList({
-    //   kf_uid: kfUid,
-    //   to_uid: context.state.currentToUID,
-    //   page: 1,
-    //   per_page: 50,
-    //   sort: 'desc',
-    // }).then((res) => {
-    //   // console.log('message list',res)
-    //   setTimeout(() => {
-    //     res.data.messages && res.data.messages.forEach((v) => {
-    //       // console.log('v.read', v.read, v.toAccount)
-    //       if (v.read === 0 && v.toAccount === 'im_account_' + kfUid) {
-    //         //过滤出未读且是发送给客服的消息
-    //         API.setMessageRead({
-    //           kf_uid: parseInt(kfUid),
-    //           to_uid: context.state.currentToUID,
-    //           msg_random: v.msgRandom,
-    //           msg_timestamp: v.msgTimeStamp,
-    //           msg_seq: v.msgSeq,
-    //         }).then((res) => {
-    //           console.log('消息已读', res)
-    //         })
-    //       }
-    //     })
-    //   }, 100)
+    // console.log('getHistoryMessageList', conversationID)
+    // const userID = localStorage.getItem("userID");
+    API.getMessageList({ chatID: 2, pageNum: 1, pageSize: 10 }).then((res) => {
+      // console.log('message list',res)
 
-    //   const messageList = messageFormate(res.data.messages, conversationID)
-    //   // console.log('messageList', messageList, res.data.messages)
-    //   const { currentMessageList } = context.state
-    //   context.state.currentMessageList = [
-    //     ...messageList,
-    //     ...currentMessageList,
-    //   ].sort((a, b) => {
-    //     return a.time - b.time
-    //   })
-    // })
+      const messageList = messageFormate(res.data.messages, conversationID)
+      // console.log('messageList', messageList, res.data.messages)
+      const { currentMessageList } = context.state
+      context.state.currentMessageList = [
+        ...messageList,
+        ...currentMessageList,
+      ].sort((a, b) => {
+        return a.time - b.time
+      })
+    })
   },
-  searchConversation(context,toUid) {
-    // const conversationID = 'C2Cim_account_10' 
+  searchConversation(context, toUid) {
+    // const conversationID = 'C2Cim_account_10'
     API.getContactList({
-      kf_uid: localStorage.getItem('kfUid'),
-      page: 1,
-      per_page: 1, 
-      friend_uid: toUid 
     }).then((res) => {
-       console.log('res search',res)
-      if(res.data.contact_list.length && res.data.contact_list[0].friend_uid == toUid) { 
-          context.state.currentToUID = toUid
-          const currentConversation  = Object.values(conversationFormate(res.data.contact_list))[0]
-          // console.log('currentConversation',currentConversation)
-          context.commit(
-            'updateCurrentConversation',
-            currentConversation
-          )
-          // 获取消息列表
-          context.dispatch('getHistoryMessageList', currentConversation.conversationID)
-          // return Promise.resolve()
-          message.success('搜索成功')
-      }else {
+      console.log('res search', res)
+      if (
+        res.data.contact_list.length &&
+        res.data.contact_list[0].friend_uid == toUid
+      ) {
+        context.state.currentToUID = toUid
+        const currentConversation = Object.values(
+          conversationFormate(res.data.contact_list)
+        )[0]
+        // console.log('currentConversation',currentConversation)
+        context.commit('updateCurrentConversation', currentConversation)
+        // 获取消息列表
+        context.dispatch(
+          'getHistoryMessageList',
+          currentConversation.conversationID
+        )
+        // return Promise.resolve()
+        message.success('搜索成功')
+      } else {
         message.warning('未找到该用户')
         // return Promise.reject()
       }
@@ -142,9 +115,7 @@ export default {
       'updateCurrentConversation',
       context.state.conversationObject[conversationID]
     )
-    // context.dispatch('getHistoryMessageList', conversationID)
-
-
+    context.dispatch('getMessageList', conversationID)
 
     // 3. 获取会话信息
     // return tim.getConversationProfile(conversationID).then(({ data }) => {
