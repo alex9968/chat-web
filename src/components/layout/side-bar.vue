@@ -146,38 +146,8 @@ export default {
     //       break
     //   }
     // },
-    // getGroupList() {
-    //   this.tim
-    //     .getGroupList()
-    //     .then(({ data: groupList }) => {
-    //       this.$store.dispatch('updateGroupList', groupList)
-    //     })
-    //     .catch((error) => {
-    //       this.$store.commit('showMessage', {
-    //         type: 'error',
-    //         message: error.message,
-    //       })
-    //     })
-    // },
-    // getFriendList() {
-    // this.tim
-    //   .getFriendList()
-    //   .then(({ data: friendList }) => {
-    //     this.$store.commit('upadteFriendList', friendList)
-    //   })
-    //   .catch((error) => {
-    //     this.$store.commit('showMessage', {
-    //       type: 'error',
-    //       message: error.message,
-    //     })
-    //   })
-    //   .catch((error) => {
-    //     this.$store.commit('showMessage', {
-    //       type: 'error',
-    //       message: error.message,
-    //     })
-    //   })
-    // },
+   
+   
   },
 }
 </script>

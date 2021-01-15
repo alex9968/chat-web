@@ -1,5 +1,8 @@
 <template>
   <div class="friend-list-container" :class="{'default': !hasFriend}">
+     <div class="header-bar">
+       好友列表
+    </div>
     <div v-if="hasFriend">
       <friend-item v-for="friend in friendList" :key="friend.userID" :friend="friend" />
     </div>
@@ -33,4 +36,12 @@ export default {
   height: 100%;
   overflow-y: scroll;
 }
+.header-bar
+    display: flex;
+    flex-shrink 0
+    height 50px
+    border-bottom 1px solid $background-deep-dark
+    padding 10px 10px 10px 20px
+    justify-content center
+    color #a5b5c1
 </style>

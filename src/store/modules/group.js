@@ -1,4 +1,5 @@
-import tim from 'tim'
+// eslint-disable-next-line quotes
+import API from "@/services/index"
 
 const groupModules = {
   state: {
@@ -41,7 +42,7 @@ const groupModules = {
       context.commit('updateGroupList', groupList)
     },
     getGroupMemberList(context, groupID) {
-      return tim.getGroupMemberList({
+      return API.getUserGroupMemberList({
         groupID: groupID,
         offset: context.state.currentMemberList.length,
         count: 30
@@ -49,7 +50,19 @@ const groupModules = {
         context.commit('updateCurrentMemberList', imResponse.data.memberList)
         return imResponse
       })
-    }
+    },
+    getGroupList(context) {
+        API.getGroupList()
+        .then(({ data: groupList }) => {
+          context.dispatch('updateGroupList', groupList)
+        })
+        .catch((error) => {
+          context.commit('showMessage', {
+            type: 'error',
+            message: error.message,
+          })
+        })
+    },
   }
 }
 

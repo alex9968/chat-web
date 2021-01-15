@@ -93,9 +93,9 @@ class Axios {
 			...config
 		}
 		let req_url = url 
-		if(typeof params === "number"){
-			req_url = req_url+`${params}` 
-		}
+		// if(typeof params === "number"){
+		// 	req_url = req_url+`${params}` 
+		// }
 		if(typeof params === "object"){
 			req_url =  this.buildUrl(url, params) 
 		}
@@ -162,7 +162,9 @@ class Axios {
 		const ps = []
 		if (typeof params === 'object') {
 			for (let p in params) {
-				if (p) {
+				if(p == 'id'){
+					url = url+'/'+ encodeURIComponent(params[p])
+				}else {
 					ps.push(p + '=' + encodeURIComponent(params[p]))
 				}
 			}

@@ -43,8 +43,14 @@ export default {
 
   /* -------- 获取联系人列表 -------- */
   getFriendList: {
-    method: 'post',
-    url: '/api/v1/friend',
+    method: 'get',
+    url: '/api/v1/friends',
+  },
+
+  /* -------- 获取群列表 -------- */
+  getGroupList: {
+    method: 'get',
+    url: '/api/v1/groups',
   },
 
   /* -------- 获取消息列表 -------- */

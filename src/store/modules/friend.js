@@ -1,3 +1,5 @@
+import API from "@/services/index"
+
 const friendModules = {
   state: {
     friendList: [],
@@ -13,6 +15,28 @@ const friendModules = {
         createGroupModelVisible: false
       })
     }
+  },
+  actions: {
+    getFriendList(context) {
+      API.getFriendList({ id: localStorage.getItem('userID') })
+        .then(({ data: friendList }) => {
+          console.log("friendList:", friendList  )
+          context.commit('upadteFriendList', friendList)
+        })
+        .catch((error) => {
+          context.commit('showMessage', {
+            type: 'error',
+            message: error.message,
+          })
+        })
+        .catch((error) => {
+          this.$store.commit('showMessage', {
+            type: 'error',
+            message: error.message,
+          })
+        })
+    }
+
   }
 }
 

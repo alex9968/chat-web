@@ -193,8 +193,10 @@ export default {
       this.API.getChatList().then((res) => {
         console.log('getRoomInfo', res)
         this.$store.commit('initConversationList', res.data)
-        // this.$store.commit('updateCurrentUserProfile',res.data)
+        this.$store.dispatch('getFriendList')
+        this.$store.dispatch('getGroupList')
       })
+
       // if (this.isSDKReady) {
       //   this.tim
       //     .getMyProfile()

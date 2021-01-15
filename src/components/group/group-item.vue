@@ -27,13 +27,13 @@ export default {
       this.$store.dispatch('checkoutConversation', conversationID)
     },
     quitGroup() {
-      this.tim.quitGroup(this.group.groupID)
-      .catch(error => {
-          this.$store.commit('showMessage', {
-            type: 'error',
-            message: error.message
-          })
-        })
+      // this.tim.quitGroup(this.group.groupID)
+      // .catch(error => {
+      //     this.$store.commit('showMessage', {
+      //       type: 'error',
+      //       message: error.message
+      //     })
+      //   })
     }
   }
 }
