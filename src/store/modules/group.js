@@ -52,7 +52,7 @@ const groupModules = {
       })
     },
     getGroupList(context) {
-        API.getGroupList()
+      API.getGroupList({ id: localStorage.getItem('userID') })
         .then(({ data: groupList }) => {
           context.dispatch('updateGroupList', groupList)
         })
