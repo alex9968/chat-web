@@ -60,9 +60,9 @@ export default {
   },
 
   /* -------- 获取客服初始化用户信息-------- */
-  accountInit: {
+  addConversation: {
     method: 'post',
-    url: '/api/admin/kfaccount/get_kf_account',
+    url: '/api/v1/chats',
   },
 
   /* -------- 更新用户信息-------- */

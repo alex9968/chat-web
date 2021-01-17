@@ -23,10 +23,21 @@ export default {
   },
   methods: {
     handleGroupClick() {
-      const conversationID = `GROUP${this.group.groupID}`
-      this.$store.dispatch('checkoutConversation', conversationID)
+      this.API.addConversation({ chatID: `GROUP${this.group.ID}` }).then(({ data })=>{
+        //  const conversationID = `GROUP${this.group.groupID}`
+        // this.$store.dispatch('checkoutConversation', conversationID)
+        this.$store.commit('updateCurrentConversation', data)
+      })
+      .catch(error => {
+          this.$store.commit('showMessage', {
+            type: 'error',
+            message: error.message
+          })
+        })
+
     },
     quitGroup() {
+
       // this.tim.quitGroup(this.group.groupID)
       // .catch(error => {
       //     this.$store.commit('showMessage', {

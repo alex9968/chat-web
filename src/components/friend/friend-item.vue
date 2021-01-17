@@ -15,17 +15,20 @@ export default {
       required: true
     }
   },
-  methods:{
+  methods: {
     handleFriendClick() {
-      // this.tim.getConversationProfile(`C2C${this.friend.ID}`).then(({data})=>{
-      //   this.$store.commit('updateCurrentConversation', data)
-      // })
-      // .catch(error => {
-      //     this.$store.commit('showMessage', {
-      //       type: 'error',
-      //       message: error.message
-      //     })
-      //   })
+      this.API.addConversation({ 
+        chatID: `C2C${this.friend.ID}`, 
+        userID: localStorage.getItem('userID') 
+        }).then(({ data })=>{
+        this.$store.commit('updateCurrentConversation', data)
+      })
+      .catch(error => {
+          this.$store.commit('showMessage', {
+            type: 'error',
+            message: error.message
+          })
+        })
     }
   }
 }
