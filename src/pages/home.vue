@@ -11,15 +11,15 @@
       </div>
       <div class="chat-wrapper">
         <el-row>
-          <el-col :xs="10" :sm="10" :md="8" :lg="8" :xl="7">
+          <el-col :xs="10" :sm="10" :md="10" :lg="8" :xl="7">
             <side-bar />
           </el-col>
-          <el-col :xs="14" :sm="10" :md="12" :lg="11" :xl="12">
+          <el-col :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
             <current-conversation />
           </el-col>
-          <el-col :xs="0" :sm="4" :md="4" :lg="5" :xl="5">
+          <!-- <el-col :xs="0" :sm="4" :md="4" :lg="5" :xl="5">
             <right-side />
-          </el-col>
+          </el-col> -->
         </el-row>
       </div>
 

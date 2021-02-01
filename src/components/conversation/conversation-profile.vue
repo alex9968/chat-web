@@ -4,16 +4,16 @@
       v-if="currentConversation.type === TIM.TYPES.CONV_C2C"
       :userProfile="currentConversation.userProfile"
     />
-    <!-- <group-profile
+    <group-profile
       v-else-if="currentConversation.type === TIM.TYPES.CONV_GROUP"
       :groupProfile="currentConversation.groupProfile"
-    /> -->
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-//import GroupProfile from './conversationProfile/group-profile.vue'
+import GroupProfile from './conversationProfile/group-profile.vue'
 import UserProfile from './conversationProfile/user-profile.vue'
 export default {
   name: 'ConversationProfile',

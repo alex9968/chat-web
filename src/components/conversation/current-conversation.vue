@@ -7,7 +7,7 @@
     >
       <!-- 聊天室header -->
       <div class="header">
-        <div class="name">{{ name }} {{ currentConversationTitle }} </div>
+        <div class="name">{{ name }} {{ currentConversationTitle }}</div>
         <!-- 右边拉开的小图标 -->
         <!-- <div class="btn-more-info"
           :class="showConversationProfile ? '' : 'left-arrow'"
@@ -18,32 +18,38 @@
       </div>
 
       <div class="content">
-        <div class="message-list" ref="message-list" @scroll="this.onScroll">
-          <div class="more" v-if="!isCompleted">
-            <el-button
-              type="text"
-              @click="
-                $store.dispatch(
-                  'getMoreHistoryMessageList',
-                  currentConversation.conversationID
-                )
-              "
-              >查看更多</el-button
-            >
+        <div class="content-left">
+          <div class="message-list" ref="message-list" @scroll="this.onScroll">
+            <div class="more" v-if="!isCompleted">
+              <el-button
+                type="text"
+                @click="
+                  $store.dispatch(
+                    'getMoreHistoryMessageList',
+                    currentConversation.conversationID
+                  )
+                "
+                >查看更多</el-button
+              >
+            </div>
+            <div class="no-more" v-else>没有更多了</div>
+            <message-item
+              v-for="message in currentMessageList"
+              :key="message.ID"
+              :message="message"
+            />
           </div>
-          <div class="no-more" v-else>没有更多了</div>
-          <message-item
-            v-for="message in currentMessageList"
-            :key="message.ID"
-            :message="message"
-          />
+          <div
+            v-show="isShowScrollButtomTips"
+            class="newMessageTips"
+            @click="scrollMessageListToButtom"
+          >
+            回到最新位置
+          </div>
         </div>
-        <div
-          v-show="isShowScrollButtomTips"
-          class="newMessageTips"
-          @click="scrollMessageListToButtom"
-        >
-          回到最新位置
+        <!-- 右边资料 -->
+        <div class="content-right">
+          <conversation-item />
         </div>
       </div>
 
@@ -64,13 +70,14 @@
 import { mapGetters, mapState } from 'vuex'
 import MessageSendBox from '../message/message-send-box'
 import MessageItem from '../message/message-item'
+import ConversationItem from './conversation-item.vue'
 //import ConversationProfile from './conversation-profile.vue'
 // import MemberProfileCard from '../group/member-profile-card'
 export default {
   name: 'CurrentConversation',
   components: {
     MessageSendBox,
-    MessageItem,
+    MessageItem
     //ConversationProfile,
     // MemberProfileCard
   },
@@ -89,7 +96,8 @@ export default {
         state.conversation.currentConversation.unreadCount,
       currentMessageList: (state) => state.conversation.currentMessageList,
       isCompleted: (state) => state.conversation.isCompleted,
-      currentConversationTitle: (state) => state.conversation.currentConversationTitle,
+      currentConversationTitle: (state) =>
+        state.conversation.currentConversationTitle,
     }),
     ...mapGetters(['toAccount', 'hidden']),
     // 是否显示当前会话组件
@@ -106,7 +114,7 @@ export default {
       // // }
       // // return this.toAccount
       // console.log('name', this.currentConversation.userProfile.nick )
-      return this.currentConversation.userProfile.nick 
+      return this.currentConversation.userProfile.nick
     },
     showMessageSendBox() {
       return this.currentConversation.type !== this.TIM.TYPES.CONV_SYSTEM
@@ -148,7 +156,6 @@ export default {
         // })
       }
     },
-  
   },
   methods: {
     onScroll({ target: { scrollTop } }) {
@@ -209,96 +216,137 @@ export default {
 
 <style lang="stylus" scoped>
 /* 当前会话的骨架屏 */
-.current-conversation-wrapper
-  height $height
-  background-color $background-light
-  color $base
-  display flex
-  .current-conversation
+.current-conversation-wrapper {
+  height: $height;
+  background-color: $background-light;
+  color: $base;
+  display: flex;
+
+  .current-conversation {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: $height;
-  .profile
+  }
+
+  .profile {
     height: $height;
     overflow-y: scroll;
-    width 220px
-    border-left 1px solid $border-base
-    flex-shrink 0
-  .more
+    width: 220px;
+    border-left: 1px solid $border-base;
+    flex-shrink: 0;
+  }
+
+  .more {
     display: flex;
     justify-content: center;
     font-size: 12px;
-  .no-more
+  }
+
+  .no-more {
     display: flex;
     justify-content: center;
     color: $secondary;
     font-size: 12px;
     padding: 10px 10px;
+  }
+}
 
-.header
-  border-bottom 1px solid $border-base
-  height 50px
-  position relative
-  .name
-    padding 0 20px
-    color $base
-    font-size 18px
-    font-weight bold
-    line-height 50px
-    text-shadow $font-dark 0 0 0.1em
-  .btn-more-info
-    position absolute
-    top 10px
-    right -15px
-    border-radius 50%
-    width 30px
-    height 30px
-    cursor pointer
-    &::before
-      position absolute
-      right 0
-      z-index 0
-      content ""
-      width: 15px
-      height: 30px
-      border: 1px solid $border-base
-      border-radius: 0 100% 100% 0/50%
-      border-left: none
-      background-color $background-light
-    &::after
-      content ""
+.header {
+  border-bottom: 1px solid $border-base;
+  height: 50px;
+  position: relative;
+
+  .name {
+    padding: 0 20px;
+    color: $base;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 50px;
+    text-shadow: $font-dark 0 0 0.1em;
+  }
+
+  .btn-more-info {
+    position: absolute;
+    top: 10px;
+    right: -15px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+    &::before {
+      position: absolute;
+      right: 0;
+      z-index: 0;
+      content: '';
+      width: 15px;
+      height: 30px;
+      border: 1px solid $border-base;
+      border-radius: 0 100% 100% 0 / 50%;
+      border-left: none;
+      background-color: $background-light;
+    }
+
+    &::after {
+      content: '';
       width: 8px;
       height: 8px;
       transition: transform 0.8s;
       border-top: 2px solid $secondary;
       border-right: 2px solid $secondary;
-      float:right;
-      position:relative;
+      float: right;
+      position: relative;
       top: 11px;
       right: 8px;
-      transform:rotate(45deg)
-    &.left-arrow
-      transform rotate(180deg)
-      &::before
-        background-color $white
-    &:hover
-      &::after
-        border-color $light-primary
-.content
+      transform: rotate(45deg);
+    }
+
+    &.left-arrow {
+      transform: rotate(180deg);
+
+      &::before {
+        background-color: $white;
+      }
+    }
+
+    &:hover {
+      &::after {
+        border-color: $light-primary;
+      }
+    }
+  }
+}
+
+.content {
   display: flex;
-  flex 1
-  flex-direction: column;
+  justify-content: flex-start;
   height: 100%;
-  overflow: hidden;
-  position: relative;
-  .message-list
+
+  &-left {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 80%;
+    border-right: 1px solid #e7e7e7;
+  }
+
+  &-right {
+    width: 20%;
+  }
+
+  .message-list {
     width: 100%;
     box-sizing: border-box;
     overflow-y: scroll;
     padding: 0 20px;
-  .newMessageTips
-    position: absolute
+  }
+
+  .newMessageTips {
+    position: absolute;
     cursor: pointer;
     padding: 5px;
     width: 120px;
@@ -312,8 +360,13 @@ export default {
     border: $border-light 1px solid;
     background-color: $white;
     color: $primary;
-.footer
+  }
+}
+
+.footer {
   border-top: 1px solid $border-base;
+}
+
 .show-more {
   text-align: right;
   padding: 10px 20px 0 0;
