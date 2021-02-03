@@ -7,6 +7,16 @@ export const messageFormate = (messageList, conversationID) => {
   messageList.forEach((v) => {
     const messagePayload = {}
 
+
+//     ChatID: 1
+// Content: "helloroot3"
+// CreatedAt: "2021-02-03T15:00:17+08:00"
+// DeletedAt: null
+// ID: 3
+// Type: "TIMTextElem"
+// UpdatedAt: "2021-02-03T15:00:17+08:00"
+// UserID: 1
+
     //解析图片
     // if (type === TIM.TYPES.MSG_IMAGE) {
     //   //console.log('message type', type)
@@ -20,7 +30,7 @@ export const messageFormate = (messageList, conversationID) => {
     //解析文本
     if (v.type === TIM.TYPES.MSG_TEXT) {
       //console.log('message type', type)
-      messagePayload['text'] = v.content
+      messagePayload['text'] = v.Content
     }
     //解析声音
     // if (type === TIM.TYPES.MSG_SOUND) {
@@ -33,8 +43,8 @@ export const messageFormate = (messageList, conversationID) => {
     //   messagePayload["size"] = messageContent.Size;
     //   // second	Number	音频时长，单位：秒 //   messagePayload["second"] = messageContent.Second;
     // }
-    const isMine = localStorage.getItem('userID') === v.fromUserID + ''
-    console.log("mine",localStorage.getItem('userID'), v.fromUserID )
+    const isMine = localStorage.getItem('userID') === v.UserID + ''
+    // console.log("mine",localStorage.getItem('userID'), v.UserID )
 
     _messageList.push({
       // ID: v.,
@@ -45,7 +55,7 @@ export const messageFormate = (messageList, conversationID) => {
       conversationType: 'C2C',
       //in 为收到的消息, out 为自己发出的消息
       flow: isMine ? 'in' : 'out',
-      from: v.fromUserId,
+      from: v.UserId,
       // isPeerRead: v.read === 1,
       isPlaceMessage: 0,
       // isRead: v.read === 0,
@@ -59,10 +69,10 @@ export const messageFormate = (messageList, conversationID) => {
       // protocol: 'JSON',
       // random: v.msgRandom,
       sequence: v.uuid,
-      time: v.createTime,
-      to: v.toUserId,
-      type: v.type,
-      userInfo: v.userInfo
+      time: v.CreatedAt,
+      // to: v.toUserId,
+      type: v.Type,
+      // userInfo: v.userInfo
     })
   })
   return _messageList
@@ -71,25 +81,27 @@ export const messageFormate = (messageList, conversationID) => {
 export const conversationFormate = (conversationList) => {
   const conversationObject = {}
   conversationList.forEach((v) => {
-    conversationObject[`C2C${v.id}`] = {
-      conversationID: `C2C${v.id}`,
-      lastMessage: {
-        lastTime: null,
-        fromAccount: '',
-        messageForShow: '',
-        type: 'TIMCustomElem',
-      },
-      peerReadTime: 0,
-      type: 'C2C',
+    const ID = `${v.Sort}${v.ID}`
+    conversationObject[ID] = {
+      conversationID: ID,
+      lastMessage: v.LastMessage,
+      sort: v.Sort,
+      id: v.ID,
+      type: v.Sort,
       unreadCount: 0,
       userInfo: v.userInfo,
       userProfile: {
-        userID: v.id,
-        nick: v.name,
-        avatar: v.avatar, 
+        userID: v.UserProfile.ID,
+        nick: v.UserProfile.Name,
+        avatar: v.UserProfile.Avatar,
       },
-      // onlineList: { 5: "alen9968", 6: "alen2" },
     }
   })
   return conversationObject
-};
+}
+
+export const conversationIDFormate = (conversationID) => {
+  var reg = /(\d+)$/g
+  var result = reg.exec(conversationID)
+  return result[0]
+}

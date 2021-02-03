@@ -190,9 +190,9 @@ export default {
     //登录成功后
     onReady() {
       this.$store.commit('toggleIsWsReady', true)
-      this.API.getChatList().then((res) => {
+      this.API.getChatList({userID: localStorage.getItem('userID')}).then((res) => {
         console.log('getRoomInfo', res)
-        this.$store.commit('initConversationList', res.data)
+        this.$store.commit('initConversationList', res.data.list)
         this.$store.dispatch('getFriendList')
         this.$store.dispatch('getGroupList')
       })

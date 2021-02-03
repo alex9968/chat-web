@@ -101,10 +101,10 @@ const conversationModules = {
     },
     //  初始化会话列表
     initConversationList(state, conversationList) {
-      const list = conversationFormate(conversationList);
+      const list = conversationFormate(conversationList)
       // console.log('初始化联系人列表', list)
-      window.initConversationObject = list;
-      state.conversationObject = list;
+      window.initConversationObject = list
+      state.conversationObject = list
     },
     updateConversationList(state, conversationList) {
       const conversationObject = {};
@@ -126,8 +126,7 @@ const conversationModules = {
       state.currentConversation = {};
     },
     sendMessage(state, msg) {
-      console.log("commit sendMessage")
-     
+      console.log("commit sendMessage");
     },
     /**
      * 将消息插入当前会话列表
@@ -138,9 +137,9 @@ const conversationModules = {
      */
     pushCurrentMessageList(state, msg) {
       // 还没当前会话，则跳过s
-      console.log("pushCurrentMessageList", msg, state.currentMessageList)
-      const data = messageFormate([msg])[0]
-      state.currentMessageList = [...state.currentMessageList, data]
+      console.log("pushCurrentMessageList", msg, state.currentMessageList);
+      const data = messageFormate([msg])[0];
+      state.currentMessageList = [...state.currentMessageList, data];
     },
 
     /**

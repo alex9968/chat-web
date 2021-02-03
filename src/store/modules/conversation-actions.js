@@ -1,5 +1,5 @@
 import { message } from 'element-ui'
-import { conversationFormate, messageFormate } from '../../utils/formatTIMData'
+import { conversationFormate, messageFormate, conversationIDFormate } from '../../utils/formatTIMData'
 import API from '@/services/index'
 
 export default {
@@ -12,15 +12,16 @@ export default {
       return
     }
     const { currentMessageList } = context.state
-    API.getMessageList({ chatID: conversationID, pageNum: 1, pageSize: 20 })
+    API.getMessageList({ chatID: conversationIDFormate(conversationID), pageNum: 1, pageSize: 20 })
       .then((res) => {
         // 更新messageID，续拉时要用到
         // context.state.nextReqMessageID = imReponse.data.nextReqMessageID
-        context.state.isCompleted = res.data.isCompleted
+        // context.state.isCompleted = res.data.isCompleted
         // 更新当前消息列表，从头部插入
-        //console.log('new currentMessageList', imReponse.data.messageList, currentMessageList)
+
+        console.log('init currentMessageList', res.data.list, currentMessageList)
         context.state.currentMessageList = [
-          ...res.data.messageList,
+          ...messageFormate(res.data.list),
           ...currentMessageList,
         ]
       })
