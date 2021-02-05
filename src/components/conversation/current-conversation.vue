@@ -77,7 +77,8 @@ export default {
   name: 'CurrentConversation',
   components: {
     MessageSendBox,
-    MessageItem
+    MessageItem,
+    ConversationItem
     //ConversationProfile,
     // MemberProfileCard
   },

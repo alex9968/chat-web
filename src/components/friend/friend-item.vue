@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     friend: {
@@ -19,12 +20,23 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.friend.currentFriend,
+    }),
+  },
   methods: {
     handleFriendClick() {
-      console.log('handleFriendClick(')
+      console.log("handleFriendClick(")
+      this.$store.commit('setCurrentFriend', this.friend.ID)
+      setTimeout(() => {
+
+        console.log("(:", this.user )
+      })
     },
+
     handleFriendDoubleClick() {
-      console.log('handleFriendDoubleClick(')
+      console.log("handleFriendDoubleClick(")
     },
     addConversation() {
       this.API.addConversation({

@@ -14,9 +14,16 @@
           <el-col :xs="10" :sm="10" :md="10" :lg="8" :xl="7">
             <side-bar />
           </el-col>
-          <el-col :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
+          <el-col  v-show="showConversationList" :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
             <current-conversation />
           </el-col>
+            <el-col v-show="showGroupList" :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
+            <current-group />
+          </el-col>
+           <el-col v-show="showFriendList" :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
+            <current-friend />
+          </el-col>
+
           <!-- <el-col :xs="0" :sm="4" :md="4" :lg="5" :xl="5">
             <right-side />
           </el-col> -->
@@ -34,11 +41,12 @@ import { Notification } from 'element-ui'
 import Vue  from 'vue'
 import { mapState } from 'vuex'
 import CurrentConversation from '../components/conversation/current-conversation'
+import CurrentGroup from '../components/group/current-group'
+import CurrentFriend from '../components/friend/current-friend'
 import SideBar from '../components/layout/side-bar'
 import HeaderBar from '../components/layout/header-bar'
-import RightSide from '../components/rightside/index.vue'
 import ImagePreviewer from '../components/message/image-previewer.vue'
-// import { translateGroupSystemNotice } from './utils/common'
+import { activeTabName } from '../assets/consts'
 import { ACTION } from '../utils/trtcCustomMessageMap'
 import MTA from '../utils/mta'
 
@@ -50,8 +58,9 @@ export default {
   components: {
     SideBar,
     CurrentConversation,
+    CurrentFriend,
+    CurrentGroup,
     ImagePreviewer,
-    RightSide,
     HeaderBar,
   },
 
@@ -64,18 +73,32 @@ export default {
       isBusy: (state) => state.video.isBusy,
       userID: (state) => state.user.userID,
       conversationPageSize: (state) => state.conversation.conversationPageSize,
+      activeTab: (state) => state.activeTab,
+      showConversationList: (state) => state.activeTab === activeTabName.CONVERSATION_LIST,
+      showGroupList: (state) => state.activeTab === activeTabName.GROUP_LIST,
+      showFriendList: (state) => state.activeTab === activeTabName.FRIEND_LIST
     }),
     // 是否显示 Loading 状态
     showLoading() {
       return !this.isWsReady
     },
+    // showConversationList() {
+    //   return localStorage.getItem("activeTab") === activeTabName.CONVERSATION_LIST
+    // },
+    // showGroupList() {
+    //   return localStorage.getItem("activeTab") === activeTabName.GROUP_LIST
+    // },
+    // showFriendList() {
+    //   return localStorage.getItem("activeTab") === activeTabName.FRIEND_LIST
+    // },
+    
   },
   watch: {
-    // isLogin(cur) {
-    //   if(!cur){
-    //     this.$router.push('/login') 
-    //   }
-    // }
+    activeTab(cur) {
+
+
+      
+    }
 
   },
   mounted() {
@@ -88,6 +111,7 @@ export default {
   data() {
     return {
       websock: null,
+      a
     }
   },
   watch: {

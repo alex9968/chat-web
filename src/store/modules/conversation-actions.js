@@ -19,7 +19,7 @@ export default {
         // context.state.isCompleted = res.data.isCompleted
         // 更新当前消息列表，从头部插入
 
-        console.log('init currentMessageList', res.data.list, currentMessageList)
+        console.log('init currentMessageList', messageFormate(res.data.list), currentMessageList)
         context.state.currentMessageList = [
           ...messageFormate(res.data.list),
           ...currentMessageList,
@@ -64,32 +64,6 @@ export default {
     })
   },
   searchConversation(context, toUid) {
-    // const conversationID = 'C2Cim_account_10'
-    API.getContactList({
-    }).then((res) => {
-      console.log('res search', res)
-      if (
-        res.data.contact_list.length &&
-        res.data.contact_list[0].friend_uid == toUid
-      ) {
-        context.state.currentToUID = toUid
-        const currentConversation = Object.values(
-          conversationFormate(res.data.contact_list)
-        )[0]
-        // console.log('currentConversation',currentConversation)
-        context.commit('updateCurrentConversation', currentConversation)
-        // 获取消息列表
-        context.dispatch(
-          'getHistoryMessageList',
-          currentConversation.conversationID
-        )
-        // return Promise.resolve()
-        message.success('搜索成功')
-      } else {
-        message.warning('未找到该用户')
-        // return Promise.reject()
-      }
-    })
   },
   /**
    * 切换会话

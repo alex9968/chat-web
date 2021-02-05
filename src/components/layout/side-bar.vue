@@ -54,13 +54,9 @@ import ConversationList from '../conversation/conversation-list'
 import GroupList from '../group/group-list'
 import FriendList from '../friend/friend-list'
 import BlackList from '../blacklist/blacklist'
+import { activeTabName } from '../../assets/consts'
 
-const activeName = {
-  CONVERSATION_LIST: 'conversation-list',
-  GROUP_LIST: 'group-list',
-  FRIEND_LIST: 'friend-list',
-  BLACK_LIST: 'black-list',
-}
+
 export default {
   name: 'SideBar',
   components: {
@@ -72,29 +68,38 @@ export default {
   },
   data() {
     return {
-      active: activeName.CONVERSATION_LIST,
-      activeName: activeName,
+      active: activeTabName.CONVERSATION_LIST,
+      activeTabName: activeTabName,
     }
   },
   computed: {
     ...mapGetters(['totalUnreadCount']),
     showConversationList() {
-      return this.active === activeName.CONVERSATION_LIST
+      return this.active === activeTabName.CONVERSATION_LIST
     },
     showGroupList() {
-      return this.active === activeName.GROUP_LIST
+      return this.active === activeTabName.GROUP_LIST
     },
     showFriendList() {
-      return this.active === activeName.FRIEND_LIST
+      return this.active === activeTabName.FRIEND_LIST
     },
     showBlackList() {
-      return this.active === activeName.BLACK_LIST
+      return this.active === activeTabName.BLACK_LIST
     },
     showAddButton() {
-      return [activeName.CONVERSATION_LIST, activeName.GROUP_LIST].includes(
+      return [activeTabName.CONVERSATION_LIST, activeTabName.GROUP_LIST].includes(
         this.active
       )
     },
+  },
+
+  watch: {
+    active(val){
+      // localStorage.setItem("activeTab", val)
+      // console.log('ss',val)
+      this.$store.commit('setActiveTab', val)
+    }
+
   },
   methods: {
     checkoutActive(name) {
@@ -102,17 +107,17 @@ export default {
     },
     handleClick(event) {
       switch (event.target.id) {
-        case activeName.CONVERSATION_LIST:
-          this.checkoutActive(activeName.CONVERSATION_LIST)
+        case activeTabName.CONVERSATION_LIST:
+          this.checkoutActive(activeTabName.CONVERSATION_LIST)
           break
-        case activeName.GROUP_LIST:
-          this.checkoutActive(activeName.GROUP_LIST)
+        case activeTabName.GROUP_LIST:
+          this.checkoutActive(activeTabName.GROUP_LIST)
           break
-        case activeName.FRIEND_LIST:
-          this.checkoutActive(activeName.FRIEND_LIST)
+        case activeTabName.FRIEND_LIST:
+          this.checkoutActive(activeTabName.FRIEND_LIST)
           break
-        case activeName.BLACK_LIST:
-          this.checkoutActive(activeName.BLACK_LIST)
+        case activeTabName.BLACK_LIST:
+          this.checkoutActive(activeTabName.BLACK_LIST)
           break
       }
     },
@@ -127,7 +132,7 @@ export default {
     },
     // handleRefresh() {
     //   switch (this.active) {
-    //     case activeName.CONVERSATION_LIST:
+    //     case activeTabName.CONVERSATION_LIST:
     //       this.tim.getConversationList().catch((error) => {
     //         this.$store.commit('showMessage', {
     //           type: 'error',
@@ -135,13 +140,13 @@ export default {
     //         })
     //       })
     //       break
-    //     case activeName.GROUP_LIST:
+    //     case activeTabName.GROUP_LIST:
     //       this.getGroupList()
     //       break
-    //     case activeName.FRIEND_LIST:
+    //     case activeTabName.FRIEND_LIST:
     //       this.getFriendList()
     //       break
-    //     case activeName.BLACK_LIST:
+    //     case activeTabName.BLACK_LIST:
     //       this.$store.dispatch('getBlacklist')
     //       break
     //   }

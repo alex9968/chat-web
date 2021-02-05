@@ -12,7 +12,6 @@ const conversationModules = {
   state: {
     currentConversation: {},
     currentConversationTitle: "",
-    currentToUID: null,
     moreMessagePage: 2,
     currentMessageList: [],
     nextReqMessageID: "",
@@ -130,10 +129,7 @@ const conversationModules = {
     },
     /**
      * 将消息插入当前会话列表
-     * 调用时机：收/发消息事件触发时
-     * @param {Object} state
-     * @param {Message[]|Message} data
-     * @returns
+     * 调用时机：接受实时推送的消息
      */
     pushCurrentMessageList(state, msg) {
       // 还没当前会话，则跳过s

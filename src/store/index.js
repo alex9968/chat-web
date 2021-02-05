@@ -13,6 +13,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    activeTab: 'conversation-list',
     current: Date.now(), // 当前时间
     intervalID: 0,
     message: undefined,
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    setActiveTab(state, options) {
+      state.activeTab = options
+    },
     startComputeCurrent(state) {
       state.intervalID = setInterval(() => {
         state.current = Date.now();

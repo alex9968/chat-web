@@ -28,7 +28,7 @@ export const messageFormate = (messageList, conversationID) => {
     //   messagePayload["imageInfoArray"] = messageContent.ImageInfoArray;
     // }
     //解析文本
-    if (v.type === TIM.TYPES.MSG_TEXT) {
+    if (v.Type === TIM.TYPES.MSG_TEXT) {
       //console.log('message type', type)
       messagePayload['text'] = v.Content
     }
@@ -95,6 +95,11 @@ export const conversationFormate = (conversationList) => {
         nick: v.UserProfile.Name,
         avatar: v.UserProfile.Avatar,
       },
+      // groupProfile: v.groupProfile && {
+      //   groupID: v.GroupProfile.ID,
+      //   nick: v.GroupProfile.Name,
+      //   avatar: v.GroupProfile.Avatar
+      // }
     }
   })
   return conversationObject

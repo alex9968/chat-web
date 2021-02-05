@@ -16,58 +16,9 @@
         <el-avatar size="medium" :src="data.avatar"></el-avatar>
     </div>
 
-    <!-- 详细资料 -->
-    <div class="info" v-if="data">
-      <div v-for="(v, k) in renderKeys" :key="k" class="item">
-        <div>
-          <span style="margin-right: 10px">{{ v.label }}:&nbsp;</span>
-          <span style="margin-right: 5px">{{
-            v.transform ? v.transform(data[k]) : data[k]
-          }}</span>
-          <el-button
-            v-if="k === 'age'"
-            size="mini"
-            icon="el-icon-edit"
-            @click="showAgeDialog = true"
-            type="primary"
-          ></el-button>
-          <el-button
-            v-if="k === 'sex'"
-            size="mini"
-            icon="el-icon-edit"
-            @click="showSexDialog = true"
-            type="primary"
-          ></el-button>
-        </div>
-      </div>
-    </div>
+  
 
-    <el-dialog title="修改生日" :visible.sync="showAgeDialog" width="30%">
-      <el-date-picker
-        v-model="currentAge"
-        type="date"
-        value-format="yyyy-MM-dd"
-        placeholder="选择日期"
-      >
-      </el-date-picker>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="showAgeDialog = false">取 消</el-button>
-        <el-button type="primary" @click="handelUserInfoUpdate('age')"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-
-    <el-dialog title="修改性别" :visible.sync="showSexDialog" width="30%">
-      <el-radio v-model="currentSex" :label="1">男</el-radio>
-      <el-radio v-model="currentSex" :label="2">女</el-radio>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="showSexDialog = false">取 消</el-button>
-        <el-button type="primary" @click="handelUserInfoUpdate('sex')"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+  
   </div>
 </template>
 
