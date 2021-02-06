@@ -1,43 +1,36 @@
 <template>
   <div @click="handleGroupClick" class="scroll-container">
     <div class="group-item">
-      <avatar :src="group.avatar" />
-      <div class="group-name text-ellipsis">{{ group.name }}</div>
+      <avatar :src="group.Avatar" />
+      <div class="group-name text-ellipsis">{{ group.Name }}</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['group'],
+  props: {
+    group: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       visible: false,
       options: [
         {
           text: '退出群组',
-          handler: this.quitGroup
-        }
-      ]
+          handler: this.quitGroup,
+        },
+      ],
     }
   },
   methods: {
     handleGroupClick() {
-      this.API.addConversation({ chatID: `GROUP${this.group.ID}` }).then(({ data })=>{
-        //  const conversationID = `GROUP${this.group.groupID}`
-        // this.$store.dispatch('checkoutConversation', conversationID)
-        this.$store.commit('updateCurrentConversation', data)
-      })
-      .catch(error => {
-          this.$store.commit('showMessage', {
-            type: 'error',
-            message: error.message
-          })
-        })
-
+      this.$store.commit('setCurrentGroup', this.group.ID)
     },
     quitGroup() {
-
       // this.tim.quitGroup(this.group.groupID)
       // .catch(error => {
       //     this.$store.commit('showMessage', {
@@ -45,32 +38,41 @@ export default {
       //       message: error.message
       //     })
       //   })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="stylus" scoped>
-.scroll-container
-  overflow-y scroll
-  flex 1
-  .group-item
-    display flex
-    padding 10px 20px
-    cursor pointer
-    position relative
-    overflow hidden
-    transition .2s
-    &:hover
-      background-color $background
-    .avatar
-      width 30px
-      height 30px
-      border-radius 50%
-      margin-right 10px
-      flex-shrink 0
-    .group-name
-      flex 1
-      color $font-light
-      line-height 30px
+.scroll-container {
+  overflow-y: scroll;
+  flex: 1;
+
+  .group-item {
+    display: flex;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: $background;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .group-name {
+      flex: 1;
+      color: $font-light;
+      line-height: 30px;
+    }
+  }
+}
 </style>

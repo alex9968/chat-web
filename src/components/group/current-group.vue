@@ -1,24 +1,30 @@
 <template>
   <div class="current-group">
-  
     <div class="top-part">
       <!-- 头像 -->
       <div class="avatar">
-        <el-avatar :size="100" :src="user.Avatar"></el-avatar>
+        <el-avatar :size="100" :src="group.Avatar"></el-avatar>
       </div>
-      <div class="name">{{ user.Name }}</div>
-      <div class="btn">发送消息</div>
-    </div>
 
+      <div class="info">
+        <div class="name">{{ group.Name }}</div>
+        <div class="btn">打开群聊</div>
+      </div>
+    </div>
 
     <!-- 详细资料 -->
     <div class="bottom-part">
-      <div v-for="(v, k) in renderKeys" :key="k" class="item">
-        <div>
-          <span style="margin-right: 10px;color: grey;">{{ v.label }}:&nbsp;</span>
-          <span style="margin-right: 5px">{{
-            v.transform ? v.transform(user[k]) : user[k]
-          }}</span>
+      <div class="intro">群ID：{{ group.ID }}</div>
+      <div class="intro">群介绍：{{ group.Intro }}</div>
+      
+      <div class="intro">群成员:</div>
+
+
+      <div class="member-list">
+        <div v-for="(v, k) in group.Members" :key="k" class="user-item">
+          <el-avatar :size="40" :src="v.Avatar"></el-avatar>
+          <div style="text-align:center">{{ v.Name }}</div>
+          <div v-if="group.UserID == v.ID" class="leader">群主</div>
         </div>
       </div>
     </div>
@@ -30,38 +36,22 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      userID: 'im_account_17',
-      messageText: 'new message',
-      userInfo: {},
       renderKeys: {
         ID: {
           key: 'ID',
-          label: '账号ID',
+          label: '群ID',
         },
-        Gender: {
-          key: 'Gender',
-          label: '性别',
-          transform: (v) => v == 1 ? "男": "女"
-        },
-        Age: {
-          key: 'Age',
-          label: '年龄',
-        },
-        SchoolCode: {
-          key: 'SchoolCode',
-          label: '学校代码',
+        UserID: {
+          key: 'UserID',
+          label: '群主ID',
         },
       },
     }
   },
   computed: {
     ...mapState({
-      user: (state) => state.friend.currentFriend,
+      group: (state) => state.group.currentGroup,
     }),
-  },
-  beforeMount() {
-    // this.getInitData()
-    //this.getGroupList()
   },
   watch: {},
   methods: {
@@ -70,15 +60,15 @@ export default {
       //   .then((res) => {
       //     if (res && res.code === 200) {
       //       console.log('200 ff', res)
-      //       this.userInfo = res.data.user
-      //       this.userPairs = res.data.pairs
-      //       this.$store.commit('updateCurrentConversationTitle', res.data.user)
+      //       this.groupInfo = res.data.group
+      //       this.groupPairs = res.data.pairs
+      //       this.$store.commit('updateCurrentConversationTitle', res.data.group)
       //     }
       //   })
       //   .catch((err) => {
       //     console.error('数据请求失败!', err)
-      //     this.userInfo = null
-      //     this.userPairs = null
+      //     this.groupInfo = null
+      //     this.groupPairs = null
       //   })
     },
   },
@@ -97,7 +87,8 @@ export default {
     position: relative;
     height: 40%;
     width: 100%;
-    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
 
     .avatar {
       position: absolute;
@@ -109,49 +100,61 @@ export default {
       box-shadow: inset -20px -20px 0px #6a6e80, inset 20px 20px 0px #9094ae;
     }
 
-    .name {
-      font-size: 30px;
-      color: #fff;
+    .info {
       position: absolute;
       left: 50%;
       top: 60%;
       transform: translate(-50%, 0%);
-    }
-
-    .btn {
-      background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
-      border-radius: 25px;
-      width: 160px;
-      height: 50px;
-      font-size: 20px;
-      color: #fff;
-      cursor: pointer;
-      position: absolute;
-      left: 50%;
-      top: 80%;
-      line-height: 50px;
       text-align: center;
-      transform: translate(-50%, 0%);
 
-      &:hover {
-        background-color: #fcb69f;
+      .name {
+        font-size: 30px;
+        color: #fff;
+      }
+
+      .btn {
+        background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+        border-radius: 25px;
+        width: 160px;
+        height: 50px;
+        font-size: 20px;
+        color: #fff;
+        cursor: pointer;
+        line-height: 50px;
+        text-align: center;
+        margin-top: 20px;
+
+        &:hover {
+          background-color: #fcb69f;
+        }
       }
     }
   }
 
   .bottom-part {
     width: 60%;
-    margin: 0 auto
+    margin: 0 auto;
     padding: 40px 0;
     font-weight: 400;
 
-    .item {
-      font-size: 20px;
-      font-weight: 400;
-      display: inline-block;
-      padding: 20px 0;
-      width: 50%;
-      padding-bottom: 0;
+    .intro {
+      text-align: left;
+      font-size: 16px;
+      color: grey;
+      margin-bottom: 20px;
+    }
+    .member-list {
+      display: flex;
+      justify-content: flex-start;
+      .user-item {
+        font-size: 12px;
+        padding-left: 20px;
+      }
+      .leader {
+        text-align: center;
+        font-size: 14px;
+        color: grey;
+      }
     }
   }
 

@@ -27,8 +27,8 @@ module.exports = {
   },
 
   rules: {
-    "quotes": ["error", "single"],
-    "semi": ["error","never"],
+    // "quotes": ["error", "single"],
+    // "semi": ["error","never"],
 
     "accessor-pairs": 2,
     "arrow-spacing": [2, { before: true, after: true }],

@@ -1,36 +1,34 @@
 <template>
   <div>
     <el-form :model="form" :rules="rules" ref="createGroupForm" label-width="100px">
-      <el-form-item label="群ID">
+      <!-- <el-form-item label="群ID">
         <el-input v-model="form.groupID"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="群名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="群类型">
+      <!-- <el-form-item label="群类型">
         <el-select v-model="form.type">
           <el-option label="Work" :value="TIM.TYPES.GRP_WORK"></el-option>
           <el-option label="Public" :value="TIM.TYPES.GRP_PUBLIC"></el-option>
           <el-option label="Meeting" :value="TIM.TYPES.GRP_MEETING"></el-option>
           <el-option label="AVChatRoom" :value="TIM.TYPES.GRP_AVCHATROOM"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="群头像地址">
         <el-input v-model="form.avatar"></el-input>
       </el-form-item>
       <el-form-item label="群简介">
         <el-input type="textarea" v-model="form.introduction" :maxlength="240"></el-input>
       </el-form-item>
-      <el-form-item label="群公告">
-        <el-input type="textarea" v-model="form.notification" :maxlength="300"></el-input>
-      </el-form-item>
-      <el-form-item label="加群方式">
+     
+      <!-- <el-form-item label="加群方式">
         <el-radio-group v-model="form.joinOption" :disabled="joinOptionDisabled">
           <el-radio label="FreeAccess">自由加群</el-radio>
           <el-radio label="NeedPermission">需要验证</el-radio>
           <el-radio label="DisableApply">禁止加群</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="群成员列表">
         <el-select
           v-model="form.memberList"

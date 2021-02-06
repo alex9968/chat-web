@@ -1,19 +1,7 @@
 <template>
   <div class="list-container">
     <div class="header-bar">
-      <el-autocomplete
-        :value-key="'groupID'"
-        :debounce="500"
-        size="mini"
-        v-model="groupID"
-        placeholder="输入群ID搜索"
-        :fetch-suggestions="searchGroupByID"
-        class="group-seach-bar"
-        prefix-icon="el-icon-search"
-        :hide-loading="hideSearchLoading"
-        @input="hideSearchLoading = false"
-        @select="applyJoinGroup"
-      ></el-autocomplete>
+      <div>群组列表</div>
       <button title="创建群组" @click="showCreateGroupModel">
         <i class="tim-icon-add"></i>
       </button>
@@ -135,23 +123,11 @@ export default {
     overflow-y scroll
   .header-bar
     display: flex;
+    justify-content: space-around;
     flex-shrink 0
     height 50px
     border-bottom 1px solid $background-deep-dark
     padding 10px 10px 10px 20px
-    .group-seach-bar
-      width 100%
-      margin-right 10px
-      >>> .el-input
-        input
-          color $first
-          border none
-          border-radius 30px
-          background-color $deep-background !important
-          &::placeholder
-            color $font-dark
-        .el-icon-search
-          color $font-dark
     button
       float right
       display: inline-block;

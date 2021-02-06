@@ -14,13 +14,34 @@
           <el-col :xs="10" :sm="10" :md="10" :lg="8" :xl="7">
             <side-bar />
           </el-col>
-          <el-col  v-show="showConversationList" :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
+          <el-col
+            v-show="showConversationList"
+            :xs="14"
+            :sm="14"
+            :md="14"
+            :lg="16"
+            :xl="17"
+          >
             <current-conversation />
           </el-col>
-            <el-col v-show="showGroupList" :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
+          <el-col
+            v-show="showGroupList"
+            :xs="14"
+            :sm="14"
+            :md="14"
+            :lg="16"
+            :xl="17"
+          >
             <current-group />
           </el-col>
-           <el-col v-show="showFriendList" :xs="14" :sm="14" :md="14" :lg="16" :xl="17">
+          <el-col
+            v-show="showFriendList"
+            :xs="14"
+            :sm="14"
+            :md="14"
+            :lg="16"
+            :xl="17"
+          >
             <current-friend />
           </el-col>
 
@@ -38,7 +59,7 @@
 
 <script>
 import { Notification } from 'element-ui'
-import Vue  from 'vue'
+import Vue from 'vue'
 import { mapState } from 'vuex'
 import CurrentConversation from '../components/conversation/current-conversation'
 import CurrentGroup from '../components/group/current-group'
@@ -74,9 +95,10 @@ export default {
       userID: (state) => state.user.userID,
       conversationPageSize: (state) => state.conversation.conversationPageSize,
       activeTab: (state) => state.activeTab,
-      showConversationList: (state) => state.activeTab === activeTabName.CONVERSATION_LIST,
+      showConversationList: (state) =>
+        state.activeTab === activeTabName.CONVERSATION_LIST,
       showGroupList: (state) => state.activeTab === activeTabName.GROUP_LIST,
-      showFriendList: (state) => state.activeTab === activeTabName.FRIEND_LIST
+      showFriendList: (state) => state.activeTab === activeTabName.FRIEND_LIST,
     }),
     // 是否显示 Loading 状态
     showLoading() {
@@ -91,27 +113,19 @@ export default {
     // showFriendList() {
     //   return localStorage.getItem("activeTab") === activeTabName.FRIEND_LIST
     // },
-    
   },
   watch: {
-    activeTab(cur) {
-
-
-      
-    }
-
+    activeTab(cur) {},
   },
   mounted() {
     // this.addHistoryFriendList()
     // 初始化监听器
     // this.initListener()
-      this.initWebSocket()
-    
+    this.initWebSocket()
   },
   data() {
     return {
       websock: null,
-      a
     }
   },
   watch: {
@@ -127,8 +141,8 @@ export default {
       // const wsuri = process.env.WS_API + '/websocket/threadsocket'
       Vue.prototype.ws = new WebSocket(socketUrl)
 
-      //  this.$store.commit('initWebsocket', data) 
-      
+      //  this.$store.commit('initWebsocket', data)
+
       this.ws.onmessage = this.websocketonmessage
       this.ws.onopen = this.websocketopen
       this.ws.onclose = this.websocketclose
@@ -145,7 +159,7 @@ export default {
       // const redata = JSON.parse(e.data)
       // console.log(redata.value)
       let data = JSON.parse(e.data)
-      this.$store.commit('pushCurrentMessageList', data) 
+      this.$store.commit('pushCurrentMessageList', data)
       // // console.log('websocketonmessage', data)
       // if (data.op == 3) {
       // } else if (data.op == 4) {
@@ -214,12 +228,14 @@ export default {
     //登录成功后
     onReady() {
       this.$store.commit('toggleIsWsReady', true)
-      this.API.getChatList({userID: localStorage.getItem('userID')}).then((res) => {
-        console.log('getRoomInfo', res)
-        this.$store.commit('initConversationList', res.data.list)
-        this.$store.dispatch('getFriendList')
-        this.$store.dispatch('getGroupList')
-      })
+      this.API.getChatList({ userID: localStorage.getItem('userID') }).then(
+        (res) => {
+          console.log('getRoomInfo', res)
+          this.$store.commit('initConversationList', res.data.list)
+          this.$store.dispatch('getFriendList')
+          this.$store.dispatch('getGroupList')
+        }
+      )
 
       // if (this.isSDKReady) {
       //   this.tim

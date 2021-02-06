@@ -20,23 +20,18 @@ export default {
       required: true,
     },
   },
-  computed: {
-    ...mapState({
-      user: (state) => state.friend.currentFriend,
-    }),
-  },
+  computed: {},
   methods: {
     handleFriendClick() {
-      console.log("handleFriendClick(")
+      console.log('handleFriendClick(')
       this.$store.commit('setCurrentFriend', this.friend.ID)
       setTimeout(() => {
-
-        console.log("(:", this.user )
+        console.log('(:', this.user)
       })
     },
 
     handleFriendDoubleClick() {
-      console.log("handleFriendDoubleClick(")
+      console.log('handleFriendDoubleClick(')
     },
     addConversation() {
       this.API.addConversation({
