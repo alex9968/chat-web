@@ -8,7 +8,7 @@
 
       <div class="info">
         <div class="name">{{ group.Name }}</div>
-        <div class="btn">打开群聊</div>
+        <div class="btn" @click="openConversation">打开群聊</div>
       </div>
     </div>
 
@@ -16,14 +16,13 @@
     <div class="bottom-part">
       <div class="intro">群ID：{{ group.ID }}</div>
       <div class="intro">群介绍：{{ group.Intro }}</div>
-      
-      <div class="intro">群成员:</div>
 
+      <div class="intro">群成员:</div>
 
       <div class="member-list">
         <div v-for="(v, k) in group.Members" :key="k" class="user-item">
-          <el-avatar :size="40" :src="v.Avatar"></el-avatar>
-          <div style="text-align:center">{{ v.Name }}</div>
+          <el-avatar  shape="square" :size="40" :src="v.Avatar"></el-avatar>
+          <div style="text-align: center">{{ v.Name }}</div>
           <div v-if="group.UserID == v.ID" class="leader">群主</div>
         </div>
       </div>
@@ -33,6 +32,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { activeTabName } from '@/assets/consts'
 export default {
   data() {
     return {
@@ -55,21 +55,11 @@ export default {
   },
   watch: {},
   methods: {
-    getInitData() {
-      // this.API.getUserInfo(this.currentToUID)
-      //   .then((res) => {
-      //     if (res && res.code === 200) {
-      //       console.log('200 ff', res)
-      //       this.groupInfo = res.data.group
-      //       this.groupPairs = res.data.pairs
-      //       this.$store.commit('updateCurrentConversationTitle', res.data.group)
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.error('数据请求失败!', err)
-      //     this.groupInfo = null
-      //     this.groupPairs = null
-      //   })
+    openConversation() {
+      // console.log('ss',this.group.ID)
+      this.$store.commit('setActiveTab', activeTabName.CONVERSATION_LIST)
+      // 切换到当前会话
+      this.$store.dispatch('group2Conversation', this.group.ID)
     },
   },
 }
@@ -87,7 +77,6 @@ export default {
     position: relative;
     height: 40%;
     width: 100%;
-
     background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
 
     .avatar {
@@ -143,13 +132,16 @@ export default {
       color: grey;
       margin-bottom: 20px;
     }
+
     .member-list {
       display: flex;
       justify-content: flex-start;
+
       .user-item {
         font-size: 12px;
         padding-left: 20px;
       }
+
       .leader {
         text-align: center;
         font-size: 14px;

@@ -1,18 +1,25 @@
 <template>
   <div class="profile-user">
-    <avatar :title=userProfile.userID :src="userProfile.avatar" />
-    <div class="nick-name text-ellipsis">
-      <span v-if="userProfile.nick" :title=userProfile.nick>
-        {{ userProfile.nick }}
-      </span>
-      <span v-else class="anonymous" title="该用户未设置昵称">
-        [Anonymous]
+    <!-- <el-avatar :title="userProfile.userID" :src="userProfile.avatar" /> -->
+    <div class="item text-ellipsis">
+      <span :title="userProfile.nick">
+       昵称<i class="el-icon-user-solid"></i>：{{ userProfile.nick }}
       </span>
     </div>
-    <div class="gender" v-if="genderClass">
-      <span :title="gender" class="iconfont" :class="genderClass"></span>
+     <div class="item" >
+      性别：
+      <i v-if="userProfile.gender == 1" class="el-icon-male"></i>
+      <i v-else class="el-icon-female"></i>
     </div>
-    <el-button
+    <div class="item" >
+      家乡<i class="el-icon-s-home"></i>：
+      <span>{{userProfile.home}}</span>
+    </div>
+      <div class="item">
+      年龄：{{userProfile.age}}
+    </div>
+    
+    <!-- <el-button
       title="将该用户加入黑名单"
       type="text"
       @click="addToBlackList"
@@ -20,7 +27,7 @@
       class="btn-add-blacklist"
       >加入黑名单</el-button
     >
-    <el-button title="将该用户移出黑名单" type="text" @click="removeFromBlacklist" v-else-if="isInBlacklist">移出黑名单</el-button>
+    <el-button title="将该用户移出黑名单" type="text" @click="removeFromBlacklist" v-else-if="isInBlacklist">移出黑名单</el-button> -->
     <!-- 拉黑 和 反拉黑 -->
   </div>
 </template>
@@ -36,7 +43,7 @@ export default {
   },
   computed: {
     ...mapState({
-      blacklist: state => state.blacklist.blacklist,
+      // blacklist: state => state.blacklist.blacklist,
       myUserID: state => state.user.currentUserProfile.userID
     }),
     isInBlacklist() {
@@ -95,25 +102,15 @@ export default {
 <style lang="stylus" scoped>
 .profile-user
   width 100%
-  text-align center
+  text-align left
   padding 0 20px
-  .avatar
-    width 160px
-    height 160px
-    border-radius 50%
-    margin 30px auto
-  .nick-name
-    width 100%
-    color $base
-    font-size 20px
-    font-weight bold
-    text-shadow $font-dark 0 0 0.1em
-    .anonymous
-      color $first
-      text-shadow none
-  .gender
-    padding 5px 0 10px 0
-    border-bottom 1px solid $border-base
+  .item
+    width: 100%
+    color grey
+    font-size 14px
+    line-height 30px
+    padding-top 10px 
+    // border-left 3px solid $border-base
   .btn-add-blacklist
     color $danger
 </style>

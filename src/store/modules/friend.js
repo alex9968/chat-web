@@ -17,9 +17,9 @@ const friendModules = {
       });
     },
     setCurrentFriend(state, friendID) {
-      console.log("setCurrentFriend(", friendID);
+      // console.log("setCurrentFriend(", friendID);
       state.friendList.forEach((v) => {
-        console.log("id", v.id);
+        // console.log("id", v.id);
         if (v.ID === friendID) {
           state.currentFriend = v;
         }
@@ -54,6 +54,7 @@ const friendModules = {
         context.state.conversationObject[conversationID]
       );
     },
+   
   },
 };
 

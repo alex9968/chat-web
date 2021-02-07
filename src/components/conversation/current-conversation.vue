@@ -7,7 +7,7 @@
     >
       <!-- 聊天室header -->
       <div class="header">
-        <div class="name">{{ name }} {{ currentConversationTitle }}</div>
+        <div class="name">{{ name }}</div>
         <!-- 右边拉开的小图标 -->
         <!-- <div class="btn-more-info"
           :class="showConversationProfile ? '' : 'left-arrow'"
@@ -49,7 +49,7 @@
         </div>
         <!-- 右边资料 -->
         <div class="content-right">
-          <conversation-item />
+          <conversation-profile />
         </div>
       </div>
 
@@ -71,15 +71,15 @@ import { mapGetters, mapState } from 'vuex'
 import MessageSendBox from '../message/message-send-box'
 import MessageItem from '../message/message-item'
 import ConversationItem from './conversation-item.vue'
-//import ConversationProfile from './conversation-profile.vue'
+import ConversationProfile from './conversation-profile.vue'
 // import MemberProfileCard from '../group/member-profile-card'
 export default {
   name: 'CurrentConversation',
   components: {
     MessageSendBox,
     MessageItem,
-    ConversationItem
-    //ConversationProfile,
+    ConversationItem,
+    ConversationProfile,
     // MemberProfileCard
   },
   data() {
@@ -97,8 +97,6 @@ export default {
         state.conversation.currentConversation.unreadCount,
       currentMessageList: (state) => state.conversation.currentMessageList,
       isCompleted: (state) => state.conversation.isCompleted,
-      currentConversationTitle: (state) =>
-        state.conversation.currentConversationTitle,
     }),
     ...mapGetters(['toAccount', 'hidden']),
     // 是否显示当前会话组件
@@ -106,16 +104,14 @@ export default {
       return !!this.currentConversation.conversationID
     },
     name() {
-      // // if (this.currentConversation.type === 'C2C') {
-      // //   return this.currentConversation.userProfile.nick || this.toAccount
-      // // } else if (this.currentConversation.type === 'GROUP') {
-      // //   return this.currentConversation.groupProfile.name || this.toAccount
-      // // } else if (this.currentConversation.conversationID === '@TIM#SYSTEM') {
-      // //   return '系统通知'
-      // // }
-      // // return this.toAccount
-      // console.log('name', this.currentConversation.userProfile.nick )
-      return this.currentConversation.userProfile.nick
+      if (this.currentConversation.type === 'C2C') {
+        return this.currentConversation.userProfile.nick
+      } else if (this.currentConversation.type === 'GROUP') {
+        return this.currentConversation.groupProfile.nick
+      } else if (this.currentConversation.type === 'SYSTEM') {
+        return '系统通知'
+      }
+      return '系统通知'
     },
     showMessageSendBox() {
       return this.currentConversation.type !== this.TIM.TYPES.CONV_SYSTEM

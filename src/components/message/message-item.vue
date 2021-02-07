@@ -233,7 +233,9 @@ export default {
           ? this.currentUserProfile.avatar
           : this.currentConversation.userProfile.avatar
       } else if (this.currentConversation.type === 'GROUP') { 
-        return ''
+         return this.isMine
+          ? this.currentUserProfile.avatar
+          : this.currentConversation.groupProfile.avatar
       } else {
         return ''
       }

@@ -11,7 +11,6 @@ import { conversationFormate, messageFormate } from "../../utils/formatTIMData";
 const conversationModules = {
   state: {
     currentConversation: {},
-    currentConversationTitle: "",
     moreMessagePage: 2,
     currentMessageList: [],
     nextReqMessageID: "",
@@ -90,11 +89,6 @@ const conversationModules = {
     resetCurrentConversationUnread(state) {
       state.currentConversation.unreadCount = 0;
     },
-    updateCurrentConversationTitle(state, user) {
-      // const age = new Date().getFullYear() - parseInt((user['age']+'').slice(0,4))
-      // let conversationTitle = user.uid  + ' ' + (user.sex === 1 ? '男' : '女')  + ' ' + age + '【' + user.platform + '】' + '【type=' + user.user_type+ '】'
-      // state.currentConversationTitle = conversationTitle
-    },
     setTotalConvasation(state, total) {
       // state.totalConvasation  = total
     },
@@ -104,6 +98,9 @@ const conversationModules = {
       // console.log('初始化联系人列表', list)
       window.initConversationObject = list
       state.conversationObject = list
+      console.log("on",Object.values(list)[0])
+      state.currentConversation = Object.values(list)[0]
+      state.currentMessageList = [];
     },
     updateConversationList(state, conversationList) {
       const conversationObject = {};

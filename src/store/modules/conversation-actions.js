@@ -1,30 +1,41 @@
-import { message } from 'element-ui'
-import { conversationFormate, messageFormate, conversationIDFormate } from '../../utils/formatTIMData'
-import API from '@/services/index'
+import { message } from "element-ui";
+import {
+  conversationFormate,
+  messageFormate,
+  conversationIDFormate,
+} from "../../utils/formatTIMData";
+import API from "@/services/index";
 
 export default {
   getMessageList(context, conversationID) {
     if (context.state.isCompleted) {
-      context.commit('showMessage', {
-        message: '已经没有更多的历史消息了哦',
-        type: 'info',
-      })
-      return
+      context.commit("showMessage", {
+        message: "已经没有更多的历史消息了哦",
+        type: "info",
+      });
+      return;
     }
-    const { currentMessageList } = context.state
-    API.getMessageList({ chatID: conversationIDFormate(conversationID), pageNum: 1, pageSize: 20 })
-      .then((res) => {
-        // 更新messageID，续拉时要用到
-        // context.state.nextReqMessageID = imReponse.data.nextReqMessageID
-        // context.state.isCompleted = res.data.isCompleted
-        // 更新当前消息列表，从头部插入
+    const { currentMessageList } = context.state;
+    API.getMessageList({
+      chatID: conversationIDFormate(conversationID),
+      pageNum: 1,
+      pageSize: 20,
+    }).then((res) => {
+      // 更新messageID，续拉时要用到
+      // context.state.nextReqMessageID = imReponse.data.nextReqMessageID
+      // context.state.isCompleted = res.data.isCompleted
+      // 更新当前消息列表，从头部插入
 
-        console.log('init currentMessageList', messageFormate(res.data.list), currentMessageList)
-        context.state.currentMessageList = [
-          ...messageFormate(res.data.list),
-          ...currentMessageList,
-        ]
-      })
+      console.log(
+        "init currentMessageList",
+        messageFormate(res.data.list),
+        currentMessageList
+      );
+      context.state.currentMessageList = [
+        ...messageFormate(res.data.list),
+        ...currentMessageList,
+      ];
+    });
   },
   getMoreHistoryMessageList(context, conversationID) {
     // const kfUid = localStorage.getItem('kfUid')
@@ -52,25 +63,19 @@ export default {
     API.getMessageList({ chatID: 2, pageNum: 1, pageSize: 10 }).then((res) => {
       // console.log('message list',res)
 
-      const messageList = messageFormate(res.data.messages, conversationID)
+      const messageList = messageFormate(res.data.messages, conversationID);
       // console.log('messageList', messageList, res.data.messages)
-      const { currentMessageList } = context.state
+      const { currentMessageList } = context.state;
       context.state.currentMessageList = [
         ...messageList,
         ...currentMessageList,
       ].sort((a, b) => {
-        return a.time - b.time
-      })
-    })
+        return a.time - b.time;
+      });
+    });
   },
-  searchConversation(context, toUid) {
-  },
-  /**
-   * 切换会话
-   * 调用时机：切换会话时
-   * @param {Object} context
-   * @param {String} conversationID
-   */
+  searchConversation(context, toUid) {},
+  //  调用时机：切换会话时
   checkoutConversation(context, conversationID) {
     //context.commit('resetCurrentMemberList')
     // 1.切换会话前，将切换前的会话进行已读上报
@@ -87,10 +92,10 @@ export default {
     // }
 
     context.commit(
-      'updateCurrentConversation',
+      "updateCurrentConversation",
       context.state.conversationObject[conversationID]
-    )
-    context.dispatch('getMessageList', conversationID)
+    );
+    context.dispatch("getMessageList", conversationID);
 
     // 3. 获取会话信息
     // return tim.getConversationProfile(conversationID).then(({ data }) => {
@@ -105,4 +110,16 @@ export default {
     //   return Promise.resolve()
     // })
   },
-}
+  group2Conversation(context, groupID) {
+    context.dispatch(
+      "checkoutConversation",
+      "C2C2"
+    );
+  },
+  friend2Conversation(context, friendID) {
+    context.dispatch(
+      "checkoutConversation",
+      "C2C2"
+    );
+  },
+};

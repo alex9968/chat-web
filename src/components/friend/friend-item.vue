@@ -1,10 +1,8 @@
 <template>
-  <div
-    @click="handleFriendClick"
-    @dblclick="handleFriendDoubleClick"
-    class="scroll-container"
-  >
-    <div class="friend-item">
+  <div @click="handleFriendClick" class="scroll-container">
+    <div
+      :class="{ 'friend-item': true, active: friend.ID === currentFriendID }"
+    >
       <avatar :src="friend.Avatar" />
       <div class="friend-name text-ellipsis">{{ friend.Name }}</div>
     </div>
@@ -20,18 +18,15 @@ export default {
       required: true,
     },
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      currentFriendID: (state) => state.friend.currentFriend.ID,
+    }),
+  },
   methods: {
     handleFriendClick() {
-      console.log('handleFriendClick(')
+      // console.log('handleFriendClick(')
       this.$store.commit('setCurrentFriend', this.friend.ID)
-      setTimeout(() => {
-        console.log('(:', this.user)
-      })
-    },
-
-    handleFriendDoubleClick() {
-      console.log('handleFriendDoubleClick(')
     },
     addConversation() {
       this.API.addConversation({
@@ -56,6 +51,11 @@ export default {
 .scroll-container {
   overflow-y: scroll;
   flex: 1;
+
+  .active {
+    color: $white;
+    background-color: $background;
+  }
 
   .friend-item {
     display: flex;

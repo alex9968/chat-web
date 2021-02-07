@@ -26,12 +26,12 @@
           :class="{ active: showFriendList }"
           title="好友列表"
         ></div>
-        <div
+        <!-- <div
           id="black-list"
           class="iconfont icon-blacklist"
           :class="{ active: showBlackList }"
           title="黑名单列表"
-        ></div>
+        ></div> -->
       </div>
       <div class="bottom">
         <div class="iconfont icon-tuichu" @click="logout" title="退出"></div>
@@ -42,20 +42,19 @@
       <conversation-list v-show="showConversationList" />
       <group-list v-show="showGroupList" />
       <friend-list v-show="showFriendList" />
-      <black-list v-show="showBlackList" />
+      <!-- <black-list v-show="showBlackList" /> -->
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import MyProfile from '../my-profile'
 import ConversationList from '../conversation/conversation-list'
 import GroupList from '../group/group-list'
 import FriendList from '../friend/friend-list'
 import BlackList from '../blacklist/blacklist'
-import { activeTabName } from '../../assets/consts'
-
+import { activeTabName } from '@/assets/consts'
 
 export default {
   name: 'SideBar',
@@ -68,67 +67,37 @@ export default {
   },
   data() {
     return {
-      active: activeTabName.CONVERSATION_LIST,
-      activeTabName: activeTabName,
     }
   },
   computed: {
     ...mapGetters(['totalUnreadCount']),
-    showConversationList() {
-      return this.active === activeTabName.CONVERSATION_LIST
-    },
-    showGroupList() {
-      return this.active === activeTabName.GROUP_LIST
-    },
-    showFriendList() {
-      return this.active === activeTabName.FRIEND_LIST
-    },
-    showBlackList() {
-      return this.active === activeTabName.BLACK_LIST
-    },
+    ...mapState({
+      showConversationList: (state) =>
+        state.activeTab === activeTabName.CONVERSATION_LIST,
+      showGroupList: (state) => state.activeTab === activeTabName.GROUP_LIST,
+      showFriendList: (state) => state.activeTab === activeTabName.FRIEND_LIST,
+    }),
     showAddButton() {
-      return [activeTabName.CONVERSATION_LIST, activeTabName.GROUP_LIST].includes(
-        this.active
-      )
+      return [
+        activeTabName.CONVERSATION_LIST,
+        activeTabName.GROUP_LIST,
+      ].includes(this.active)
     },
   },
 
   watch: {
-    active(val){
-      // localStorage.setItem("activeTab", val)
-      // console.log('ss',val)
-      this.$store.commit('setActiveTab', val)
-    }
-
   },
   methods: {
-    checkoutActive(name) {
-      this.active = name
-    },
+   
     handleClick(event) {
-      switch (event.target.id) {
-        case activeTabName.CONVERSATION_LIST:
-          this.checkoutActive(activeTabName.CONVERSATION_LIST)
-          break
-        case activeTabName.GROUP_LIST:
-          this.checkoutActive(activeTabName.GROUP_LIST)
-          break
-        case activeTabName.FRIEND_LIST:
-          this.checkoutActive(activeTabName.FRIEND_LIST)
-          break
-        case activeTabName.BLACK_LIST:
-          this.checkoutActive(activeTabName.BLACK_LIST)
-          break
-      }
+       this.$store.commit('setActiveTab', event.target.id)
     },
     logout() {
-      API.logout({ token: localStorage.getItem('token') }).then(
-        (res) => {
-          console.log('logout')
-          this.$store.dispatch('logout')
-          this.$router.push('/login')
-        }
-      )
+      API.logout({ token: localStorage.getItem('token') }).then((res) => {
+        console.log('logout')
+        this.$store.dispatch('logout')
+        this.$router.push('/login')
+      })
     },
     // handleRefresh() {
     //   switch (this.active) {
@@ -151,8 +120,6 @@ export default {
     //       break
     //   }
     // },
-   
-   
   },
 }
 </script>

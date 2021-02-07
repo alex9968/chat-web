@@ -1,16 +1,15 @@
 <template>
   <div class="list-container">
     <div class="header-bar">
-
-       <el-button title="创建会话" @click="handleAddButtonClick">
+      <!-- <el-button title="创建会话" @click="handleAddButtonClick">
         <i class="tim-icon-add"></i>
-      </el-button>
+      </el-button> -->
       <!-- <el-input size="mini" placeholder="输入UID查找" v-model="searchToUid" @change="handleAddButtonClick">
         <el-button  slot="append" title="添加会话" size="mini" @click="handleAddButtonClick">
           <i class="el-icon-search"/>
         </el-button>
       </el-input> -->
-     
+      <div>会话列表</div>
     </div>
 
     <div class="scroll-container">
@@ -65,14 +64,11 @@ export default {
         const forkConversation = []
         const normalConversation = []
         //排序过滤
-        Object.values(
-          state.conversation.conversationObject
-        ).forEach((v, i) => {
+        Object.values(state.conversation.conversationObject).forEach((v, i) => {
           if (state.conversation.forkList.indexOf(v.conversationID) !== -1) {
             v.isFork = true
             forkConversation.push(v)
           } else {
-            
             v.isFork = false
             normalConversation.push(v)
           }
@@ -113,7 +109,7 @@ export default {
     handleRefresh() {
       this.refreshConversation()()
     },
-     handleAddButtonClick() {
+    handleAddButtonClick() {
       this.showDialog = true
     },
     handleConfirm() {
@@ -122,16 +118,17 @@ export default {
           .dispatch('checkoutConversation', `C2C${this.userID}`)
           .then(() => {
             this.showDialog = false
-          }).catch(() => {
-          this.$store.commit('showMessage', {
-            message: '没有找到该用户',
-            type: 'warning'
           })
-        })
+          .catch(() => {
+            this.$store.commit('showMessage', {
+              message: '没有找到该用户',
+              type: 'warning',
+            })
+          })
       } else {
         this.$store.commit('showMessage', {
           message: '没有找到该用户',
-          type: 'warning'
+          type: 'warning',
         })
       }
       this.userID = ''
@@ -218,40 +215,40 @@ export default {
   display: flex;
   flex-direction: column; // -reverse
 
-  
+  .header-bar {
+    flex-shrink: 0;
+    height: 50px;
+    border-bottom: 1px solid $background-deep-dark;
+    padding: 10px 10px 10px 20px;
 
-  .header-bar{ 
-    flex-shrink 0
-    height 50px
-    border-bottom 1px solid $background-deep-dark
-    padding 10px 10px 10px 20px
-    button{
-      float right
+    button {
+      float: right;
       display: inline-block;
       cursor: pointer;
-      background $background-deep-dark
-      border: none
+      background: $background-deep-dark;
+      border: none;
       color: $font-dark;
       box-sizing: border-box;
-      transition: .3s;
+      transition: 0.3s;
       -moz-user-select: none;
       -webkit-user-select: none;
       -ms-user-select: none;
-      margin: 0 10px 0 0
-      padding 0
-      width 30px
-      height 30px
-      line-height 34px
+      margin: 0 10px 0 0;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      line-height: 34px;
       font-size: 24px;
       text-align: center;
       white-space: nowrap;
-      border-radius: 50%
-      outline 0
-      &:hover{
+      border-radius: 50%;
+      outline: 0;
+
+      &:hover {
         // background $light-primary
         // color $white
         transform: rotate(360deg);
-        color $light-primary
+        color: $light-primary;
       }
     }
   }
@@ -259,17 +256,17 @@ export default {
   .scroll-container {
     overflow-y: scroll;
     flex: 1;
-    position relative
+    position: relative;
   }
 
   .more {
-    position absolute
-    bottom: 0
-    left 0
-    border-top: 1px solid #d3d3d3
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #d3d3d3;
     // background lightgrey
-    width: 100%
-    display flex 
+    width: 100%;
+    display: flex;
     justify-content: center;
     font-size: 12px;
   }

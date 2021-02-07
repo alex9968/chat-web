@@ -42,7 +42,7 @@ const groupModules = {
       });
     },
     setCurrentGroup(state, groupID) {
-      console.log("setCurrentGroup(", groupID);
+      // console.log("setCurrentGroup(", groupID);
       state.groupList.forEach((v) => {
         if (v.ID === groupID) {
           state.currentGroup = v;
@@ -68,6 +68,7 @@ const groupModules = {
       API.getGroupList({ id: localStorage.getItem("userID") })
         .then(({ data: groupList }) => {
           context.dispatch("updateGroupList", groupList);
+          context.commit("setCurrentGroup", groupList[0].ID);
         })
         .catch((error) => {
           context.commit("showMessage", {

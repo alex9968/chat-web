@@ -1,6 +1,7 @@
 <template>
   <div class="list-container">
     <div class="header-bar">
+      <div/>
       <div>群组列表</div>
       <button title="创建群组" @click="showCreateGroupModel">
         <i class="tim-icon-add"></i>
@@ -123,7 +124,7 @@ export default {
     overflow-y scroll
   .header-bar
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-shrink 0
     height 50px
     border-bottom 1px solid $background-deep-dark

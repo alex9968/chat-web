@@ -1,6 +1,6 @@
 <template>
   <div @click="handleGroupClick" class="scroll-container">
-    <div class="group-item">
+    <div :class="{ 'group-item': true, 'active': group.ID ===  currentGroupID}">
       <avatar :src="group.Avatar" />
       <div class="group-name text-ellipsis">{{ group.Name }}</div>
     </div>
@@ -8,12 +8,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     group: {
       type: Object,
       required: true,
     },
+  },
+  computed: {
+    ...mapState({
+      currentGroupID: (state) => state.group.currentGroup.ID,
+    }),
   },
   data() {
     return {
@@ -47,6 +53,11 @@ export default {
 .scroll-container {
   overflow-y: scroll;
   flex: 1;
+
+  .active {
+    color: $white;
+    background-color: $background;
+  }
 
   .group-item {
     display: flex;

@@ -18,7 +18,7 @@ import UserProfile from './conversationProfile/user-profile.vue'
 export default {
   name: 'ConversationProfile',
   components: {
-    //GroupProfile,
+    GroupProfile,
     UserProfile
   },
   data() {
@@ -34,7 +34,7 @@ export default {
 
 <style lang="stylus" scoped>
 .conversation-profile-wrapper 
-  background-color $white
+  background-color #f5f5f5
   height 100%
   overflow-y scroll
 

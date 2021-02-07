@@ -1,23 +1,23 @@
 <template>
   <div class="current-friend">
-  
     <div class="top-part">
       <!-- 头像 -->
       <div class="avatar">
-        <el-avatar :size="100" :src="user.Avatar"></el-avatar>
+        <el-avatar :size="100" :src="friend.Avatar"></el-avatar>
       </div>
-      <div class="name">{{ user.Name }}</div>
-      <div class="btn">发送消息</div>
+      <div class="name">{{ friend.Name }}</div>
+      <div class="btn" @click="openConversation">发送消息</div>
     </div>
-
 
     <!-- 详细资料 -->
     <div class="bottom-part">
       <div v-for="(v, k) in renderKeys" :key="k" class="item">
         <div>
-          <span style="margin-right: 10px;color: grey;">{{ v.label }}:&nbsp;</span>
+          <span style="margin-right: 10px; color: grey"
+            >{{ v.label }}:&nbsp;</span
+          >
           <span style="margin-right: 5px">{{
-            v.transform ? v.transform(user[k]) : user[k]
+            v.transform ? v.transform(friend[k]) : friend[k]
           }}</span>
         </div>
       </div>
@@ -27,12 +27,10 @@
 
 <script>
 import { mapState } from 'vuex'
+import { activeTabName } from '@/assets/consts'
 export default {
   data() {
     return {
-      userID: 'im_account_17',
-      messageText: 'new message',
-      userInfo: {},
       renderKeys: {
         ID: {
           key: 'ID',
@@ -41,7 +39,7 @@ export default {
         Gender: {
           key: 'Gender',
           label: '性别',
-          transform: (v) => v == 1 ? "男": "女"
+          transform: (v) => (v == 1 ? '男' : '女'),
         },
         Age: {
           key: 'Age',
@@ -56,15 +54,16 @@ export default {
   },
   computed: {
     ...mapState({
-      user: (state) => state.friend.currentFriend,
+      friend: (state) => state.friend.currentFriend,
     }),
-  },
-  beforeMount() {
-    // this.getInitData()
-    //this.getFriendList()
   },
   watch: {},
   methods: {
+    openConversation() {
+      this.$store.commit('setActiveTab', activeTabName.CONVERSATION_LIST)
+      // 切换到当前会话
+      this.$store.dispatch('friend2Conversation', this.friend.ID)
+    },
     getInitData() {
       // this.API.getUserInfo(this.currentToUID)
       //   .then((res) => {
@@ -141,7 +140,7 @@ export default {
 
   .bottom-part {
     width: 60%;
-    margin: 0 auto
+    margin: 0 auto;
     padding: 40px 0;
     font-weight: 400;
 

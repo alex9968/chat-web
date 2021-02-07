@@ -1,21 +1,18 @@
-
-
-import TIM from '@/assets/tim'
+import TIM from "@/assets/tim";
 
 export const messageFormate = (messageList, conversationID) => {
-  const _messageList = []
+  const _messageList = [];
   messageList.forEach((v) => {
-    const messagePayload = {}
+    const messagePayload = {};
 
-
-//     ChatID: 1
-// Content: "helloroot3"
-// CreatedAt: "2021-02-03T15:00:17+08:00"
-// DeletedAt: null
-// ID: 3
-// Type: "TIMTextElem"
-// UpdatedAt: "2021-02-03T15:00:17+08:00"
-// UserID: 1
+    //     ChatID: 1
+    // Content: "helloroot3"
+    // CreatedAt: "2021-02-03T15:00:17+08:00"
+    // DeletedAt: null
+    // ID: 3
+    // Type: "TIMTextElem"
+    // UpdatedAt: "2021-02-03T15:00:17+08:00"
+    // UserID: 1
 
     //解析图片
     // if (type === TIM.TYPES.MSG_IMAGE) {
@@ -30,7 +27,7 @@ export const messageFormate = (messageList, conversationID) => {
     //解析文本
     if (v.Type === TIM.TYPES.MSG_TEXT) {
       //console.log('message type', type)
-      messagePayload['text'] = v.Content
+      messagePayload["text"] = v.Content;
     }
     //解析声音
     // if (type === TIM.TYPES.MSG_SOUND) {
@@ -43,18 +40,18 @@ export const messageFormate = (messageList, conversationID) => {
     //   messagePayload["size"] = messageContent.Size;
     //   // second	Number	音频时长，单位：秒 //   messagePayload["second"] = messageContent.Second;
     // }
-    const isMine = localStorage.getItem('userID') === v.UserID + ''
+    const isMine = localStorage.getItem("userID") === v.UserID + "";
     // console.log("mine",localStorage.getItem('userID'), v.UserID )
 
     _messageList.push({
       // ID: v.,
-      avatar: '',
+      avatar: "",
       clientSequence: 49812,
       conversationID: v.roomId,
       conversationSubType: undefined,
-      conversationType: 'C2C',
+      conversationType: "C2C",
       //in 为收到的消息, out 为自己发出的消息
-      flow: isMine ? 'in' : 'out',
+      flow: isMine ? "in" : "out",
       from: v.UserId,
       // isPeerRead: v.read === 1,
       isPlaceMessage: 0,
@@ -62,7 +59,7 @@ export const messageFormate = (messageList, conversationID) => {
       isResend: false,
       isRevoked: false,
       isSystemMessage: false,
-      nick: '',
+      nick: "",
       payload: messagePayload,
       // isFork: v.star_at,
       // priority: 'Normal',
@@ -73,15 +70,15 @@ export const messageFormate = (messageList, conversationID) => {
       // to: v.toUserId,
       type: v.Type,
       // userInfo: v.userInfo
-    })
-  })
-  return _messageList
+    });
+  });
+  return _messageList;
 };
 
 export const conversationFormate = (conversationList) => {
-  const conversationObject = {}
+  const conversationObject = {};
   conversationList.forEach((v) => {
-    const ID = `${v.Sort}${v.ID}`
+    const ID = `${v.Sort}${v.ID}`;
     conversationObject[ID] = {
       conversationID: ID,
       lastMessage: v.LastMessage,
@@ -90,23 +87,35 @@ export const conversationFormate = (conversationList) => {
       type: v.Sort,
       unreadCount: 0,
       userInfo: v.userInfo,
-      userProfile: {
+      userProfile: {},
+      groupProfile: {},
+    };
+
+    if (v.Sort === "C2C" && v.UserProfile) {
+      conversationObject[ID]["userProfile"] = {
         userID: v.UserProfile.ID,
         nick: v.UserProfile.Name,
         avatar: v.UserProfile.Avatar,
-      },
-      // groupProfile: v.groupProfile && {
-      //   groupID: v.GroupProfile.ID,
-      //   nick: v.GroupProfile.Name,
-      //   avatar: v.GroupProfile.Avatar
-      // }
+        gender: v.UserProfile.Gender,
+        age: v.UserProfile.Age || '未知',
+        home: v.UserProfile.Profile.Home || '未知',
+      };
+    } 
+    
+    if (v.Sort === "GROUP" && v.GroupProfile)  {
+      conversationObject[ID]["groupProfile"] = {
+        groupID: v.GroupProfile.ID,
+        nick: v.GroupProfile.Name,
+        avatar: v.GroupProfile.Avatar,
+        intro: v.GroupProfile.Intro
+      };
     }
-  })
-  return conversationObject
-}
+  });
+  return conversationObject;
+};
 
 export const conversationIDFormate = (conversationID) => {
-  var reg = /(\d+)$/g
-  var result = reg.exec(conversationID)
-  return result[0]
-}
+  var reg = /(\d+)$/g;
+  var result = reg.exec(conversationID);
+  return result[0];
+};

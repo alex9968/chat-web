@@ -7,7 +7,7 @@
         <div class="content">{{ groupProfile.groupID }}</div>
       </div>
       <div class="info-item">
-        <div class="label">
+        <!-- <div class="label">
           群头像
           <i
               class="el-icon-edit"
@@ -18,7 +18,7 @@
           "
               style="cursor:pointer; font-size:16px;"
           />
-        </div>
+        </div> -->
         <div class="content" v-if="!showEditFaceUrl">
           <avatar :src="groupProfile.avatar"/>
 
