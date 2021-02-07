@@ -107,7 +107,8 @@ export const conversationFormate = (conversationList) => {
         groupID: v.GroupProfile.ID,
         nick: v.GroupProfile.Name,
         avatar: v.GroupProfile.Avatar,
-        intro: v.GroupProfile.Intro
+        intro: v.GroupProfile.Intro,
+        userID: v.GroupProfile.UserID
       };
     }
   });

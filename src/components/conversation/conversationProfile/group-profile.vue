@@ -1,180 +1,175 @@
 <template>
-  <div>
+  <div class="group-profile">
+    <div class="item">
+      <span :title="groupProfile.nick">
+        群名<i class="el-icon-user-solid"></i>：{{ groupProfile.nick }}
+      </span>
+    </div>
+    <div class="item">
+      简介<i class="el-icon-chat-dot-square"></i>：{{ groupProfile.intro }}
+    </div>
     <group-member-list :groupProfile="groupProfile" />
-    <div class="group-info-content">
+
+    <div v-if="false" class="group-info-content">
       <div class="info-item">
         <div class="label">群ID</div>
         <div class="content">{{ groupProfile.groupID }}</div>
       </div>
       <div class="info-item">
-        <!-- <div class="label">
+        <div class="label">
           群头像
           <i
-              class="el-icon-edit"
-              v-if="editable"
-              @click="
-            showEditFaceUrl = true
-            inputFocus('editFaceUrl')
-          "
-              style="cursor:pointer; font-size:16px;"
+            class="el-icon-edit"
+            v-if="editable"
+            @click="
+              showEditFaceUrl = true
+              inputFocus('editFaceUrl')
+            "
+            style="cursor: pointer; font-size: 16px"
           />
-        </div> -->
+        </div>
         <div class="content" v-if="!showEditFaceUrl">
-          <avatar :src="groupProfile.avatar"/>
-
+          <avatar :src="groupProfile.avatar" />
         </div>
         <el-input
-            ref="editFaceUrl"
-            v-else
-            autofocus
-            v-model="avatar"
-            size="mini"
-            @blur="showEditFaceUrl = false"
-            @keydown.enter.native="editFaceUrl"
+          ref="editFaceUrl"
+          v-else
+          autofocus
+          v-model="avatar"
+          size="mini"
+          @blur="showEditFaceUrl = false"
+          @keydown.enter.native="editFaceUrl"
         />
       </div>
 
       <div class="info-item">
         <div class="label">群类型</div>
-        <div class="content">{{ groupType}}</div>
+        <div class="content">{{ groupType }}</div>
       </div>
       <div class="info-item">
         <div class="label">
           群名称
           <i
-              class="el-icon-edit"
-              v-if="editable"
-              @click="
-            showEditName = true
-            inputFocus('editName')
-          "
-              style="cursor:pointer; font-size:16px;"
+            class="el-icon-edit"
+            v-if="editable"
+            @click="
+              showEditName = true
+              inputFocus('editName')
+            "
+            style="cursor: pointer; font-size: 16px"
           />
         </div>
 
-        <div class="content text-ellipsis" :title="groupProfile.name" v-if="!showEditName">
+        <div
+          class="content text-ellipsis"
+          :title="groupProfile.name"
+          v-if="!showEditName"
+        >
           {{ groupProfile.name || '暂无' }}
         </div>
         <el-input
-            ref="editName"
-            v-else
-            autofocus
-            v-model="name"
-            size="mini"
-            @blur="showEditName = false"
-            @keydown.enter.native="editName"
+          ref="editName"
+          v-else
+          autofocus
+          v-model="name"
+          size="mini"
+          @blur="showEditName = false"
+          @keydown.enter.native="editName"
         />
       </div>
       <div class="info-item">
         <div class="label">
           群介绍
           <i
-              class="el-icon-edit"
-              v-if="editable"
-              @click="
-            showEditIntroduction = true
-            inputFocus('editIntroduction')
-          "
-              style="cursor:pointer; font-size:16px;"
+            class="el-icon-edit"
+            v-if="editable"
+            @click="
+              showEditIntroduction = true
+              inputFocus('editIntroduction')
+            "
+            style="cursor: pointer; font-size: 16px"
           />
         </div>
-        <div class="long-content" :title="groupProfile.introduction" v-if="!showEditIntroduction">
+        <div
+          class="long-content"
+          :title="groupProfile.introduction"
+          v-if="!showEditIntroduction"
+        >
           {{ groupProfile.introduction || '暂无' }}
         </div>
         <el-input
-            ref="editIntroduction"
-            v-else
-            autofocus
-            v-model="introduction"
-            size="mini"
-            @blur="showEditIntroduction = false"
-            @keydown.enter.native="editIntroduction"
+          ref="editIntroduction"
+          v-else
+          autofocus
+          v-model="introduction"
+          size="mini"
+          @blur="showEditIntroduction = false"
+          @keydown.enter.native="editIntroduction"
         />
       </div>
-      <div class="info-item">
-        <div class="label">
-          群公告
-          <i
-              class="el-icon-edit"
-              v-if="editable"
-              @click="
-            showEditNotification = true
-            inputFocus('editNotification')
-          "
-              style="cursor:pointer; font-size:16px;"
-          />
-        </div>
-        <div class="long-content" :title="groupProfile.notification" v-if="!showEditNotification">
-          {{ groupProfile.notification || '暂无' }}
-        </div>
 
-        <el-input
-            ref="editNotification"
-            v-else
-            autofocus
-            v-model="notification"
-            size="mini"
-            @blur="showEditNotification = false"
-            @keydown.enter.native="editNotification"
-        />
-      </div>
-      <div class="info-item" v-if="groupProfile.type !== 'Private'">
+      <!-- <div class="info-item" v-if="groupProfile.type !== 'Private'">
         <div class="label">
           申请加群方式
           <i
-              class="el-icon-edit"
-              v-if="editable"
-              @click="
-            showEditJoinOption = true
-            inputFocus('editJoinOption')
-          "
-              style="cursor:pointer; font-size:16px;"
+            class="el-icon-edit"
+            v-if="editable"
+            @click="
+              showEditJoinOption = true
+              inputFocus('editJoinOption')
+            "
+            style="cursor: pointer; font-size: 16px"
           />
         </div>
         <div class="content" v-show="!showEditJoinOption">
           {{ joinOptionMap[groupProfile.joinOption] }}
         </div>
         <el-select
-            ref="editJoinOption"
-            v-model="joinOption"
-            v-show="showEditJoinOption"
-            size="mini"
-            automatic-dropdown
-            @blur="showEditJoinOption = false"
-            @change="editJoinOption"
+          ref="editJoinOption"
+          v-model="joinOption"
+          v-show="showEditJoinOption"
+          size="mini"
+          automatic-dropdown
+          @blur="showEditJoinOption = false"
+          @change="editJoinOption"
         >
           <el-option label="自由加入" value="FreeAccess"></el-option>
           <el-option label="需要验证" value="NeedPermission"></el-option>
           <el-option label="禁止加群" value="DisableApply"></el-option>
         </el-select>
-      </div>
-      <div class="info-item">
+      </div> -->
+      <!-- <div class="info-item">
         <div class="label">
           群消息提示类型
           <i
-              class="el-icon-edit"
-              v-if="editable"
-              @click="
-            showEditMessageRemindType = true
-            inputFocus('editMessageRemindType')
-          "
-              style="cursor:pointer; font-size:16px;"
+            class="el-icon-edit"
+            v-if="editable"
+            @click="
+              showEditMessageRemindType = true
+              inputFocus('editMessageRemindType')
+            "
+            style="cursor: pointer; font-size: 16px"
           />
         </div>
         <div class="content" v-show="!showEditMessageRemindType">
-          {{ messageRemindTypeMap[this.groupProfile.selfInfo.messageRemindType] }}
+          {{
+            messageRemindTypeMap[this.groupProfile.selfInfo.messageRemindType]
+          }}
         </div>
         <el-select
-            ref="editMessageRemindType"
-            v-show="showEditMessageRemindType"
-            v-model="messageRemindType"
-            size="mini"
-            automatic-dropdown
-            @change="editMessageRemindType"
-            @blur="showEditMessageRemindType = false"
+          ref="editMessageRemindType"
+          v-show="showEditMessageRemindType"
+          v-model="messageRemindType"
+          size="mini"
+          automatic-dropdown
+          @change="editMessageRemindType"
+          @blur="showEditMessageRemindType = false"
         >
           <el-option label="接收消息并提示" value="AcceptAndNotify"></el-option>
-          <el-option label="接收消息但不提示" value="AcceptNotNotify"></el-option>
+          <el-option
+            label="接收消息但不提示"
+            value="AcceptNotNotify"
+          ></el-option>
           <el-option label="屏蔽消息" value="Discard"></el-option>
         </el-select>
       </div>
@@ -187,7 +182,7 @@
               showEditNameCard = true
               inputFocus('editNameCard')
             "
-            style="cursor:pointer; font-size:16px;"
+            style="cursor: pointer; font-size: 16px"
           />
         </div>
         <div class="content cursor-pointer" v-if="!showEditNameCard">
@@ -204,30 +199,37 @@
         />
       </div>
       <div class="info-item">
-        <div class="label" :class="{'active' : active}">全体禁言</div>
+        <div class="label" :class="{ active: active }">全体禁言</div>
         <el-switch
-                v-model="muteAllMembers"
-                active-color="#409eff"
-                inactive-color="#dcdfe6"
-                @change='changeMuteStatus'>
+          v-model="muteAllMembers"
+          active-color="#409eff"
+          inactive-color="#dcdfe6"
+          @change="changeMuteStatus"
+        >
         </el-switch>
       </div>
       <div v-if="isOwner">
-        <el-button type="text" @click="showChangeGroupOwner = true">转让群组</el-button>
+        <el-button type="text" @click="showChangeGroupOwner = true"
+          >转让群组</el-button
+        >
         <el-input
-            v-if="showChangeGroupOwner"
-            v-model="newOwnerUserID"
-            placeholder="新群主的userID"
-            size="mini"
-            @blur="showChangeGroupOwner = false"
-            @keydown.enter.native="changeOwner"
+          v-if="showChangeGroupOwner"
+          v-model="newOwnerUserID"
+          placeholder="新群主的userID"
+          size="mini"
+          @blur="showChangeGroupOwner = false"
+          @keydown.enter.native="changeOwner"
         />
-      </div>
+      </div> -->
       <div>
-        <el-button type="text" style="color:red;" @click="quitGroup">退出群组</el-button>
+        <el-button type="text" style="color: red" @click="quitGroup"
+          >退出群组</el-button
+        >
       </div>
       <div v-if="showDissmissGroup">
-        <el-button type="text" style="color:red;" @click="dismissGroup">解散群组</el-button>
+        <el-button type="text" style="color: red" @click="dismissGroup"
+          >解散群组</el-button
+        >
       </div>
     </div>
   </div>
@@ -266,47 +268,52 @@ export default {
       messageRemindTypeMap: {
         AcceptAndNotify: '接收消息并提示',
         AcceptNotNotify: '接收消息但不提示',
-        Discard: '屏蔽消息'
+        Discard: '屏蔽消息',
       },
       joinOptionMap: {
         FreeAccess: '自由加入',
         NeedPermission: '需要验证',
-        DisableApply: '禁止加群'
+        DisableApply: '禁止加群',
       },
-      active:false
+      active: false,
     }
   },
   computed: {
     editable() {
       return (
         this.groupProfile.type === this.TIM.TYPES.GRP_WORK ||
-        [this.TIM.TYPES.GRP_MBR_ROLE_OWNER, this.TIM.TYPES.GRP_MBR_ROLE_ADMIN].includes(this.groupProfile.selfInfo.role)
+        [
+          this.TIM.TYPES.GRP_MBR_ROLE_OWNER,
+          this.TIM.TYPES.GRP_MBR_ROLE_ADMIN,
+        ].includes(this.groupProfile.selfInfo.role)
       )
     },
     isOwner() {
-      return this.groupProfile.selfInfo.role === this.TIM.TYPES.GRP_MBR_ROLE_OWNER
+      return this.groupProfile.userID == localStorage.getItem('userID')
     },
     isAdmin() {
-      return this.groupProfile.selfInfo.role === this.TIM.TYPES.GRP_MBR_ROLE_ADMIN
+      return (
+        this.groupProfile.selfInfo.role === this.TIM.TYPES.GRP_MBR_ROLE_ADMIN
+      )
     },
     showDissmissGroup() {
       // 好友工作群不能解散
       return this.isOwner && this.groupProfile.type !== this.TIM.TYPES.GRP_WORK
     },
-    groupType() {
-      switch (this.groupProfile.type) {
-        case this.TIM.TYPES.GRP_WORK:
-          return '好友工作群（Work）'
-        case this.TIM.TYPES.GRP_PUBLIC:
-          return '陌生人社交群（Public）'
-        case this.TIM.TYPES.GRP_CHATROOM:
-          return '临时会议群（Meeting）'
-        case this.TIM.TYPES.GRP_AVCHATROOM:
-          return '直播群（AVChatRoom）'
-        default:
-          return ''
-      }
-    }
+    // groupType() {
+    //   switch (this.groupProfile.type) {
+    //     case this.TIM.TYPES.GRP_WORK:
+    //       return '好友工作群（Work）'
+    //     case this.TIM.TYPES.GRP_PUBLIC:
+    //       return '陌生人社交群（Public）'
+    //     case this.TIM.TYPES.GRP_CHATROOM:
+    //       return '临时会议群（Meeting）'
+    //     case this.TIM.TYPES.GRP_AVCHATROOM:
+    //       return '直播群（AVChatRoom）'
+    //     default:
+    //       return ''
+    //   }
+    // },
   },
   watch: {
     groupProfile(groupProfile) {
@@ -327,7 +334,7 @@ export default {
         nameCard: groupProfile.selfInfo.nameCard || '',
         muteAllMembers: groupProfile.muteAllMembers,
       })
-    }
+    },
   },
   methods: {
     inputFocus(ref) {
@@ -339,15 +346,15 @@ export default {
       this.tim
         .updateGroupProfile({
           groupID: this.groupProfile.groupID,
-          name: this.name.trim()
+          name: this.name.trim(),
         })
         .then(() => {
           this.showEditName = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
@@ -355,15 +362,15 @@ export default {
       this.tim
         .updateGroupProfile({
           groupID: this.groupProfile.groupID,
-          avatar: this.avatar.trim()
+          avatar: this.avatar.trim(),
         })
         .then(() => {
           this.showEditFaceUrl = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
@@ -371,34 +378,34 @@ export default {
       if (this.isOwner || this.isAdmin) {
         this.tim
           .updateGroupProfile({
-          muteAllMembers: this.muteAllMembers,
-          groupID: this.groupProfile.groupID
-        })
-          .then(imResponse => {
-          this.muteAllMembers = imResponse.data.group.muteAllMembers
-          if (this.muteAllMembers) {
-            this.active = true
-            this.$store.commit('showMessage', {
-              message: '全体禁言'
-            })
-          } else {
-            this.active = false
-            this.$store.commit('showMessage', {
-              message: '取消全体禁言'
-            })
-          }
-        })
-          .catch(error => {
-          this.$store.commit('showMessage', {
-            type: 'error',
-            message: error.message
+            muteAllMembers: this.muteAllMembers,
+            groupID: this.groupProfile.groupID,
           })
-        })
+          .then((imResponse) => {
+            this.muteAllMembers = imResponse.data.group.muteAllMembers
+            if (this.muteAllMembers) {
+              this.active = true
+              this.$store.commit('showMessage', {
+                message: '全体禁言',
+              })
+            } else {
+              this.active = false
+              this.$store.commit('showMessage', {
+                message: '取消全体禁言',
+              })
+            }
+          })
+          .catch((error) => {
+            this.$store.commit('showMessage', {
+              type: 'error',
+              message: error.message,
+            })
+          })
       } else {
         this.muteAllMembers = this.groupProfile.muteAllMembers
         this.$store.commit('showMessage', {
           type: 'error',
-          message: '普通群成员不能对全体禁言'
+          message: '普通群成员不能对全体禁言',
         })
       }
     },
@@ -406,15 +413,15 @@ export default {
       this.tim
         .updateGroupProfile({
           groupID: this.groupProfile.groupID,
-          introduction: this.introduction.trim()
+          introduction: this.introduction.trim(),
         })
         .then(() => {
           this.showEditIntroduction = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
@@ -422,15 +429,15 @@ export default {
       this.tim
         .updateGroupProfile({
           groupID: this.groupProfile.groupID,
-          notification: this.notification.trim()
+          notification: this.notification.trim(),
         })
         .then(() => {
           this.showEditNotification = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
@@ -438,15 +445,15 @@ export default {
       this.tim
         .updateGroupProfile({
           groupID: this.groupProfile.groupID,
-          joinOption: this.joinOption
+          joinOption: this.joinOption,
         })
         .then(() => {
           this.showEditJoinOption = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
@@ -454,52 +461,58 @@ export default {
       this.tim
         .changeGroupOwner({
           groupID: this.groupProfile.groupID,
-          newOwnerID: this.newOwnerUserID
+          newOwnerID: this.newOwnerUserID,
         })
         .then(() => {
           this.showChangeGroupOwner = false
           this.$store.commit('showMessage', {
-            message: `转让群主成功，新群主ID：${this.newOwnerUserID}`
+            message: `转让群主成功，新群主ID：${this.newOwnerUserID}`,
           })
           this.newOwnerUserID = ''
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
     quitGroup() {
-      this.tim.quitGroup(this.groupProfile.groupID).then(({ data: { groupID } }) => {
-        this.$store.commit('showMessage', {
-          message: '退群成功'
+      this.tim
+        .quitGroup(this.groupProfile.groupID)
+        .then(({ data: { groupID } }) => {
+          this.$store.commit('showMessage', {
+            message: '退群成功',
+          })
+          if (groupID === this.groupProfile.groupID) {
+            this.$store.commit('resetCurrentConversation')
+          }
         })
-        if (groupID === this.groupProfile.groupID) {
-          this.$store.commit('resetCurrentConversation')
-        }
-      })
-      .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
     dismissGroup() {
-      this.tim.dismissGroup(this.groupProfile.groupID).then(({ data: { groupID } }) => {
-        this.$store.commit('showMessage', {
-          message: `群：${this.groupProfile.name || this.groupProfile.groupID}解散成功！`,
-          type: 'success'
+      this.tim
+        .dismissGroup(this.groupProfile.groupID)
+        .then(({ data: { groupID } }) => {
+          this.$store.commit('showMessage', {
+            message: `群：${
+              this.groupProfile.name || this.groupProfile.groupID
+            }解散成功！`,
+            type: 'success',
+          })
+          if (groupID === this.groupProfile.groupID) {
+            this.$store.commit('resetCurrentConversation')
+          }
         })
-        if (groupID === this.groupProfile.groupID) {
-          this.$store.commit('resetCurrentConversation')
-        }
-      })
-      .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
@@ -507,15 +520,15 @@ export default {
       this.tim
         .setMessageRemindType({
           groupID: this.groupProfile.groupID,
-          messageRemindType: this.messageRemindType
+          messageRemindType: this.messageRemindType,
         })
         .then(() => {
           this.showEditMessageRemindType = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
     },
@@ -523,66 +536,89 @@ export default {
       if (this.nameCard.trim().length === 0) {
         this.$store.commit('showMessage', {
           message: '不能设置空的群名片',
-          type: 'warning'
+          type: 'warning',
         })
         return
       }
       this.tim
         .setGroupMemberNameCard({
           groupID: this.groupProfile.groupID,
-          nameCard: this.nameCard.trim()
+          nameCard: this.nameCard.trim(),
         })
         .then(() => {
           this.showEditNameCard = false
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('showMessage', {
             type: 'error',
-            message: error.message
+            message: error.message,
           })
         })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="stylus">
-.group-info-content
-  padding 10px 10px
-  .avatar
-    width 40px
-    height 40px
-    border-radius 50%
-.info-item {
-  margin-bottom: 12px;
+.group-profile {
+  width: 100%;
+  text-align: left;
+  padding: 0 10px;
 
-  .label {
+  .group-info-content {
+    padding: 10px 10px;
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+  }
+
+  .item {
+    width: 100%;
+    color: grey;
     font-size: 14px;
-    color: $secondary;
+    line-height: 30px;
+    padding-top: 10px;
   }
-  .active {
-    color: $black
+
+  .info-item {
+    margin-bottom: 12px;
+
+    .label {
+      font-size: 14px;
+      color: $secondary;
+    }
+
+    .active {
+      color: $black;
+    }
+
+    .content {
+      color: $background;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+
+    .long-content {
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
   }
-  .content {
-    color: $background;
-    word-wrap: break-word;
-    word-break: break-all;
+
+  .cursor-pointer {
+    cursor: pointer;
   }
-  .long-content {
-    word-wrap:break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+
+  /* 设置滚动条的样式 */
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
   }
-}
-.cursor-pointer {
-  cursor: pointer;
-}
-/* 设置滚动条的样式 */
-::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
 }
 </style>

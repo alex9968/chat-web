@@ -103,7 +103,7 @@ export default {
 .profile-user
   width 100%
   text-align left
-  padding 0 20px
+  padding 0 10px
   .item
     width: 100%
     color grey
