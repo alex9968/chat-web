@@ -51,7 +51,7 @@ export const messageFormate = (messageList, conversationID) => {
       conversationSubType: undefined,
       conversationType: "C2C",
       //in 为收到的消息, out 为自己发出的消息
-      flow: isMine ? "in" : "out",
+      flow: isMine ? "out" : "in",
       from: v.UserId,
       // isPeerRead: v.read === 1,
       isPlaceMessage: 0,

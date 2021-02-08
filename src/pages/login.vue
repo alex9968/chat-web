@@ -129,7 +129,6 @@ export default {
           this.loading = false
           this.$store.commit('toggleIsLogin', true)
           this.$store.commit('startComputeCurrent')
-          this.$store.commit('setUserInfo', res.data.userInfo)
            
           this.$nextTick(() => {
             // 以服务的方式调用的 Loading 需要异步关闭
@@ -137,6 +136,7 @@ export default {
           })
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('userID', res.data.userInfo.ID)
+          localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
           this.$router.push('/home')
           this.$store.commit('showMessage', {
             type: 'success',

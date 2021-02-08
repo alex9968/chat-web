@@ -270,12 +270,12 @@ export default {
       const userID = parseInt(localStorage.getItem("userID"))
       console.log("232", this.currentConversation)
       const messageReq = {
-        option: 3, //req type
+        option: TIM.TYPES.WS_REQ_MSG, //req type
         message: { 
-          fromUserID: userID,
-          toUserID: this.currentConversation.id, 
-          content:    this.messageContent,
-          type: TIM.TYPES.MSG_TEXT
+          ChatID: this.currentConversation.id,
+          UserID: userID,
+          Content:  this.messageContent,
+          Type: TIM.TYPES.MSG_TEXT
         },
       }
 

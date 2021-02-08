@@ -118,7 +118,9 @@ export default {
     activeTab(cur) {},
   },
   mounted() {
-    // this.addHistoryFriendList()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    this.$store.commit('setUserInfo', userInfo)
+
     // 初始化监听器
     // this.initListener()
     this.initWebSocket()
@@ -231,10 +233,11 @@ export default {
       this.API.getChatList({ userID: localStorage.getItem('userID') }).then(
         (res) => {
           console.log('getRoomInfo', res)
-          const firstConversationID  = res.data.list[0].Sort + res.data.list[0].ID
+          const firstConversationID =
+            res.data.list[0].Sort + res.data.list[0].ID
           this.$store.commit('initConversationList', res.data.list)
           //自动选择第一个会话
-          this.$store.dispatch( 'checkoutConversation', firstConversationID)
+          this.$store.dispatch('checkoutConversation', firstConversationID)
           this.$store.dispatch('getFriendList')
           this.$store.dispatch('getGroupList')
         }

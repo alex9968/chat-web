@@ -1,5 +1,8 @@
 export default {
   TYPES: {
+    WS_REQ_LOGIN: 1,
+    WS_REQ_LOGOUT: 2,
+    WS_REQ_MSG: 3,
     MSG_TEXT: "TIMTextElem",
     MSG_IMAGE: "TIMImageElem",
     MSG_SOUND: "TIMSoundElem",
