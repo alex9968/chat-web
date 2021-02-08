@@ -227,7 +227,7 @@ export default {
       return false
     },
     avatar() {
-      console.log("self", this.currentConversation)
+      console.log("message avatar", this.message)
       if (this.currentConversation.type === 'C2C') {
         return this.isMine
           ? this.currentUserProfile.avatar
@@ -235,7 +235,7 @@ export default {
       } else if (this.currentConversation.type === 'GROUP') { 
          return this.isMine
           ? this.currentUserProfile.avatar
-          : this.currentConversation.groupProfile.avatar
+          : this.message.Avatar
       } else {
         return ''
       }

@@ -1,7 +1,7 @@
 <template>
-  <div class="header-bar">
+  <div class="layout-header-bar">
     <div class="header-bar-left">
-      <div class="title">聊天系统</div>
+      <div class="title">IM网页聊天系统</div>
     </div>
     <!-- 右边 -->
     <div v-if="false">
@@ -46,15 +46,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.header-bar {
+.layout-header-bar {
   height: 6vh;
   line-height: 6vh;
   color: $white;
   display: flex;
   width: 100%;
   justify-content: space-between;
-  // border-bottom: 1px solid lightgrey;
-  // box-shadow: 0 11px 20px 0 rgba(0, 0, 0, 0.3);
+  
   align-items: center;
   overflow: hidden;
 
@@ -69,9 +68,9 @@ export default {
     margin-left: 10px;
     height: 100%;
     vertical-align: center;
-    // border-bottom: 2px solid green;
     font-size: 24px;
     color: green;
+    border-bottom: 1px solid lightgrey;
   }
 
   .total {

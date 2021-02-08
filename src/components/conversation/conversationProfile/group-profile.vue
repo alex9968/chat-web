@@ -263,7 +263,7 @@ export default {
       joinOption: this.groupProfile.joinOption,
       newOwnerUserID: '',
       messageRemindType: this.groupProfile.selfInfo.messageRemindType,
-      nameCard: this.groupProfile.selfInfo.nameCard || '',
+      // nameCard: this.groupProfile.selfInfo.nameCard || '',
       muteAllMembers: this.groupProfile.muteAllMembers,
       messageRemindTypeMap: {
         AcceptAndNotify: '接收消息并提示',

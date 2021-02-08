@@ -69,7 +69,7 @@ export const messageFormate = (messageList, conversationID) => {
       time: v.CreatedAt,
       // to: v.toUserId,
       type: v.Type,
-      // userInfo: v.userInfo
+      userInfo: v.UserInfo
     });
   });
   return _messageList;
