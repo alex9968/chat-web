@@ -270,16 +270,18 @@ export default {
       const userID = parseInt(localStorage.getItem("userID"))
       console.log("232", this.currentConversation)
       const messageReq = {
-        option: TIM.TYPES.WS_REQ_MSG, //req type
-        message: { 
-          ChatID: this.currentConversation.id,
-          UserID: userID,
-          Content:  this.messageContent,
-          Type: TIM.TYPES.MSG_TEXT
-        },
+          chatID: this.currentConversation.id,
+          userID: userID,
+          content:  this.messageContent,
+          type: TIM.TYPES.MSG_TEXT
       }
+      this.API.sendMessage(messageReq).then(res => {
+        if(res.code == 200){
+          console.log("send msg ok200")
+        }
+      })
 
-      this.ws.send(JSON.stringify(messageReq))
+      // this.ws.send(JSON.stringify(messageReq))
         this.$store.commit('sendMessage', '')
       //  console.log("sendMessage",res)
       this.$bus.$emit('scroll-bottom')

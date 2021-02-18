@@ -22,9 +22,14 @@ const getBaseURL = () => {
 // console.log('url',getBaseURL())
 let token;
 function getToken() {
-  if (token) return token;
+  // if (token) return token;
 
-  return (token = parseQueryString().token);
+  // return (token = parseQueryString().token);
+  const token  = localStorage.getItem('token')
+  if (token  != undefined ){
+    return token
+  }
+  return ""
 }
 
 const http = new Axios({
@@ -34,7 +39,7 @@ const http = new Axios({
     headers: {
       Accept: "*/*",
       // "Content-Type": "application/json",
-      authorization: getToken(),
+      Authorization: getToken(),
     },
   },
   beforeRequset: (url) => {

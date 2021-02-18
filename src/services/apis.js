@@ -38,7 +38,7 @@ export default {
 
   sendMessage: {
     method: 'post',
-    url: '/api/v1/message',
+    url: '/api/v1/messages',
   },
 
   /* -------- 获取联系人列表 -------- */

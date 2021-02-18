@@ -77,12 +77,12 @@ export default {
       return '你撤回了一条消息'
     },
     messageReadByPeer() {
-      if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && this.message.isPeerRead) {
-        return '已读'
-      }
-      if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && !this.message.isPeerRead) {
-        return '未读'
-      }
+      // if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && this.message.isPeerRead) {
+      //   return '已读'
+      // }
+      // if (this.message.conversationType === this.TIM.TYPES.CONV_C2C && !this.message.isPeerRead) {
+      //   return '未读'
+      // }
       return ''
     },
     isEdit() {

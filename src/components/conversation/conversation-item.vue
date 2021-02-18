@@ -50,7 +50,7 @@
         </div>
         <div class="row-2">
           <div class="summary">
-            <div v-if="conversation.lastMessage" class="text-ellipsis">
+            <div v-if="conversation.lastMessage.ChatID" class="text-ellipsis">
               <span
                 class="text"
                 :title="conversation.lastMessage.messageForShow"
@@ -64,20 +64,20 @@
           </div>
         </div>
       </div>
-      <div @click="forkConversation($event)">
+      <!-- <div @click="forkConversation($event)">
         <span v-if="!conversation.isFork" class="fork-text">收藏</span>
         <i
           v-else
           :class="{ 'el-icon-star-on': conversation.isFork, fork: true }"
         ></i>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-import { isToday, getDate, getTime } from '../../utils/date'
+import dayjs from 'dayjs'
 export default {
   name: 'conversation-item',
   props: ['conversation'],
@@ -99,17 +99,8 @@ export default {
       )
     },
     date() {
-      if (
-        !this.conversation.lastMessage ||
-        !this.conversation.lastMessage.lastTime
-      ) {
-        return ''
-      }
-      const date = new Date(this.conversation.lastMessage.lastTime * 1000)
-      if (isToday(date)) {
-        return getTime(date)
-      }
-      return getDate(date)
+      // console.log("date", )
+        return dayjs(this.conversation.lastMessage.CreatedAt).format('MM-DD HH:mm');
     },
     avatar: function () {
       if (
@@ -140,19 +131,19 @@ export default {
       return ''
     },
     messageForShow() {
-      if (this.conversation.lastMessage.isRevoked) {
-        if (
-          this.conversation.lastMessage.fromAccount ===
-          this.currentUserProfile.userID
-        ) {
-          return '你撤回了一条消息'
-        }
-        if (this.conversation.type === this.TIM.TYPES.CONV_C2C) {
-          return '对方撤回了一条消息'
-        }
-        return `${this.conversation.lastMessage.fromAccount}撤回了一条消息`
-      }
-      return this.conversation.lastMessage.messageForShow
+      // if (this.conversation.lastMessage.isRevoked) {
+      //   if (
+      //     this.conversation.lastMessage.fromAccount ===
+      //     this.currentUserProfile.userID
+      //   ) {
+      //     return '你撤回了一条消息'
+      //   }
+      //   if (this.conversation.type === this.TIM.TYPES.CONV_C2C) {
+      //     return '对方撤回了一条消息'
+      //   }
+      //   return `${this.conversation.lastMessage.fromAccount}撤回了一条消息`
+      // }
+      return this.conversation.lastMessage.Content
     },
     ...mapState({
       currentConversation: (state) => state.conversation.currentConversation,

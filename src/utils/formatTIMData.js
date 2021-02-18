@@ -85,10 +85,11 @@ export const conversationFormate = (conversationList) => {
       sort: v.Sort,
       id: v.ID,
       type: v.Sort,
-      unreadCount: 0,
+      unreadCount: 1,
       userInfo: v.userInfo,
       userProfile: {},
       groupProfile: {},
+      time: v.CreatedAt,
     };
 
     if (v.Sort === "C2C" && v.UserProfile) {

@@ -318,11 +318,12 @@ export default {
 .content {
   display: flex;
   justify-content: flex-start;
-  height: 100%;
+  height: 60vh;
 
   &-left {
     display: flex;
     flex: 1;
+    height: 100%;
     flex-direction: column;
     height: 100%;
     overflow: hidden;

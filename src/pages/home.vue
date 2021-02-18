@@ -150,9 +150,15 @@ export default {
       this.ws.onclose = this.websocketclose
     },
     websocketopen() {
-      let data = { token: localStorage.getItem('token') }
+      // let data = { authToken: localStorage.getItem('token'), roomID:  }
       //websocket onopen
-      this.ws.send(JSON.stringify(data))
+      const authToken =  localStorage.getItem('token')
+
+
+      for(var i= 1; i< 4; i++){
+        this.ws.send(JSON.stringify({authToken, roomID: i}))
+
+      }
       //取出当前的会话列表
       this.onReady()
     },
