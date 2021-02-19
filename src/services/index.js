@@ -27,7 +27,7 @@ function getToken() {
   // return (token = parseQueryString().token);
   const token  = localStorage.getItem('token')
   if (token  != undefined ){
-    return token
+    return "bearer"+ token
   }
   return ""
 }
