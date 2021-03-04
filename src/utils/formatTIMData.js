@@ -54,7 +54,7 @@ export const messageFormate = (messageList, conversationID) => {
       flow: isMine ? "out" : "in",
       from: v.UserId,
       // isPeerRead: v.read === 1,
-      isPlaceMessage: 0,
+      isPlaceMessage: 2,
       // isRead: v.read === 0,
       isResend: false,
       isRevoked: false,

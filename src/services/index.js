@@ -26,6 +26,7 @@ function getToken() {
 
   // return (token = parseQueryString().token);
   const token  = localStorage.getItem('token')
+  console.log('token', token)
   if (token  != undefined ){
     return "bearer"+ token
   }
@@ -39,7 +40,7 @@ const http = new Axios({
     headers: {
       Accept: "*/*",
       // "Content-Type": "application/json",
-      Authorization: getToken(),
+      Authorization: "bearer"+localStorage.getItem('token'),
     },
   },
   beforeRequset: (url) => {

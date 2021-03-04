@@ -81,7 +81,8 @@ const conversationModules = {
   mutations: {
     /* 更新当前会话 */
     updateCurrentConversation(state, conversation) {
-      state.currentConversation = conversation;
+      state.currentConversation = { ...conversation, unreadCount: 0};
+      state.conversationObject[conversation.conversationID] = { ...conversation, unreadCount: 0};
       state.currentMessageList = [];
       state.nextReqMessageID = "";
       state.isCompleted = false;
