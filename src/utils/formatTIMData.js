@@ -47,9 +47,9 @@ export const messageFormate = (messageList, conversationID) => {
       // ID: v.,
       avatar: "",
       clientSequence: 49812,
-      conversationID: v.roomId,
+      conversationID: v.ChatID,
       conversationSubType: undefined,
-      conversationType: "C2C",
+      conversationType: v.ChatSort,
       //in 为收到的消息, out 为自己发出的消息
       flow: isMine ? "out" : "in",
       from: v.UserId,

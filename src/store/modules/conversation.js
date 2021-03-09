@@ -131,9 +131,19 @@ const conversationModules = {
      */
     pushCurrentMessageList(state, msg) {
       // 还没当前会话，则跳过s
-      console.log("pushCurrentMessageList", msg, state.currentMessageList);
+      // console.log("pushCurrentMessageList", msg, state.currentMessageList);
       const data = messageFormate([msg])[0];
-      state.currentMessageList = [...state.currentMessageList, data];
+      console.log("pushCurrentMessageList", data);
+
+      const msgConversationID  = data.conversationType + data.conversationID
+
+      if (msgConversationID === state.currentConversation.conversationID) {
+        state.currentMessageList = [...state.currentMessageList, data];
+      }else {
+      console.log("addf",  state.conversationObject[msgConversationID+''],state.conversationObject[msgConversationID]);
+        state.conversationObject[msgConversationID].lastMessage = msg
+        state.conversationObject[msgConversationID].unreadCount++
+      }
     },
 
     /**

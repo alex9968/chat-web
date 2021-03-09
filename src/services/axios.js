@@ -79,7 +79,8 @@ class Axios {
 		const config = { // 将用户传过来的参数与公共配置合并。
 			url,
 			...options,
-			...this.initConfig
+			...this.initConfig,
+      		Authorization: "bearer"+localStorage.getItem('token'),
 		}
 		// 配置拦截器，支持根据不同url配置不同的拦截器
 		//通过了拦截器才能继续返回data
