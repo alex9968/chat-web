@@ -73,25 +73,19 @@ export default {
             normalConversation.push(v)
           }
         })
-        console.log(
-          'sort',
-          normalConversation.sort((a, b) => {
-            if (a.unreadCount) {
-              return -a.unreadCount
-            } else {
-              b.lastMessage.lastTime - a.lastMessage.lastTime
-            }
-          })
-        )
+        // console.log(
+        // )
 
         return [
           ...forkConversation,
           ...normalConversation.sort((a, b) => {
-            if (a.unreadCount) {
-              return true
-            } else {
-              b.lastMessage.lastTime - a.lastMessage.lastTime
-            }
+            // if (a.unreadCount) {
+            //   return true
+            // } else {
+            //   b.lastMessage.lastTime - a.lastMessage.lastTime
+            // }
+            return b.lastMessage.lastTime - a.lastMessage.lastTime
+
           }),
         ]
       },

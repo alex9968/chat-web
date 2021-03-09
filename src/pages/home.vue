@@ -154,11 +154,7 @@ export default {
       //websocket onopen
       const authToken =  localStorage.getItem('token')
 
-
-      for(var i= 1; i< 4; i++){
-        this.ws.send(JSON.stringify({authToken, roomID: i}))
-
-      }
+       this.ws.send(JSON.stringify({authToken}))
       //取出当前的会话列表
       this.onReady()
     },
