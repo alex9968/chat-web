@@ -8,6 +8,11 @@ import actions from "./conversation-actions";
 import { conversationFormate, messageFormate } from "../../utils/formatTIMData";
 // import mutations from './conversation-mutations'
 
+const OP_MSG = 3
+const OP_ROOM_COUNT = 4
+const OP_ROOM_INFO = 5
+
+
 const conversationModules = {
   state: {
     currentConversation: {},
@@ -19,7 +24,7 @@ const conversationModules = {
     totalConvasation: 0,
     conversationPageNum: 1,
     conversationPageSize: 100,
-    forkList: ["C2Cim_account_3"],
+    forkList: [],
   },
   getters: {
     toAccount: (state) => {
@@ -130,20 +135,32 @@ const conversationModules = {
      * 调用时机：接受实时推送的消息
      */
     pushCurrentMessageList(state, msg) {
-      // 还没当前会话，则跳过s
-      // console.log("pushCurrentMessageList", msg, state.currentMessageList);
-      const data = messageFormate([msg])[0];
-      console.log("pushCurrentMessageList", data);
+      // 还没当前会话，则累加未读数量
+      const msgConversationID  = msg.sort + msg.room
 
-      const msgConversationID  = data.conversationType + data.conversationID
+      switch(msg.op){
+        case OP_MSG:
+          const data = messageFormate([msg.data])[0];
+          // console.log("pushCurrentMessageList", data);
+          const msgConversation =  state.conversationObject[msgConversationID]
+          if (msgConversationID === state.currentConversation.conversationID) {
+            state.currentMessageList = [...state.currentMessageList, data];
+          }else {
+            if(msgConversation) {
+              msgConversation.lastMessage = msg
+              msgConversation.unreadCount++
+            }
+          }
+        case OP_ROOM_INFO:
+          if(msg.sort === "GROUP"){
+            state.conversationObject[msgConversationID].groupProfile.members = msg.data
+          }
 
-      if (msgConversationID === state.currentConversation.conversationID) {
-        state.currentMessageList = [...state.currentMessageList, data];
-      }else {
-      console.log("addf",  state.conversationObject[msgConversationID+''],state.conversationObject[msgConversationID]);
-        state.conversationObject[msgConversationID].lastMessage = msg
-        state.conversationObject[msgConversationID].unreadCount++
+        default:
+          console.log("ws消息格式无法识别!")
+
       }
+     
     },
 
     /**

@@ -1,6 +1,18 @@
 import _axios from 'axios'
 import { message } from 'element-ui'
 
+// _axios.interceptors.request.use(function (config) {
+// 	// 在发送请求之前做些什么
+// 	// 判断是否存在token,如果存在将每个页面header添加token
+// 	if (localStorage.getItem("token")) {
+// 	  config.headers.common['Authorization'] = sessionStorage.getItem("token");
+// 	}
+// 	return config
+//   }, function (error) {
+// 	// router.push('/login')
+// 	return Promise.reject(error)
+//   })
+
 
 class Axios {
 	constructor(props) {
@@ -80,7 +92,7 @@ class Axios {
 			url,
 			...options,
 			...this.initConfig,
-      		Authorization: "bearer"+localStorage.getItem('token'),
+      		// Authorization: "bearer"+localStorage.getItem('token'),
 		}
 		// 配置拦截器，支持根据不同url配置不同的拦截器
 		//通过了拦截器才能继续返回data

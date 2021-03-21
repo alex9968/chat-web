@@ -19,19 +19,7 @@ const getBaseURL = () => {
   return "http://127.0.0.1:8888";
 };
 
-// console.log('url',getBaseURL())
-let token;
-function getToken() {
-  // if (token) return token;
 
-  // return (token = parseQueryString().token);
-  const token  = localStorage.getItem('token')
-  console.log('token', token)
-  if (token  != undefined ){
-    return "bearer"+ token
-  }
-  return ""
-}
 
 const http = new Axios({
   initConfig: {

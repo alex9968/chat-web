@@ -161,9 +161,12 @@ export default {
     websocketonmessage(e) {
       //数据接收
       // const redata = JSON.parse(e.data)
-      // console.log(redata.value)
-      let data = JSON.parse(e.data)
-      this.$store.commit('pushCurrentMessageList', data)
+      if(e.data){
+        let data = JSON.parse(e.data)
+        console.log("new ws:", data)
+        this.$store.commit('pushCurrentMessageList', data)
+      }
+
       // // console.log('websocketonmessage', data)
       // if (data.op == 3) {
       // } else if (data.op == 4) {

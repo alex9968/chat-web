@@ -227,7 +227,7 @@ export default {
       return false
     },
     avatar() {
-      console.log("message avatar", this.message)
+      // console.log("message avatar", this.message)
       if (this.currentConversation.type === 'C2C') {
         return this.isMine
           ? this.currentUserProfile.avatar

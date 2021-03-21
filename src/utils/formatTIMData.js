@@ -1,6 +1,6 @@
 import TIM from "@/assets/tim";
 
-export const messageFormate = (messageList, conversationID) => {
+export const messageFormate = (messageList) => {
   const _messageList = [];
   messageList.forEach((v) => {
     const messagePayload = {};
@@ -14,7 +14,7 @@ export const messageFormate = (messageList, conversationID) => {
     // UpdatedAt: "2021-02-03T15:00:17+08:00"
     // UserID: 1
 
-    //解析图片
+    // 解析图片
     // if (type === TIM.TYPES.MSG_IMAGE) {
     //   //console.log('message type', type)
     //   //图片唯一id String
@@ -24,12 +24,12 @@ export const messageFormate = (messageList, conversationID) => {
     //   //图片信息 Array.<Object>
     //   messagePayload["imageInfoArray"] = messageContent.ImageInfoArray;
     // }
-    //解析文本
+    // j解析文本
     if (v.Type === TIM.TYPES.MSG_TEXT) {
-      //console.log('message type', type)
+      // console.log('message type', type)
       messagePayload["text"] = v.Content;
     }
-    //解析声音
+    // 解析声音
     // if (type === TIM.TYPES.MSG_SOUND) {
     //   //console.log('声音', type)
     //   // uuid	String	唯一标识
@@ -50,7 +50,7 @@ export const messageFormate = (messageList, conversationID) => {
       conversationID: v.ChatID,
       conversationSubType: undefined,
       conversationType: v.ChatSort,
-      //in 为收到的消息, out 为自己发出的消息
+      // in 为收到的消息, out 为自己发出的消息
       flow: isMine ? "out" : "in",
       from: v.UserId,
       // isPeerRead: v.read === 1,
@@ -69,7 +69,7 @@ export const messageFormate = (messageList, conversationID) => {
       time: v.CreatedAt,
       // to: v.toUserId,
       type: v.Type,
-      userInfo: v.UserInfo
+      userInfo: v.UserInfo,
     });
   });
   return _messageList;
@@ -98,18 +98,19 @@ export const conversationFormate = (conversationList) => {
         nick: v.UserProfile.Name,
         avatar: v.UserProfile.Avatar,
         gender: v.UserProfile.Gender,
-        age: v.UserProfile.Age || '未知',
-        home: v.UserProfile.Profile.Home || '未知',
+        age: v.UserProfile.Age || "未知",
+        home: v.UserProfile.Profile.Home || "未知",
       };
-    } 
-    
-    if (v.Sort === "GROUP" && v.GroupProfile)  {
+    }
+
+    if (v.Sort === "GROUP" && v.GroupProfile) {
       conversationObject[ID]["groupProfile"] = {
         groupID: v.GroupProfile.ID,
         nick: v.GroupProfile.Name,
         avatar: v.GroupProfile.Avatar,
         intro: v.GroupProfile.Intro,
-        userID: v.GroupProfile.UserID
+        userID: v.GroupProfile.UserID,
+        members: [],
       };
     }
   });
