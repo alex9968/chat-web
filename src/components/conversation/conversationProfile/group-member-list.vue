@@ -1,7 +1,7 @@
 <template>
   <div class="group-member-list-wrapper">
     <div class="header">
-      <span class="member-count text-ellipsis">群成员：{{currentConversation.groupProfile.memberNum}}</span>
+      <!-- <span class="member-count text-ellipsis">群成员：{{currentConversation.groupProfile.memberNum}}</span> -->
       <popover v-model="addGroupMemberVisible">
         <add-group-member></add-group-member>
         <div slot="reference" class="btn-add-member" title="添加群成员">
@@ -11,16 +11,18 @@
     </div>
     <div class="scroll-content">
       <div class="group-member-list">
-        <div v-for="member in members" :key="member.userID">
-          <popover placement="right" :key="member.userID">
+        <div v-for="member in members" :key="member.UserID">
+          <popover placement="right" :key="member.UserID">
             <group-member-info :member="member" />
-            <div slot="reference" class="group-member" @click="currentMemberID = member.userID">
-              <avatar :title=getGroupMemberAvatarText(member.role) :src="member.avatar" />
+            <div slot="reference" class="group-member" @click="currentMemberID = member.UserID">
+              <avatar :title=getGroupMemberAvatarText(member.role) :class="{filter: !member.IsOnline }"  :src="member.Avatar" />
               <div class="member-name text-ellipsis">
                 <span v-if="member.nameCard" :title=member.nameCard>{{ member.nameCard }}</span>
-                <span v-else-if="member.nick" :title=member.nick>{{ member.nick }}</span>
-                <span v-else :title=member.userID>{{ member.userID }}</span>
+                <span v-else-if="member.Name" :title=member.Name>{{ member.Name }}</span>
+                <span v-else :title=member.userID>{{ member.UserID }}</span>
               </div>
+              <i v-if="member.IsMaster" style="color: gold" class="el-icon-user-solid"></i>
+              <i v-else class="el-icon-user-solid"></i>
             </div>
           </popover>
         </div>
@@ -54,13 +56,13 @@ export default {
   computed: {
     ...mapState({
       currentConversation: state => state.conversation.currentConversation,
-      currentMemberList: state => state.group.currentMemberList
+      // currentMemberList: state => state.group.currentMemberList
     }),
     showLoadMore() {
       return this.members.length < this.groupProfile.memberNum
     },
     members() {
-      return this.currentMemberList.slice(0, this.count)
+      return this.currentConversation.groupProfile.members
     }
   },
   methods: {
@@ -87,6 +89,8 @@ export default {
 
 <style lang="stylus" scoped>
 .group-member-list-wrapper
+  .filter
+    filter: brightness(50%);
   .header
     height 50px
     padding 10px 16px 10px 20px
@@ -118,12 +122,13 @@ export default {
       flex-wrap wrap
       width 100%
     .group-member
-      width 60px
+      // width 60px
       height 60px
       display: flex;
       justify-content center
       align-content center
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
       text-align: center;
       color: $black;
       cursor: pointer;

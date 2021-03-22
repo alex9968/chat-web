@@ -2,8 +2,11 @@
   <div class="group-profile">
     <div class="item">
       <span :title="groupProfile.nick">
-        群名<i class="el-icon-user-solid"></i>：{{ groupProfile.nick }}
+        群名<i class="el-icon-s-flag"></i>：{{ groupProfile.nick }}
       </span>
+    </div>
+    <div class="item">
+      成员<i class="el-icon-user-solid"></i>：{{ groupProfile.memberNum }}
     </div>
     <div class="item">
       简介<i class="el-icon-chat-dot-square"></i>：{{ groupProfile.intro }}

@@ -137,12 +137,13 @@ const conversationModules = {
     pushCurrentMessageList(state, msg) {
       // 还没当前会话，则累加未读数量
       const msgConversationID  = msg.sort + msg.room
+      const msgConversation =  state.conversationObject[msgConversationID]
+      if(!msgConversation) return
 
       switch(msg.op){
         case OP_MSG:
           const data = messageFormate([msg.data])[0];
           // console.log("pushCurrentMessageList", data);
-          const msgConversation =  state.conversationObject[msgConversationID]
           if (msgConversationID === state.currentConversation.conversationID) {
             state.currentMessageList = [...state.currentMessageList, data];
           }else {
@@ -152,8 +153,14 @@ const conversationModules = {
             }
           }
         case OP_ROOM_INFO:
+          console.log('ss', msg,msgConversation)
           if(msg.sort === "GROUP"){
-            state.conversationObject[msgConversationID].groupProfile.members = msg.data
+            msgConversation.groupProfile = {
+              ...msgConversation.groupProfile,
+              members: msg.data.UserList,
+              memberNum:  msg.data.OnlineCount + "/" + msg.data.UserList.length,
+            }
+
           }
 
         default:
