@@ -235,7 +235,7 @@ export default {
       } else if (this.currentConversation.type === 'GROUP') { 
          return this.isMine
           ? this.currentUserProfile.avatar
-          : this.message.Avatar
+          : this.message.userInfo.Avatar
       } else {
         return ''
       }
@@ -258,6 +258,7 @@ export default {
       if (this.message.isRevoked) { // 撤回消息
         return 'position-center'
       }
+      console.log("this.isMine",this.isMine )
       if (this.isMine) {
         return 'position-right'
       } else {

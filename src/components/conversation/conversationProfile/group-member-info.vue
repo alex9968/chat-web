@@ -79,10 +79,12 @@ export default {
       return (this.isOwner || this.isAdmin) && !this.isMine
     },
     isOwner() {
-      return this.currentConversation.groupProfile.selfInfo.role === 'Owner'
+      // return this.currentConversation.groupProfile.selfInfo.role === 'Owner'
+      return false
     },
     isAdmin() {
-      return this.currentConversation.groupProfile.selfInfo.role === 'Admin'
+      // return this.currentConversation.groupProfile.selfInfo.role === 'Admin'
+      return false
     },
     isMine() {
       return this.currentUserProfile.userID === this.member.userID
@@ -94,12 +96,12 @@ export default {
       )
     },
     changeRoleTitle() {
-      if (!this.canChangeRole) {
-        return ''
-      }
-      return this.isOwner && this.member.role === 'Admin'
-        ? '设为：Member'
-        : '设为：Admin'
+      // if (!this.canChangeRole) {
+      //   return ''
+      // }
+      // return this.isOwner && this.member.role === 'Admin'
+      //   ? '设为：Member'
+      //   : '设为：Admin'
     },
     // 是否显示禁言时间
     showMuteUntil() {
@@ -152,22 +154,22 @@ export default {
         })
     },
     changeMemberRole() {
-      if (!this.canChangeRole) {
-        return
-      }
-      let currentRole = this.member.role
-      this.tim
-        .setGroupMemberRole({
-          groupID: this.currentConversation.groupProfile.groupID,
-          userID: this.member.userID,
-          role: currentRole === 'Admin' ? 'Member' : 'Admin'
-        })
-        .catch(error => {
-          this.$store.commit('showMessage', {
-            type: 'error',
-            message: error.message
-          })
-        })
+      // if (!this.canChangeRole) {
+      //   return
+      // }
+      // let currentRole = this.member.role
+      // this.tim
+      //   .setGroupMemberRole({
+      //     groupID: this.currentConversation.groupProfile.groupID,
+      //     userID: this.member.userID,
+      //     role: currentRole === 'Admin' ? 'Member' : 'Admin'
+      //   })
+      //   .catch(error => {
+      //     this.$store.commit('showMessage', {
+      //       type: 'error',
+      //       message: error.message
+      //     })
+      //   })
     },
     setGroupMemberMuteTime() {
       this.tim
