@@ -71,7 +71,7 @@ import { activeTabName } from '../assets/consts'
 import { ACTION } from '../utils/trtcCustomMessageMap'
 import MTA from '../utils/mta'
 
-const socketUrl = 'ws://127.0.0.1:8888/ws'
+const socketUrl = process.env.NODE_ENV === "production" ? 'ws://39.105.116.143:8000/ws' : 'ws://127.0.0.1:8000/ws'
 // let websocket = new WebSocket(socketUrl)
 
 export default {

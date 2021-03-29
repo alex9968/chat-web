@@ -14,9 +14,9 @@ import { parseQueryString } from "../utils/index";
 const getBaseURL = () => {
   // console.log('sssss',process.env.NODE_ENV)
   if (process.env.NODE_ENV === "production") {
-    return "http://127.0.0.1:8888";
+    return "http://39.105.116.143:8000";
   }
-  return "http://127.0.0.1:8888";
+  return "http://127.0.0.1:8000";
 };
 
 
