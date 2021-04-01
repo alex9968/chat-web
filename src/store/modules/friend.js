@@ -3,12 +3,16 @@ import API from "@/services/index";
 const friendModules = {
   state: {
     friendList: [],
+    relationList: [],
     createGroupModelVisible: false,
     currentFriend: {},
+    currentRelation: {},
+    currentFriendRelated: false
   },
   mutations: {
-    upadateFriendList(state, friendList) {
-      state.friendList = friendList;
+    updateFriendData(state, data) {
+      state.friendList = data.friends;
+      state.relationList = data.relations;
     },
     reset(state) {
       Object.assign(state, {
@@ -18,6 +22,7 @@ const friendModules = {
     },
     setCurrentFriend(state, friendID) {
       // console.log("setCurrentFriend(", friendID);
+      state.currentFriendRelated = true
       state.friendList.forEach((v) => {
         // console.log("id", v.id);
         if (v.ID === friendID) {
@@ -25,14 +30,26 @@ const friendModules = {
         }
       });
     },
+    setCurrentRelation(state, { UserId, Is2Me }) {
+      state.currentFriendRelated = false
+      state.relationList.forEach((v) => {
+        // console.log("id", v.id);
+        if (!Is2Me && v.RelatedId === UserId) {
+          state.currentFriend = v.RelatedProfile;
+        }
+        if (Is2Me && v.UserId === UserId) {
+          state.currentFriend = v.UserProfile;
+        }
+      });
+    },
   },
   actions: {
     getFriendList(context) {
       API.getFriendList({ id: localStorage.getItem("userID") })
-        .then(({ data: friendList }) => {
+        .then(({ data }) => {
           // console.log("friendList:", friendList  )
-          context.commit("upadateFriendList", friendList);
-          context.commit("setCurrentFriend", friendList[0].ID);
+          context.commit("updateFriendData", data);
+          data.friends.length && context.commit("setCurrentFriend", data.friends[0].ID);
         })
         .catch((error) => {
           context.commit("showMessage", {

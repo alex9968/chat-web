@@ -1,12 +1,18 @@
 <template>
-  <div class="friend-list-container" :class="{'default': !hasFriend}">
+  <div class="friend-list-container">
      <div class="header-bar">
-       好友列表
+       <div>好友列表</div>
     </div>
+     <div class="group-container">
+    <div v-if="hasRelation">
+      <friend-item :related="false" v-for="user in relationList" :key="user.userID" :friend="user" />
+    </div>
+
     <div v-if="hasFriend">
-      <friend-item v-for="friend in friendList" :key="friend.userID" :friend="friend" />
+      <friend-item :related="true" v-for="user in friendList" :key="user.userID" :friend="user" />
     </div>
-    <div style="color:gray;" v-else>暂无好友</div>
+    <div class="null" v-else>暂无好友</div>
+    </div>
   </div>
 </template>
 
@@ -19,23 +25,38 @@ export default {
   },
   computed: {
     ...mapState({
-      friendList: state => state.friend.friendList
+      friendList: state => state.friend.friendList,
+      relationList: state => state.friend.relationList
     }),
     hasFriend() {
       return this.friendList.length > 0
+    },
+    hasRelation() {
+      return this.relationList.length > 0
     }
   }
 }
 </script>
 
 <style lang="stylus" scpoed>
-.default {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  overflow-y: scroll;
-}
+.friend-list-container
+  height 100%
+  width 100%
+  display flex
+  flex-direction column
+ .group-container 
+    overflow-y scroll
+    flex 1
+    .null 
+      color gray
+      height 50%
+      width 100%
+      display flex
+      align-items center
+      justify-content center
+
+
+
 .header-bar
     display: flex;
     flex-shrink 0

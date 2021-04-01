@@ -1,5 +1,5 @@
 <template>
-  <div @click="handleFriendClick" class="scroll-container">
+  <div v-if="related" @click="handleFriendClick" class="scroll-container">
     <div
       :class="{ 'friend-item': true, active: friend.ID === currentFriendID }"
     >
@@ -7,6 +7,48 @@
       <div class="friend-name text-ellipsis">{{ friend.Name }}</div>
     </div>
   </div>
+
+  <!-- 你加别人的申请 -->
+  <div v-else-if="friend.UserId === userID" @click="handleRelationClick" class="scroll-container">
+    <div
+      :class="{
+        'friend-item': true,
+        active: friend.RelatedId === currentFriendID,
+      }"
+    >
+        <avatar :src="friend.RelatedProfile.Avatar" />
+        <div class="friend-name text-ellipsis">
+          {{ friend.RelatedProfile.Name }}
+        </div>
+        <div v-if="friend.State === 0" style="font-size: 12px">
+          已申请,等待对方同意
+        </div>
+        <div v-if="friend.State === 1" style="font-size: 12px">已添加</div>
+        <div v-if="friend.State === 2" style="font-size: 12px">对方已拒绝</div>
+     
+    </div>
+  </div>
+
+<!-- 别人加你 -->
+  <div v-else @click="handleRelation2Click" class="scroll-container">
+    <div
+      :class="{
+        'friend-item': true,
+        active: friend.RelatedId === currentFriendID,
+      }"
+    >
+        <avatar :src="friend.UserProfile.Avatar" />
+        <div class="friend-name text-ellipsis">
+          {{ friend.UserProfile.Name }}
+        </div>
+        <div v-if="friend.State === 0" style="font-size: 12px">申请加你为好友
+          <el-button type="success" @click="agreeToFriend($event,friend.UserId)" round size="mini">同意</el-button>
+        </div>
+        <div v-if="friend.State === 1" style="font-size: 12px">已添加</div>
+        <div v-if="friend.State === 2" style="font-size: 12px">对方已拒绝</div>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -17,16 +59,34 @@ export default {
       type: Object,
       required: true,
     },
+    related: {
+      type: Boolean,
+      required: true,
+    },
   },
   computed: {
     ...mapState({
       currentFriendID: (state) => state.friend.currentFriend.ID,
+      userID: (state) => state.user.userID,
+      currentRelationFriendID: (state) =>
+        state.friend.currentRelation.RelatedId,
     }),
   },
   methods: {
     handleFriendClick() {
       // console.log('handleFriendClick(')
       this.$store.commit('setCurrentFriend', this.friend.ID)
+    },
+    handleRelationClick() {
+      this.$store.commit('setCurrentRelation', {UserId: this.friend.RelatedId, Is2Me: false})
+    },
+    handleRelation2Click() {
+      this.$store.commit('setCurrentRelation', {UserId: this.friend.UserId, Is2Me: true})
+    },
+    agreeToFriend(e, uid) {
+      e.stopPropagation();
+      console.log('agreeToFriend', uid)
+
     },
     addConversation() {
       this.API.addConversation({

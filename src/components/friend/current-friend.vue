@@ -6,7 +6,7 @@
         <el-avatar :size="100" :src="friend.Avatar"></el-avatar>
       </div>
       <div class="name">{{ friend.Name }}</div>
-      <div class="btn" @click="openConversation">发送消息</div>
+      <div class="btn" v-if="currentFriendRelated" @click="openConversation">发送消息</div>
     </div>
 
     <!-- 详细资料 -->
@@ -55,6 +55,7 @@ export default {
   computed: {
     ...mapState({
       friend: (state) => state.friend.currentFriend,
+      currentFriendRelated: (state) => state.friend.currentFriendRelated,
     }),
   },
   watch: {},
