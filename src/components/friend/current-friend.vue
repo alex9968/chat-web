@@ -6,7 +6,21 @@
         <el-avatar :size="100" :src="friend.Avatar"></el-avatar>
       </div>
       <div class="name">{{ friend.Name }}</div>
-      <div class="btn" v-if="currentFriendRelated" @click="openConversation">发送消息</div>
+      <div
+        class="send-btn"
+        v-if="currentFriendRelated"
+        @click="openConversation"
+      >
+        发送消息
+      </div>
+      <div class="handle-btn" v-if="showHandleBtn">
+        <el-button type="success" @click="handleFriend(RELATION_AGREE)" round
+          >同意</el-button
+        >
+        <el-button type="danger" @click="handleFriend(RELATION_REFUSE)" round
+          >拒绝</el-button
+        >
+      </div>
     </div>
 
     <!-- 详细资料 -->
@@ -28,9 +42,12 @@
 <script>
 import { mapState } from 'vuex'
 import { activeTabName } from '@/assets/consts'
+
 export default {
   data() {
     return {
+      RELATION_REFUSE: 2,
+      RELATION_AGREE: 1,
       renderKeys: {
         ID: {
           key: 'ID',
@@ -56,6 +73,9 @@ export default {
     ...mapState({
       friend: (state) => state.friend.currentFriend,
       currentFriendRelated: (state) => state.friend.currentFriendRelated,
+      currentRelationID: (state) => state.friend.currentRelation.ID,
+      showHandleBtn: (state) =>
+        state.user.userID == state.friend.currentRelation.RelatedId && state.friend.currentRelation.State === 0,
     }),
   },
   watch: {},
@@ -64,6 +84,19 @@ export default {
       this.$store.commit('setActiveTab', activeTabName.CONVERSATION_LIST)
       // 切换到当前会话
       this.$store.dispatch('friend2Conversation', this.friend.ID)
+    },
+    handleFriend(handleSig) {
+      console.log('agreeToFriend', handleSig)
+      this.API.handleFriendRelation({
+        handleSig,
+        userID: localStorage.getItem('userID'),
+        relationID: this.currentRelationID,
+      }).then(() => {
+        // console.log('friendList:', data)
+        // context.commit("updateFriendData", data);
+        this.$message.success("添加好友成功!")
+        openConversation()
+      })
     },
     getInitData() {
       // this.API.getUserInfo(this.currentToUID)
@@ -118,7 +151,7 @@ export default {
       transform: translate(-50%, 0%);
     }
 
-    .btn {
+    .send-btn {
       background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
       border-radius: 25px;
       width: 160px;
@@ -136,6 +169,16 @@ export default {
       &:hover {
         background-color: #fcb69f;
       }
+    }
+
+    .handle-btn {
+      cursor: pointer;
+      position: absolute;
+      left: 50%;
+      top: 80%;
+      line-height: 50px;
+      text-align: center;
+      transform: translate(-50%, 0%);
     }
   }
 

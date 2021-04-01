@@ -41,9 +41,7 @@
         <div class="friend-name text-ellipsis">
           {{ friend.UserProfile.Name }}
         </div>
-        <div v-if="friend.State === 0" style="font-size: 12px">申请加你为好友
-          <el-button type="success" @click="agreeToFriend($event,friend.UserId)" round size="mini">同意</el-button>
-        </div>
+        <div v-if="friend.State === 0" style="font-size: 12px">申请加你为好友,待处理</div>
         <div v-if="friend.State === 1" style="font-size: 12px">已添加</div>
         <div v-if="friend.State === 2" style="font-size: 12px">对方已拒绝</div>
     </div>
@@ -68,8 +66,6 @@ export default {
     ...mapState({
       currentFriendID: (state) => state.friend.currentFriend.ID,
       userID: (state) => state.user.userID,
-      currentRelationFriendID: (state) =>
-        state.friend.currentRelation.RelatedId,
     }),
   },
   methods: {
@@ -83,11 +79,7 @@ export default {
     handleRelation2Click() {
       this.$store.commit('setCurrentRelation', {UserId: this.friend.UserId, Is2Me: true})
     },
-    agreeToFriend(e, uid) {
-      e.stopPropagation();
-      console.log('agreeToFriend', uid)
-
-    },
+   
     addConversation() {
       this.API.addConversation({
         chatID: `C2C${this.friend.ID}`,

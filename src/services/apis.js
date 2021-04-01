@@ -72,27 +72,9 @@ export default {
     url: '/api/admin/user/${uid}/update',
   },
 
-  /* -------- 获取UID------- */
-  /* data: {   [key]: value   } */
-  getUserUidByIMAccount: {
-    method: 'post',
-    url: '/stub-api/v3/user/uid_translation_im_account',
-  },
-
-  /* -------- 收藏联系人------- */
-  contactStar: {
-    method: 'post',
-    url: '/stub-api/v3/friend/star_contact',
-  },
-  /* -------- 取消收藏联系人------- */
-  contactUnStar: {
-    method: 'post',
-    url: '/stub-api/v3/friend/un_star_contact',
-  },
-
   /* -------- 获取聊天记录 -------- */
-  getUserMessages: {
+  handleFriendRelation: {
     method: 'post',
-    url: '/stub-api/v3/im/get_user_messages',
+    url: '/api/v1/friends/handle',
   },
 };

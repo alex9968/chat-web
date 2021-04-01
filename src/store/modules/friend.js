@@ -23,6 +23,7 @@ const friendModules = {
     setCurrentFriend(state, friendID) {
       // console.log("setCurrentFriend(", friendID);
       state.currentFriendRelated = true
+      state.currentRelation = {}
       state.friendList.forEach((v) => {
         // console.log("id", v.id);
         if (v.ID === friendID) {
@@ -36,9 +37,11 @@ const friendModules = {
         // console.log("id", v.id);
         if (!Is2Me && v.RelatedId === UserId) {
           state.currentFriend = v.RelatedProfile;
+          state.currentRelation = v
         }
         if (Is2Me && v.UserId === UserId) {
           state.currentFriend = v.UserProfile;
+          state.currentRelation = v
         }
       });
     },
