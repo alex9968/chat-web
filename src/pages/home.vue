@@ -67,7 +67,7 @@ import CurrentFriend from '../components/friend/current-friend'
 import SideBar from '../components/layout/side-bar'
 import HeaderBar from '../components/layout/header-bar'
 import ImagePreviewer from '../components/message/image-previewer.vue'
-import { activeTabName } from '../assets/consts'
+import { activeTabName, OP_TYPE  } from '../assets/consts'
 import { ACTION } from '../utils/trtcCustomMessageMap'
 import MTA from '../utils/mta'
 
@@ -154,19 +154,16 @@ export default {
       //websocket onopen
       const authToken =  localStorage.getItem('token')
 
-       this.ws.send(JSON.stringify({authToken}))
+       this.ws.send(JSON.stringify({authToken, cop: OP_TYPE.COP_AUTH}))
       //取出当前的会话列表
       this.onReady()
     },
+    //数据接收, 处理
     websocketonmessage(e) {
-      //数据接收
-      // const redata = JSON.parse(e.data)
-      if(e.data){
-        let data = JSON.parse(e.data)
-        console.log("new ws:", data)
-        this.$store.commit('pushCurrentMessageList', data)
-      }
-
+      if(!e.data) return
+      const data = JSON.parse(e.data)
+      console.log("new ws:", data)
+      this.$store.commit('pushCurrentMessageList', { msg: data, store: this.$store})
       // // console.log('websocketonmessage', data)
       // if (data.op == 3) {
       // } else if (data.op == 4) {

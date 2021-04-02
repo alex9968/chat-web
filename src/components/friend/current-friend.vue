@@ -87,16 +87,19 @@ export default {
     },
     handleFriend(handleSig) {
       console.log('agreeToFriend', handleSig)
-      this.API.handleFriendRelation({
-        handleSig,
-        userID: localStorage.getItem('userID'),
-        relationID: this.currentRelationID,
-      }).then(() => {
-        // console.log('friendList:', data)
-        // context.commit("updateFriendData", data);
-        this.$message.success("添加好友成功!")
-        openConversation()
-      })
+
+      this.$store.dispatch("handleFriendRelation", { ws: this.ws, handleSig,relationID: this.currentRelationID})
+      // this.API.handleFriendRelation({
+      //   handleSig,
+      //   userID: localStorage.getItem('userID'),
+      //   relationID: this.currentRelationID,
+      // }).then(() => {
+      //   // console.log('friendList:', data)
+      //   this.$store.dispatch("handleFriendRelation", this.ws,22);
+      //   this.$store.dispatch("getFriendList");
+      //   this.$message.success("添加好友成功!")
+      //   // openConversation()
+      // })
     },
     getInitData() {
       // this.API.getUserInfo(this.currentToUID)

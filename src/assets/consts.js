@@ -23,3 +23,13 @@ export const MSG_TYPE = {
     MSG_IMAGE: 'TIMImageElem',
     MSG_SOUND: 'TIMSoundElem',
 };
+
+export const  OP_TYPE = { 
+    OP_MSG: 3,
+	OP_ROOM_COUNT: 4,
+    OP_ROOM_INFO: 5,
+    OP_NEW_CHAT: 6,
+    COP_AUTH: 10,
+    COP_NEW_CHAT: 11
+}
+

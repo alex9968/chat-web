@@ -46,12 +46,8 @@
         >登录</el-button
       >
 
-      <div style="width: 240px;text-align: right">
-        <el-button
-          type="text"
-          @click="handelRegister"
-          >去注册</el-button
-        >
+      <div style="width: 240px; text-align: right">
+        <el-button type="text" @click="handelRegister">去注册</el-button>
       </div>
     </div>
   </div>
@@ -101,6 +97,30 @@ export default {
         {
           name: 'root2',
         },
+        {
+          name: 'root3',
+        },
+        {
+          name: 'root4',
+        },
+        {
+          name: 'root5',
+        },
+        {
+          name: 'Elaine',
+        },
+        {
+          name: 'Gemma',
+        },
+        {
+          name: 'Shailene',
+        },
+        {
+          name: 'Lydia',
+        },
+        {
+          name: 'Allison',
+        },
       ],
     }
   },
@@ -115,9 +135,7 @@ export default {
         }
       })
     },
-    handelRegister() {
-
-    },
+    handelRegister() {},
 
     submitLogin(userID, userSig) {
       loadingInstance = Loading.service()
@@ -129,7 +147,7 @@ export default {
           this.loading = false
           this.$store.commit('toggleIsLogin', true)
           this.$store.commit('startComputeCurrent')
-           
+
           this.$nextTick(() => {
             // 以服务的方式调用的 Loading 需要异步关闭
             loadingInstance.close()

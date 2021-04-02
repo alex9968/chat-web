@@ -1,6 +1,5 @@
 import { message } from "element-ui";
 import {
-  conversationFormate,
   messageFormate,
   conversationIDFormate,
 } from "../../utils/formatTIMData";
@@ -26,11 +25,11 @@ export default {
       // context.state.isCompleted = res.data.isCompleted
       // 更新当前消息列表，从头部插入
 
-      console.log(
-        "init currentMessageList",
-        messageFormate(res.data.list),
-        currentMessageList
-      );
+      // console.log(
+      //   "init currentMessageList",
+      //   messageFormate(res.data.list),
+      //   currentMessageList
+      // );
       context.state.currentMessageList = [
         ...messageFormate(res.data.list),
         ...currentMessageList,
@@ -74,10 +73,8 @@ export default {
       });
     });
   },
-  searchConversation(context, toUid) {},
   //  调用时机：切换会话时
   checkoutConversation(context, conversationID) {
-    //context.commit('resetCurrentMemberList')
     // 1.切换会话前，将切换前的会话进行已读上报
     // if (context.state.currentConversation.conversationID) {
     //   const prevConversationID = context.state.currentConversation.conversationID
@@ -117,6 +114,8 @@ export default {
     );
   },
   friend2Conversation(context, friendID) {
+
+
     context.dispatch(
       "checkoutConversation",
       "C2C2"

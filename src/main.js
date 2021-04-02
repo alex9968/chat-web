@@ -24,7 +24,7 @@ Vue.prototype.TIM = TIM
 Vue.prototype.API = API
 Vue.prototype.$store = store
 // Vue.prototype.$confirm = MessageBox.confirm
-// Vue.prototype.$message= Message
+Vue.prototype.$message= Message
 Vue.use(Button)
 Vue.use(Row)
 Vue.use(Col)

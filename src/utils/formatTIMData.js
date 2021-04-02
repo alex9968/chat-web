@@ -78,6 +78,7 @@ export const messageFormate = (messageList) => {
 export const conversationFormate = (conversationList) => {
   const conversationObject = {};
   conversationList.forEach((v) => {
+    const isMine = localStorage.getItem("userID") === v.UserID + "";
     const ID = `${v.Sort}${v.ID}`;
     conversationObject[ID] = {
       conversationID: ID,
@@ -92,15 +93,24 @@ export const conversationFormate = (conversationList) => {
       time: v.CreatedAt,
     };
 
-    if (v.Sort === "C2C" && v.UserProfile) {
+    if (v.Sort === "C2C" && isMine) {
+      conversationObject[ID]["userProfile"] = {
+        userID: v.TargetProfile.ID,
+        nick: v.TargetProfile.Name,
+        avatar: v.TargetProfile.Avatar,
+        gender: v.TargetProfile.Gender,
+        age: v.TargetProfile.Age || "未知",
+        home: v.TargetProfile.Profile.Home || "未知",
+      };
+    } else {
       conversationObject[ID]["userProfile"] = {
         userID: v.UserProfile.ID,
         nick: v.UserProfile.Name,
         avatar: v.UserProfile.Avatar,
         gender: v.UserProfile.Gender,
         age: v.UserProfile.Age || "未知",
-        home: v.UserProfile.Profile.Home || "未知",
-      };
+        home: v.UserProfile.Profile.Home || "未知"
+      }
     }
 
     if (v.Sort === "GROUP" && v.GroupProfile) {

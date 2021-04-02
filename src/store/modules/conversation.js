@@ -1,16 +1,13 @@
 import tim from "tim";
 import TIM from "tim-js-sdk";
 import API from "@/services/index";
-import { message } from "element-ui";
+import { OP_TYPE, activeTabName} from "@/assets/consts";;
+import { message } from 'element-ui'
 import store from "..";
 import { titleNotify } from "../../utils";
 import actions from "./conversation-actions";
 import { conversationFormate, messageFormate } from "../../utils/formatTIMData";
 // import mutations from './conversation-mutations'
-
-const OP_MSG = 3
-const OP_ROOM_COUNT = 4
-const OP_ROOM_INFO = 5
 
 
 const conversationModules = {
@@ -134,16 +131,16 @@ const conversationModules = {
      * 将消息插入当前会话列表
      * 调用时机：接受实时推送的消息
      */
-    pushCurrentMessageList(state, msg) {
+    pushCurrentMessageList(state, {msg, store}) {
       // 还没当前会话，则累加未读数量
       const msgConversationID  = msg.sort + msg.room
       const msgConversation =  state.conversationObject[msgConversationID]
-      if(!msgConversation) return
 
       switch(msg.op){
-        case OP_MSG:
+        case OP_TYPE.OP_MSG:
+          if(!msgConversation) return
           const data = messageFormate([msg.data])[0];
-          // console.log("pushCurrentMessageList", data);
+          console.log("pushCurrentMessageList", data);
           if (msgConversationID === state.currentConversation.conversationID) {
             state.currentMessageList = [...state.currentMessageList, data];
           }else {
@@ -152,17 +149,29 @@ const conversationModules = {
               msgConversation.unreadCount++
             }
           }
-        case OP_ROOM_INFO:
-          console.log('ss', msg,msgConversation)
+          break;
+        case OP_TYPE.OP_ROOM_INFO:
+          if(!msgConversation) return
+          console.log('OP_ROOM_INFO', msg,msgConversation)
           if(msg.sort === "GROUP"){
             msgConversation.groupProfile = {
               ...msgConversation.groupProfile,
               members: msg.data.UserList,
               memberNum:  msg.data.OnlineCount + "/" + msg.data.UserList.length,
             }
-
           }
-
+          break;
+        case OP_TYPE.OP_NEW_CHAT:
+          // state.conversationList
+          console.log('OP_NEW_CHAT', msg,OP_TYPE.OP_NEW_CHAT)
+          const newConversation = Object.values(conversationFormate([msg.data]))[0]
+          // console.log("newConversation", newConversation)
+          state.conversationObject[newConversation.ID] = newConversation 
+          message.success("添加好友成功!")
+          store.commit('setActiveTab', activeTabName.CONVERSATION_LIST)
+          store.dispatch('friend2Conversation', newConversation.ID)
+          store.dispatch("getFriendList");
+          break;
         default:
           console.log("ws消息格式无法识别!")
 
